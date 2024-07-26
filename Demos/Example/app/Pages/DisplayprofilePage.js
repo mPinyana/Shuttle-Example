@@ -86,11 +86,6 @@ const UserProfile = () => {
     );
     }
 
-                    
-                    
-                    
-                   
-
     return (
         <View style={styles.container}>
            <View  style ={styles.NavigationBar}> 
