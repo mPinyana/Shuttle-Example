@@ -102,13 +102,14 @@ const fetchUserProfile = async (userId) => {
 
     return (
     <View style ={styles.Container}>
-        <View  style ={styles.NavigationBar}>
-            <Text style={styles.Heading} >UCT Shuttle Services
-            </Text>
+
+        <View  style ={styles.header}>
+            <Text style={styles.headerText} >UCT Shuttle Services</Text>
         </View>
         
         <View style={styles.Salutations}>
-        <Text style={styles.Hi}>Hello!</Text><Text style={styles.Welkom}> Welcome, Please enter login details</Text>
+        <Text style={styles.Hi}>Hello!</Text>
+        {/* <Text style={styles.Welkom}> Welcome, Please enter login details</Text> */}
         </View>
         
         <View style={styles.InputBoxes}>
@@ -127,16 +128,21 @@ const fetchUserProfile = async (userId) => {
                     value={password}
                     onChangeText={(text) => setPassword(text.trim())}
                     secureTextEntry={true}
-                />
-            
-            <Button color={'#00308F'} style={styles.button} title='Login' onPress={logginIn}/>
-
-            <Button color={'red'} style={styles.button} title='SignUp' onPress={SignUp}/>
-           
+                /> 
         </View>
+    
+    <View style={styles.buttonContainer}>
+        <Button color={'#00308F'} 
+            style={styles.button} 
+            title='Login' 
+            onPress={logginIn}/>
 
-        
-
+        <Button color={'red'} 
+            style={styles.button} 
+            title='SignUp' 
+            onPress={SignUp}/>
+    </View>
+     
     </View>
         
     );
@@ -145,71 +151,69 @@ const fetchUserProfile = async (userId) => {
 const styles = StyleSheet.create({
     Container:{
         flex:1,
-        backgroundColor: 'white',
+        //backgroundColor: 'white',
     },
 
-    button:{
-       flex:0,
-       // top:'90%',
-        width:'20%'
+    header: {
+        height: '16%',
+        width:'100%',
+        backgroundColor: '#00308F',
+        justifyContent:'space-evenly',
+        alignItems:'center',
+    },
+
+    headerText:{
+        color:'white',
+        fontSize:Platform.OS==='android'? 22:0,// Remove this during implementation 
+    }, 
+
+    Salutations:{
+        height:'16%',
+        alignItems:'center',
+        width:'100%',
+        padding: '7%',
     },
 
     Hi:{
-       
         fontStyle:'italic',
         fontSize:Platform.OS==='android'? 35:0,
         color:'#00308F',
     },
 
-    Heading:{
-        color:'white',
-        fontSize:Platform.OS==='android'? 22:0,// Remove this during implementation 
-        top:'40%',
-        left:'22%',
-        
-    }, 
-
-    InputBoxes:{
-        flex:0.8,
-        alignItems:'Center',
-        height: '20%',
-        width:'70%',
-        top:'10%',
-        left:'10%',
-        justifyContent:'flex-start',
-        justifyContent:'space-evenly'
-
-    },
-
-    inputText:{
-        height: 40,
-        borderColor: '#ffffff',
-        borderWidth: '2%',
-        borderRadius:'4px',
-        marginBottom: 20,
-        paddingHorizontal: 10,
-
-    },
-    NavigationBar: {
-        //flex: 0.5,
-        width:'100%',
-        height:'15%',
-        backgroundColor: '#00308F',
-        justifyContent:'Top',
-        alignItems:'Center',
-        
-    },
-    Salutations:{
-        alignItems:'center',
-        width:'100%',
-        top:'8%',
-    },
     Welkom:{
         fontStyle:'italic',
         fontSize:Platform.OS==='android'? 22:0,
         color:'#00308F',
-    }
+    },
 
+    InputBoxes:{
+        height: '30%',
+        width:'100%',
+        justifyContent:'flex-start',
+        alignItems: 'center',
+        
+    },
+
+    input: {
+        padding: '2%',
+        width: '85%',
+        borderRadius: 20,
+        justifyContent: 'space-evenly',
+        marginVertical: '5%',
+        backgroundColor: '#d9d9d9',
+    },
+
+    buttonContainer: {
+        height: '15%',
+        width:'100%',
+        flexDirection: 'column',
+        justifyContent:'space-evenly',
+    },
+
+    button:{
+       width:'60%',
+       padding: '10%',
+    },
       
 })
 export default LoginPage;
