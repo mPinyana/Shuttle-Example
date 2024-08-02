@@ -131,17 +131,17 @@ const fetchUserProfile = async (userId) => {
                 /> 
         </View>
     
-    <View style={styles.buttonContainer}>
-        <Button color={'#00308F'} 
+        <View style={styles.buttonContainer}>
+            <Button color={'#00308F'} 
             style={styles.button} 
             title='Login' 
             onPress={logginIn}/>
 
-        <Button color={'red'} 
+            <Button color={'red'} 
             style={styles.button} 
             title='SignUp' 
             onPress={SignUp}/>
-    </View>
+        </View>
      
     </View>
         
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        height: '16%',
+        flex: 0.26,
         width:'100%',
         backgroundColor: '#00308F',
         justifyContent:'space-evenly',
@@ -168,10 +168,11 @@ const styles = StyleSheet.create({
     }, 
 
     Salutations:{
-        height:'16%',
+        flex: 0.2,
         alignItems:'center',
+        justifyContent:'space-evenly',
         width:'100%',
-        padding: '7%',
+      
     },
 
     Hi:{
@@ -180,22 +181,22 @@ const styles = StyleSheet.create({
         color:'#00308F',
     },
 
-    Welkom:{
-        fontStyle:'italic',
-        fontSize:Platform.OS==='android'? 22:0,
-        color:'#00308F',
-    },
+    // Welkom:{
+    //     fontStyle:'italic',
+    //     fontSize:Platform.OS==='android'? 22:0,
+    //     color:'#00308F',
+    // },
 
     InputBoxes:{
-        height: '30%',
+        height: '25%',
         width:'100%',
-        justifyContent:'flex-start',
+        justifyContent:'space-evenly',
         alignItems: 'center',
         
     },
 
     input: {
-        padding: '2%',
+        height: '30%',
         width: '85%',
         borderRadius: 20,
         justifyContent: 'space-evenly',
@@ -204,15 +205,21 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer: {
-        height: '15%',
+        flex: 0.25,
         width:'100%',
-        flexDirection: 'column',
         justifyContent:'space-evenly',
+        alignItems: 'center',
+       
+        
     },
 
     button:{
-       width:'60%',
-       padding: '10%',
+        //padding: '10%',
+        width:'90%',
+        //borderRadius: 20,
+        //justifyContent: 'space-evenly',
+        //marginVertical: '2%',
+        
     },
       
 })
