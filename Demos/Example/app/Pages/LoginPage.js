@@ -132,15 +132,24 @@ const fetchUserProfile = async (userId) => {
         </View>
     
         <View style={styles.buttonContainer}>
-            <Button color={'#00308F'} 
-            style={styles.button} 
-            title='Login' 
-            onPress={logginIn}/>
+            <TouchableOpacity 
+            activeOpacity={0.8}
+            style={styles.buttonLogin}  
+            onPress={logginIn}>
+            <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
 
-            <Button color={'red'} 
+            <TouchableOpacity 
+            activeOpacity={0.8}
+            style={styles.buttonSignup}
+            onPress={SignUp}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+            </TouchableOpacity>
+
+            {/* <Button color={'red'} 
             style={styles.button} 
             title='SignUp' 
-            onPress={SignUp}/>
+            onPress={SignUp}/> */}
         </View>
      
     </View>
@@ -155,7 +164,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        flex: 0.26,
+        height: 100,
         width:'100%',
         backgroundColor: '#00308F',
         justifyContent:'space-evenly',
@@ -168,7 +177,7 @@ const styles = StyleSheet.create({
     }, 
 
     Salutations:{
-        flex: 0.2,
+        height: 120,
         alignItems:'center',
         justifyContent:'space-evenly',
         width:'100%',
@@ -188,7 +197,7 @@ const styles = StyleSheet.create({
     // },
 
     InputBoxes:{
-        height: '25%',
+        height: 130,
         width:'100%',
         justifyContent:'space-evenly',
         alignItems: 'center',
@@ -198,28 +207,45 @@ const styles = StyleSheet.create({
     input: {
         height: '30%',
         width: '85%',
+        padding: 10,
         borderRadius: 20,
         justifyContent: 'space-evenly',
         marginVertical: '5%',
         backgroundColor: '#d9d9d9',
+        borderWidth: 0.2,
     },
 
     buttonContainer: {
-        flex: 0.25,
+        height: 120,
         width:'100%',
         justifyContent:'space-evenly',
         alignItems: 'center',
-       
-        
     },
 
-    button:{
-        //padding: '10%',
-        width:'90%',
-        //borderRadius: 20,
-        //justifyContent: 'space-evenly',
-        //marginVertical: '2%',
-        
+    buttonLogin:{
+        height: '35%',
+        width:'70%',
+        backgroundColor: '#00308F',
+        borderRadius: 20,
+        justifyContent:'space-evenly',
+        alignItems: 'center',
+        marginVertical: 10, 
+    },
+
+    buttonSignup:{
+        height: '35%',
+        width:'70%',
+        backgroundColor: 'red',
+        borderRadius: 20,
+        justifyContent:'space-evenly',
+        alignItems: 'center',
+        marginVertical: 10, 
+    },
+
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
       
 })
