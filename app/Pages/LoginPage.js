@@ -7,7 +7,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { Firebase_DB } from '../../FirebaseConfig';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { AllStyles } from '../shared/AllStyles';
+import { AllStyles, primaryColor}  from '../shared/AllStyles';
 
 
 const l_logo = require("../assets/L_logo.png")
@@ -102,7 +102,7 @@ function LoginPage(props) {
 
 
     return (
-    <View style ={AllStyles.Container}>
+    <View style ={AllStyles.container}>
         
         <View  style ={AllStyles.NavBar}>
             <Image source={l_logo} style = {AllStyles.leftLogo}/>

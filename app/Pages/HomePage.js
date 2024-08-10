@@ -3,12 +3,16 @@ import { View, Text} from 'react-native';
 import { Firebase_Auth } from '../../FirebaseConfig';
 import { doc,getDoc } from 'firebase/firestore';
 import { Firebase_DB } from '../../FirebaseConfig';
-import { AllStyles } from '../shared/AllStyles';
+import { AllStyles, primaryColor } from '../shared/AllStyles';
+import CustomHeader from '../shared/CustomHeader';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import InspectionStack from '../routes/InspectionStack';
 import Search from './Search';
 import Settings from './Settings';
+
+
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -26,7 +30,7 @@ const HomePage = () => {
     useEffect(() => {
         const fetchUserProfile = async () => {
           try {
-            const user = Firebase_Auth.currentUser;
+            //const user = Firebase_Auth.currentUser;
             if (user) {
               const profileDocRef = doc(Firebase_DB, 'Profiles', user.uid);
               const profileDoc = await getDoc(profileDocRef);
@@ -50,11 +54,11 @@ const HomePage = () => {
     
     
 
-    if (loading) {
+    /* if (loading) {
         return (
             <View style={{alignItems:'center'}}>
                 
-                <Text style ={{fontSize:40 ,color:'#004aad',padding:70}}>Loading...</Text>
+                <Text style ={{fontSize:40 ,color:primaryColor,padding:70}}>Loading...</Text>
         
             </View>
         );
@@ -67,29 +71,45 @@ const HomePage = () => {
         </View>
     
     );
-    }
+    } */
 
     return (
             <Tab.Navigator screenOptions={{
+              headerTitleAlign: 'center',
+              headerTitleStyle: { color: primaryColor,
+                fontSize: 32    
+        },
+           headerLeft:()=> <CustomHeader /*navigation={navigation}*/ />,
+           tabBarStyle: {
+            backgroundColor: 'white',
+          
+            
+          },
+          //tabBarLabel: ()=>false,
+          tabBarLabelStyle:{
+
+          },
+          
+          tabBarActiveTintColor: primaryColor,
+          tabBarInactiveTintColor: primaryColor,
+
 
             }}>
                 <Tab.Screen name ='Inspection' component={InspectionStack} options={{
                             headerShown:false,
-                            tabBarIcon:()=> <FontAwesome name="check-circle" size={32} color='#004aad' />
+                            tabBarIcon: ({ color, focused })=> <Ionicons name={focused?"checkmark-circle":'checkmark-circle-outline'} size={32} color={color} />
                         }}/>
                 <Tab.Screen name ='Search' component={Search} options={{
-                            headerTitleAlign: 'center',
-                            headerTitleStyle: { color: '#004aad',
-                                fontSize: 32      
-                        },
-                        tabBarIcon:()=> <FontAwesome5 name="search" size={32} color='#004aad' />
+                        tabBarIcon: ({ color, focused })=>
+                          focused? (
+                          <FontAwesome5 name="search" size={32} color={color} />
+                        ):
+                        (
+                          <Ionicons name="search-outline" size={32} color={color}/>
+                        )
                 }}/>
                 <Tab.Screen name ='Settings' component ={Settings} options={{
-                            headerTitleAlign: 'center',
-                            headerTitleStyle: { color: '#004aad',
-                                fontSize: 32      
-                        },
-                        tabBarIcon:()=>  <Ionicons name="settings-sharp" size={32} color='#004aad' />
+                        tabBarIcon:({ color, focused}) =>  <Ionicons name={focused? "settings-sharp":"settings-outline"} size={32} color={color} />
 
                 }}/>
             </Tab.Navigator> 

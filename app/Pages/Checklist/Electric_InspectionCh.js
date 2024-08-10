@@ -1,78 +1,76 @@
 import { View,TouchableOpacity,Text } from "react-native";
-import { AllStyles } from '../shared/AllStyles';
+import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import React from 'react'
+import React from 'react';
 
- export default function Wheels_InspectionCh({navigation}){
+export default function Electric_InspectionCh({navigation }){
     return(
-            <View style={AllStyles.container}>
+        <View style={AllStyles.container}>
            
-                    <Text style={AllStyles.section}>Wheels </Text>
+                    <Text style={AllStyles.section}>Electric </Text>
 
                         <View style={AllStyles.checklist}>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check rim and tyres for visible damage </Text>
+                                        <Text style={AllStyles.label}>Check all interior lights </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check tyre pressure and remaining tread </Text>
+                                        <Text style={AllStyles.label}>Check all parking lights </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check oil leaks on wheel hubs </Text>
+                                        <Text style={AllStyles.label}>Check for Headlights, Dim & Bright </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check wheel nuts in place & secure </Text>
+                                        <Text style={AllStyles.label}>Check rearview mirrors-secure </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all missing {'\n'} wheel caps and extensions </Text>
+                                        <Text style={AllStyles.label}>Check all indicator lights-{'\n'} left, right, front & rear</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all wheel nut indicators{'\n'} are aligned</Text>
+                                        <Text style={AllStyles.label}>Check stop lights</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check abnormal tyre alignment </Text>
+                                        <Text style={AllStyles.label}>Check windscreen wipes</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
-
-
-                                   
-
-
+                                    <View style={AllStyles.checkItem}>
+                                        <Text style={AllStyles.label}>Check reverse lights</Text>
+                                        <BouncyCheckbox
+                                        size={30} 
+                                        fillColor='blue' />
+                                    </View>
+                                    
                         </View>
 
-                        
                         <TouchableOpacity style ={{ width:'60%',
-                            borderRadius:10,
-                            backgroundColor: '#004aad',
-                            padding: 10,
-                            marginBottom:'10%',}}
-                            onPress={()=> navigation.navigate("bodyWorks")}  >
-                            <Text style ={AllStyles.textBtn} >Next</Text>
+                                 borderRadius:10,
+                                 backgroundColor: primaryColor,
+                                 padding: 10,
+                                marginBottom:'10%',}}
+                                  >
+                            <Text style ={AllStyles.textBtn} >Submit</Text>
                         </TouchableOpacity>
+
                 
        </View>
-
-
-
-       
     );
 }

@@ -1,32 +1,53 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 
-export const AllStyles = StyleSheet.create({
+
+const {height } = Dimensions.get('window');
+const primaryColor= '#004aad';
+const secondaryColor = '#ff5757' ;
+
+ const AllStyles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor: 'white',
-        alignItems:'center'
+        backgroundColor: '#fff',
+        alignItems:'center',
+        color:'#fff'
 
     },
 
     btnLogin:{
         width:'60%',
         borderRadius:10,
-        backgroundColor: '#004aad',
+        backgroundColor: primaryColor,
         padding: 10,
         marginBottom:'10%',
-        marginLeft: '20%'
+      //  marginLeft: '20%'
         
     },
-
     btnSignIn:{
         width:'60%',
         borderRadius:10,
-        backgroundColor: '#ff5757',
+        backgroundColor: secondaryColor,
         padding: 10,
-        marginLeft: '20%'
+      //  marginLeft: '20%'
 
     },
+    btnAdd:{
+            position: 'absolute',
+            width: 60,
+            height: 60,
+            alignItems: 'center',
+            justifyContent:'center',
+            right: 30,
+            bottom: 50
+    },
+    btnClose: {
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        zIndex: 1,
+      },
+
     checklist:{
         flex:1,
        // top:'3%',
@@ -52,7 +73,7 @@ export const AllStyles = StyleSheet.create({
     },
 
     dropdownContainer: {
-        width: '40%',
+        width: '50%',
         borderColor: 'darkgrey',
         marginLeft:'15%',
         
@@ -81,7 +102,7 @@ export const AllStyles = StyleSheet.create({
         paddingHorizontal: 15,
         borderRadius:10,
         marginBottom:'8%', 
-        marginLeft: '15%'
+        //marginLeft: '15%'
 
     },
     inspectItem:{
@@ -89,12 +110,12 @@ export const AllStyles = StyleSheet.create({
         height:'7%',
         top:'6%',
         borderRadius:10,
-        backgroundColor: '#004aad',
+        backgroundColor: primaryColor,
         justifyContent:'center',
         alignItems:'center'
     },
     label:{
-        fontStyle:'italic',
+       // fontStyle:'italic',
        //marginRight:'5%',
        fontSize:19
     },
@@ -111,27 +132,41 @@ export const AllStyles = StyleSheet.create({
         color:'yellow',
         fontSize:20
     },
+
+    modal:{
+        justifyContent:'flex-end',
+        margin:0,
+        
+    },
+    modalContent: {
+       
+        height: height * 0.7,
+        padding: 20,
+        backgroundColor: 'white',
+        borderRadius: 15,
+        borderWidth:1,
+        borderColor:'grey',
+      },
+
+      
     NavBar: {
         width:'100%',
         height:'10%',
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         justifyContent:'Top',
         alignItems:'Center',
-       // borderBottomWidth: 2,
-      // borderBottomColor: 'darkgrey', 
         flexDirection: 'row',  
     },
     rightLogo:{
         height:50,
         width:70,
         marginTop:20,
-        marginLeft:30
+        marginLeft:40
     },
 
     Role:{
         marginBottom:'2%',
-       // marginRight:'50%'
-       marginLeft: '15%'
+       marginLeft: '-53%'
     },
     textBtn: {
         color: 'white',
@@ -151,18 +186,15 @@ export const AllStyles = StyleSheet.create({
         color:'black',
         alignItems:'center',
         top:'3%',
-       fontWeight:'bold'
+        fontWeight:'bold'
     },
     Welkom:{
         fontStyle:'italic',
         fontSize:22,
-        color: '#004aad',
+        color: primaryColor,
     }
-
-      
-
-
-
 
 
 })
+
+export { primaryColor, secondaryColor, AllStyles };

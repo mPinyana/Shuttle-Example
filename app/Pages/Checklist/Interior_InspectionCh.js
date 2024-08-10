@@ -1,5 +1,5 @@
 import { View,TouchableOpacity,Text } from "react-native";
-import { AllStyles } from '../shared/AllStyles';
+import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import React from 'react';
 
@@ -69,7 +69,7 @@ import React from 'react';
 
             <TouchableOpacity style ={{ width:'60%',
                      borderRadius:10,
-                     backgroundColor: '#004aad',
+                     backgroundColor: primaryColor,
                      padding: 10,
                     marginBottom:'10%',}}
                     onPress={()=> navigation.navigate("engineAir")}  >
