@@ -5,11 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Android - Experimental",
+            "request": "launch",
+            "type": "reactnative",
+            "cwd": "${workspaceFolder}",
+            "platform": "android"
+          },
+          {
+            "name": "Debug Android Hermes",
+            "request": "launch",
+            "type": "reactnativedirect",
+            "cwd": "${workspaceFolder}",
+            "platform": "android"
+          },
+          {
+            "name": "Attach to Hermes application",
+            "request": "attach",
+            "type": "reactnativedirect",
+            "cwd": "${workspaceFolder}"
+          },
+          {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
             "url": "http://localhost:8080",
             "webRoot": "${workspaceFolder}"
-        }
-    ]
+          }
+        ]
+       
 }
