@@ -1,7 +1,29 @@
 import React from 'react';
 import { StyleSheet ,View, Text,TextInput,TouchableOpacity} from 'react-native'; 
+import  { useState } from 'react';
 
 function SignUpScreen(){
+
+    const [user, setUser] = useState({
+        name: '',
+        surname: '',
+        email: '',
+        password: '',
+    });
+
+    // const [newUser, setNewUser] = useState('');
+
+    const handleInputChange = (text, field) => {
+        setUser({ ...user, [field]: text }); // Update specific car property
+      };
+
+    const handleFormSubmit = () => {
+        console.log("User Created:", user);
+        //setNewUser('');
+      };
+    
+
+
 
     return(
 
@@ -17,25 +39,38 @@ function SignUpScreen(){
             <View style={styles.inputContainerA}>
 
                 <TextInput style={styles.input}
-                    placeholder="Name"/>
+                    placeholder="Name"
+                    value = {user.name}
+                    onChangeText={(text) => handleInputChange(text, 'name')}
+                    />
 
                 <TextInput style={styles.input}
-                    placeholder="Surname"/>
+                    placeholder="Surname"
+                    value = {user.surname}
+                    onChangeText={(text) => handleInputChange(text, 'surname')}
+                    />
             </View>
 
             <View style={styles.inputContainerB}>
                 <TextInput style={styles.inputB}
-                    placeholder="Email"/>
+                    placeholder="Email"
+                    value = {user.email}
+                    onChangeText={(text) => handleInputChange(text, 'email')}
+                    />
 
                 <TextInput style={styles.inputB}
-                    placeholder="Password"/>
+                    placeholder="Password"
+                    value = {user.password}
+                    onChangeText={(text) => handleInputChange(text, 'password')}
+                    />
           
             </View>
 
             <View style={styles.buttonContainer}>
             <TouchableOpacity 
             activeOpacity={0.8}
-            style={styles.buttonSignup}  
+            style={styles.buttonSignup} 
+            onPress={handleFormSubmit}
             >
             <Text style={styles.buttonText}>Sign up</Text>
             </TouchableOpacity>
