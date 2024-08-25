@@ -1,81 +1,46 @@
-import { View,TouchableOpacity,Text } from "react-native";
+import { View,TouchableOpacity,Text, ScrollView } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import React from 'react';
+import InteriorChecklist from './InteriorChecklist'
 
  export default function Interior_InspectionCh({navigation}){
+
+        const route = useRoute();
+        const { inspection, updateInspections } = route.params;
+      
+        const [interior, setInterior] = useState(inspection.busInterior);
+      
+        useEffect(() => {
+          // Update the inspection state in the parent component
+          updateInspections({
+            ...inspection,
+            busInterior: interior
+          });
+        }, [interior]);    
+
     return(
         <View style={AllStyles.container}>
            
         <Text style={AllStyles.section}>Interior </Text>
-
-            <View style={AllStyles.checklist}>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>General Cleanliness </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check all seats & Seatbealts </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check Fire Extinguiser   {'\n'}(expiry date and seal): </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check triangle </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check microphone operational </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check steps in Vehicle </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check Wifi Working </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check Air Conditioner Working </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                        <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check USB COVERS </Text>
-                            <BouncyCheckbox
-                            size={30} 
-                            fillColor='blue' />
-                        </View>
-                     
-            </View>
-
-            <TouchableOpacity style ={{ width:'60%',
-                     borderRadius:10,
-                     backgroundColor: primaryColor,
-                     padding: 10,
-                    marginBottom:'10%',}}
-                    onPress={()=> navigation.navigate("engineAir")}  >
+            
+                <InteriorChecklist
+                    interior={interior}
+                    setInterior={setInterior}
+                />
+           
+            <View style = {AllStyles.btnContainer}>
+            <TouchableOpacity style ={AllStyles.btn}
+                    onPress={()=> navigation.navigate("electric",{
+                        inspection: {
+                          ...inspection,
+                          busInterior: interior
+                        },
+                        updateInspections
+                      })}  >
                 <Text style ={AllStyles.textBtn} >Next</Text>
             </TouchableOpacity>
-
+            </View>
     
 </View>
     );

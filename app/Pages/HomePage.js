@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { View, Text} from 'react-native';
 import { Firebase_Auth } from '../../FirebaseConfig';
@@ -7,7 +8,6 @@ import { AllStyles, primaryColor } from '../shared/AllStyles';
 import CustomHeader from '../shared/CustomHeader';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
 import InspectionStack from '../routes/InspectionStack';
 import Search from './Search';
 import Settings from './Settings';
@@ -19,7 +19,11 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 
-const HomePage = () => {
+
+const HomePage = ({navigation}) => {
+
+
+  /*
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const user = Firebase_Auth.currentUser;
@@ -54,7 +58,7 @@ const HomePage = () => {
     
     
 
-    /* if (loading) {
+     if (loading) {
         return (
             <View style={{alignItems:'center'}}>
                 
@@ -79,7 +83,7 @@ const HomePage = () => {
               headerTitleStyle: { color: primaryColor,
                 fontSize: 32    
         },
-           headerLeft:()=> <CustomHeader /*navigation={navigation}*/ />,
+           headerLeft:()=> <CustomHeader navigation={navigation}/>,
            tabBarStyle: {
             backgroundColor: 'white',
           
