@@ -1,74 +1,47 @@
-import { View,TouchableOpacity,Text } from "react-native";
-import { AllStyles, primaryColor } from '../../shared/AllStyles';
-import BouncyCheckbox from "react-native-bouncy-checkbox";
-import React from 'react';
+import { View,TouchableOpacity,Text, ScrollView } from "react-native";
+import { AllStyles } from '../../shared/AllStyles';
+import { useRoute } from '@react-navigation/native';
+
+import ElectricChecklist from './ElectricChecklist';
+import React, { useState, useEffect } from 'react';
 
 export default function Electric_InspectionCh({navigation }){
+
+    const route = useRoute();
+    const { inspection, updateInspections } = route.params;
+
+    const [electric, setElectric] = useState(inspection.busElectric);
+
+    useEffect(() => {
+        // Update the inspection state in the parent component
+        updateInspections({
+          ...inspection,
+          busElectric: electric
+        });
+      }, [electric]);
+
     return(
         <View style={AllStyles.container}>
            
                     <Text style={AllStyles.section}>Electric </Text>
-
-                        <View style={AllStyles.checklist}>
-                                    <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all interior lights </Text>
-                                        <BouncyCheckbox
-                                        size={30} 
-                                        fillColor='blue' />
-                                    </View>
-                                    <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all parking lights </Text>
-                                        <BouncyCheckbox
-                                        size={30} 
-                                        fillColor='blue' />
-                                    </View>
-                                    <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check for Headlights, Dim & Bright </Text>
-                                        <BouncyCheckbox
-                                        size={30} 
-                                        fillColor='blue' />
-                                    </View>
-                                    <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check rearview mirrors-secure </Text>
-                                        <BouncyCheckbox
-                                        size={30} 
-                                        fillColor='blue' />
-                                    </View>
-                                    <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all indicator lights-{'\n'} left, right, front & rear</Text>
-                                        <BouncyCheckbox
-                                        size={30} 
-                                        fillColor='blue' />
-                                    </View>
-                                    <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check stop lights</Text>
-                                        <BouncyCheckbox
-                                        size={30} 
-                                        fillColor='blue' />
-                                    </View>
-                                    <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check windscreen wipes</Text>
-                                        <BouncyCheckbox
-                                        size={30} 
-                                        fillColor='blue' />
-                                    </View>
-                                    <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check reverse lights</Text>
-                                        <BouncyCheckbox
-                                        size={30} 
-                                        fillColor='blue' />
-                                    </View>
-                                    
+                        <ScrollView style={{flexGrow:1}}>
+                            <ElectricChecklist
+                             electric={electric}
+                             setElectric={setElectric}       
+                            />
+                        </ScrollView>
+                        <View style={AllStyles.btnContainer}>
+                                <TouchableOpacity style ={AllStyles.btn}
+                                        onPress={()=> navigation.navigate("wheels", {
+                                            inspection: {
+                                                ...inspection,
+                                                busElectric: electric
+                                              },
+                                              updateInspections
+                                          })}>
+                                    <Text style ={AllStyles.textBtn} >Next</Text>
+                                </TouchableOpacity>
                         </View>
-
-                        <TouchableOpacity style ={{ width:'60%',
-                                 borderRadius:10,
-                                 backgroundColor: primaryColor,
-                                 padding: 10,
-                                marginBottom:'10%',}}
-                                  >
-                            <Text style ={AllStyles.textBtn} >Submit</Text>
-                        </TouchableOpacity>
 
                 
        </View>

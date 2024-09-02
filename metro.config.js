@@ -5,3 +5,9 @@ const defaultConfig = getDefaultConfig(__dirname);
 defaultConfig.resolver.sourceExts.push('cjs');
 
 module.exports = defaultConfig;
+
+/* module.exports = {
+    transformer: {
+        babelTransformerPath: require.resolve('react-native-svg-transformer'),
+    },
+}; */
