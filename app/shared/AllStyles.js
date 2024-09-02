@@ -39,7 +39,7 @@ const secondaryColor = '#ff5757' ;
             alignItems: 'center',
             justifyContent:'center',
             right: 30,
-            bottom: 50
+            bottom: 80
     },
     btnClose: {
         position: 'absolute',
@@ -160,7 +160,7 @@ const secondaryColor = '#ff5757' ;
     },
     modalContent: {
        
-        height: height * 0.6,
+        height: height * 0.8,
         padding: 20,
         backgroundColor: 'white',
         borderRadius: 15,

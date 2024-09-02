@@ -13,7 +13,7 @@ import Search from './Search';
 import Settings from './Settings';
 
 
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
