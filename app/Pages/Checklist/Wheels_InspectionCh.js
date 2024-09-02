@@ -11,43 +11,43 @@ import React from 'react'
 
                         <View style={AllStyles.checklist}>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check rim and tyres for visible damage </Text>
+                                        <Text style={AllStyles.label}>Rim and tyres for visible damage </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check tyre pressure and remaining tread </Text>
+                                        <Text style={AllStyles.label}>Tyre pressure and remaining tread </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check oil leaks on wheel hubs </Text>
+                                        <Text style={AllStyles.label}>Oil leaks on wheel hubs </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check wheel nuts in place & secure </Text>
+                                        <Text style={AllStyles.label}>Wheel nuts in place & secure </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all missing {'\n'} wheel caps and extensions </Text>
+                                        <Text style={AllStyles.label}>Check for missing wheel caps and extensions </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all wheel nut indicators{'\n'} are aligned</Text>
+                                        <Text style={AllStyles.label}>Check all wheel nut indicators are aligned</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check abnormal tyre alignment </Text>
+                                        <Text style={AllStyles.label}>Check for abnormal tyre alignment </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />

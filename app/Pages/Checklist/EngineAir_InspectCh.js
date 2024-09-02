@@ -11,19 +11,19 @@ export default function EngineAir_InspectCh({navigation}){
 
                         <View style={AllStyles.checklist}>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check Engine Oil Level </Text>
+                                        <Text style={AllStyles.label}>Engine oil level </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Operator Engine Coolant Level </Text>
+                                        <Text style={AllStyles.label}>Operator engine coolant level </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Derain Air Tanks </Text>
+                                        <Text style={AllStyles.label}>Derain air tanks </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />

@@ -11,31 +11,31 @@ export default function DriverCompartment_inspectCh({navigation}){
 
                         <View style={AllStyles.checklist}>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all warning Lights and gauges </Text>
+                                        <Text style={AllStyles.label}>All warning lights and gauges </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check Handbrake functions correctly </Text>
+                                        <Text style={AllStyles.label}>Handbrake functions correctly </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check Steering Wheel for {'\n'} Excessive Play </Text>
+                                        <Text style={AllStyles.label}>Steering wheel for excessive play </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check Driver's Seat & Seatbelt </Text>
+                                        <Text style={AllStyles.label}>Driver's seat & seatbelt </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check AdBlue Level </Text>
+                                        <Text style={AllStyles.label}>AdBlue level </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />

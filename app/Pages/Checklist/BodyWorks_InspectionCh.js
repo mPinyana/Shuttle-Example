@@ -11,55 +11,55 @@ import React from 'react';
 
                         <View style={AllStyles.checklist}>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all exterior cleanliness </Text>
+                                        <Text style={AllStyles.label}>Exterior cleanliness </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check window and windscreen cracks </Text>
+                                        <Text style={AllStyles.label}>Window and windscreen cracks </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check for body damage and{'\n'}mark on sheet  </Text>
+                                        <Text style={AllStyles.label}>Body damage and mark on sheet  </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check rearview mirrors-secure </Text>
+                                        <Text style={AllStyles.label}>Rearview mirrors-secure </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all reflectors and reflective tape</Text>
+                                        <Text style={AllStyles.label}>All reflectors and reflective tape</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check conditions of wipper blades </Text>
+                                        <Text style={AllStyles.label}>Conditions of wipper blades </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all passenger doors functional </Text>
+                                        <Text style={AllStyles.label}>All passenger doors functional </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all branding</Text>
+                                        <Text style={AllStyles.label}>All branding</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check mudflaps </Text>
+                                        <Text style={AllStyles.label}>Mudflaps </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />

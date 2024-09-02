@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text,TextInput,TouchableOpacity, Image} from 'react-native'; 
+import {View, Text,TextInput,TouchableOpacity, Image, ImageBackground} from 'react-native'; 
 import  { useState } from 'react';
 import { Firebase_Auth } from '../../FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
@@ -12,6 +12,7 @@ import { AllStyles, primaryColor}  from '../shared/AllStyles';
 
 const l_logo = require("../assets/L_logo.png")
 const r_logo = require("../assets/R_logo.png")
+const background = require("../assets/uct buses.webp")
 
 
 
@@ -103,20 +104,20 @@ function LoginPage(props) {
 
     return (
     <View style ={AllStyles.container}>
-        
+  
         <View  style ={AllStyles.NavBar}>
             <Image source={l_logo} style = {AllStyles.leftLogo}/>
-            <Text style={AllStyles.Heading} >UCT Shuttle Services
-            </Text>
+            <Text style={AllStyles.Heading} >UCT Shuttle Services</Text>
             <Image source={r_logo} style ={AllStyles.rightLogo}/>
         </View>
+
         
         <View style={AllStyles.Salutations}>
         <Text style={AllStyles.Hi}>Hello!</Text><Text style={AllStyles.Welkom}> Welcome, Please enter login details</Text>
         </View>
         
         
-           
+    <View style={AllStyles.InputBoxes}> 
         <TextInput
             style={AllStyles.input}
             placeholder="Enter email"
@@ -132,6 +133,7 @@ function LoginPage(props) {
             onChangeText={(text) => setPassword(text.trim())}
             secureTextEntry={true}
         />
+    </View>
 
         <Text style = {AllStyles.Role}>User Role:</Text>
         
@@ -150,7 +152,7 @@ function LoginPage(props) {
         searchablePlaceholder="Type to search..."
         searchableError="No items found"
       />
-            
+    <View style={AllStyles.buttonContainer}>
         <TouchableOpacity style={AllStyles.btnLogin} onPress={logginIn}>
             <Text style={AllStyles.textBtn}>Login</Text>
         </TouchableOpacity>
@@ -161,10 +163,8 @@ function LoginPage(props) {
         </TouchableOpacity>
 
     </View>
+    </View>
         
     );
 }
-
-
-
 export default LoginPage;

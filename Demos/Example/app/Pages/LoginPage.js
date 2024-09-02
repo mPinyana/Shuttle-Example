@@ -46,44 +46,44 @@ function LoginPage(props) {
 
     }
 
-    const SignUp = async() => {
+//     const SignUp = async() => {
 
-        if (!validateEmail(email)) {
-            alert('Invalid email format');
-            return;
-          }
+//         if (!validateEmail(email)) {
+//             alert('Invalid email format');
+//             return;
+//           }
 
-        setLoading(true);
-        try{
-            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-            const userID = userCredentials.user.uid;
+//         setLoading(true);
+//         try{
+//             const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+//             const userID = userCredentials.user.uid;
 
-            const userData = {
-                id: userID,
-                email: email
-            }
+//             const userData = {
+//                 id: userID,
+//                 email: email
+//             }
 
-            const userRef = doc(Firebase_DB, 'Profiles', userID);
-            await setDoc(userRef, userData);
+//             const userRef = doc(Firebase_DB, 'Profiles', userID);
+//             await setDoc(userRef, userData);
 
-            setEmail('');
-            setPassword('');
+//             setEmail('');
+//             setPassword('');
 
-            console.log('User added to database collection - Profiles');
-            console.log('User successfully registered');
+//             console.log('User added to database collection - Profiles');
+//             console.log('User successfully registered');
 
-            alert('Succcesful, Check your email')
-        }  
+//             alert('Succcesful, Check your email')
+//         }  
 
-        catch(error){
-            console.log(error);
-            alert('Sign up failed: '+ error.message);
-        }
-        finally{
-            setLoading(false);
-        }
+//         catch(error){
+//             console.log(error);
+//             alert('Sign up failed: '+ error.message);
+//         }
+//         finally{
+//             setLoading(false);
+//         }
 
-}
+// }
 
 const fetchUserProfile = async (userId) => {
     try {
@@ -142,7 +142,7 @@ const fetchUserProfile = async (userId) => {
             <TouchableOpacity 
             activeOpacity={0.8}
             style={styles.buttonSignup}
-            onPress={SignUp}>
+            onPress={() => navigation.navigate("SignUp")}>
             <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
 

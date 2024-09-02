@@ -11,49 +11,49 @@ export default function Electric_InspectionCh({navigation }){
 
                         <View style={AllStyles.checklist}>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all interior lights </Text>
+                                        <Text style={AllStyles.label}>All interior lights </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all parking lights </Text>
+                                        <Text style={AllStyles.label}>All parking lights </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check for Headlights, Dim & Bright </Text>
+                                        <Text style={AllStyles.label}>Headlights (dim & bright) </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check rearview mirrors-secure </Text>
+                                        <Text style={AllStyles.label}>Rearview mirrors-secure </Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check all indicator lights-{'\n'} left, right, front & rear</Text>
+                                        <Text style={AllStyles.label}>Indicator lights - left, right, front & rear</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check stop lights</Text>
+                                        <Text style={AllStyles.label}>Brake lights</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check windscreen wipes</Text>
+                                        <Text style={AllStyles.label}>Windscreen wipers</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />
                                     </View>
                                     <View style={AllStyles.checkItem}>
-                                        <Text style={AllStyles.label}>Check reverse lights</Text>
+                                        <Text style={AllStyles.label}>Reverse lights</Text>
                                         <BouncyCheckbox
                                         size={30} 
                                         fillColor='blue' />

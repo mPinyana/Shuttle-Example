@@ -17,49 +17,49 @@ import React from 'react';
                             fillColor='blue' />
                         </View>
                         <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check all seats & Seatbealts </Text>
+                            <Text style={AllStyles.label}>Seats & Seatbealts </Text>
                             <BouncyCheckbox
                             size={30} 
                             fillColor='blue' />
                         </View>
                         <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check Fire Extinguiser   {'\n'}(expiry date and seal): </Text>
+                            <Text style={AllStyles.label}>Fire Extinguiser (expiry date and seal) </Text>
                             <BouncyCheckbox
                             size={30} 
                             fillColor='blue' />
                         </View>
                         <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check triangle </Text>
+                            <Text style={AllStyles.label}>Triangle </Text>
                             <BouncyCheckbox
                             size={30} 
                             fillColor='blue' />
                         </View>
                         <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check microphone operational </Text>
+                            <Text style={AllStyles.label}>Microphone operational </Text>
                             <BouncyCheckbox
                             size={30} 
                             fillColor='blue' />
                         </View>
                         <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check steps in Vehicle </Text>
+                            <Text style={AllStyles.label}>Vehicle steps </Text>
                             <BouncyCheckbox
                             size={30} 
                             fillColor='blue' />
                         </View>
                         <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check Wifi Working </Text>
+                            <Text style={AllStyles.label}>Wifi operational </Text>
                             <BouncyCheckbox
                             size={30} 
                             fillColor='blue' />
                         </View>
                         <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check Air Conditioner Working </Text>
+                            <Text style={AllStyles.label}>Air-conditioner functional </Text>
                             <BouncyCheckbox
                             size={30} 
                             fillColor='blue' />
                         </View>
                         <View style={AllStyles.checkItem}>
-                            <Text style={AllStyles.label}>Check USB COVERS </Text>
+                            <Text style={AllStyles.label}>USB covers </Text>
                             <BouncyCheckbox
                             size={30} 
                             fillColor='blue' />
