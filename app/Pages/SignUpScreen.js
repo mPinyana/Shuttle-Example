@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet ,View, Text,TextInput,TouchableOpacity, Image} from 'react-native'; 
 import  { useState } from 'react';
-// import { Firebase_DB } from '../../FirebaseConfig';
+import { Firebase_DB } from '../../FirebaseConfig';
 import { Firebase_Auth } from '../../FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
@@ -34,6 +34,7 @@ function SignUpScreen(){
     const [items, setItems] = useState([
         { label: 'Driver', value: 'Driver' },
         { label: 'Fleet Controller', value: 'Fleet Controller' },
+        {label: 'Management', value: 'Management'},
         
   ]);
 
@@ -66,14 +67,20 @@ function SignUpScreen(){
 
             const userData = {
                 id: userID,
-                email: user.email
+                email: user.email,
+                name: user.name,
+                surname:user.surname
             }
 
             const userRef = doc(Firebase_DB, 'Profiles', userID);
             await setDoc(userRef, userData);
 
-            setEmail('');
-            setPassword('');
+            setUser({ ...user, name: '' });
+            setUser({ ...user, email: '' });
+            setUser({ ...user, surname: '' });
+            setUser({ ...user, password: '' });
+
+
 
             console.log('User added to database collection - Profiles');
             console.log('User successfully registered');
@@ -136,6 +143,7 @@ function SignUpScreen(){
                     placeholder="Password"
                     value = {user.password}
                     onChangeText={(text) => handleInputChange(text, 'password')}
+                    secureTextEntry={true}
                     />
             </View>
 

@@ -27,7 +27,7 @@ const validateEmail = (email) => {
 function LoginPage({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
+    
     const [open, setOpen] = useState(false);
     const [roleValue, setValue] = useState('Driver');
     const [items, setItems] = useState([
@@ -51,7 +51,7 @@ function LoginPage({navigation}) {
             try{
                 const response = await signInWithEmailAndPassword(auth, email.toString(), password);
                 console.log(response);
-                navigation.navigate('Home', {roleValue});
+                navigation.navigate('Home', {});
             }     
             catch(error){
                 console.log(error);
@@ -138,7 +138,7 @@ function LoginPage({navigation}) {
                     />
                 </View>
 
-                <View style={AllStyles.rolesContainer}>
+                {/* <View style={AllStyles.rolesContainer}>
                     <Text style = {AllStyles.roleText}>User Role:</Text>
                     
                     <DropDownPicker
@@ -156,7 +156,7 @@ function LoginPage({navigation}) {
                     searchablePlaceholder="Type to search..."
                     searchableError="No items found"
                     />
-                </View>  
+                </View>   */}
                         
                     <TouchableOpacity style={AllStyles.btnLogin} onPress={logginIn}>
                         <Text style={AllStyles.textBtn}>Login</Text>
