@@ -136,8 +136,10 @@ function LoginPage({navigation}) {
                         onChangeText={(text) => setPassword(text.trim())}
                         secureTextEntry={true}
                     />
-                </View>  
-                    <Text style = {AllStyles.Role}>User Role:</Text>
+                </View>
+
+                <View style={AllStyles.rolesContainer}>
+                    <Text style = {AllStyles.roleText}>User Role:</Text>
                     
                     <DropDownPicker
                     open={open}
@@ -153,7 +155,8 @@ function LoginPage({navigation}) {
                     listMode="SCROLLVIEW" // Use a scroll view to display the items
                     searchablePlaceholder="Type to search..."
                     searchableError="No items found"
-                />
+                    />
+                </View>  
                         
                     <TouchableOpacity style={AllStyles.btnLogin} onPress={logginIn}>
                         <Text style={AllStyles.textBtn}>Login</Text>

@@ -29,21 +29,13 @@ const secondaryColor = '#ff5757' ;
     },
 
     btnLogin:{
-
-    //     width:'60%',
-    //     borderRadius:10,
-    //     backgroundColor: primaryColor,
-    //     padding: 10,
-    //     marginBottom:'10%',
-    //   //  marginLeft: '20%'
     height: 45,
     width:'70%',
     backgroundColor: primaryColor,
     borderRadius: 30,
     justifyContent:'space-evenly',
     alignItems: 'center',
-    marginVertical: 10, 
-
+    marginVertical: 10,
     },
 
     btnSignIn:{
@@ -117,16 +109,20 @@ const secondaryColor = '#ff5757' ;
         borderColor: 'darkgrey',
         borderWidth: 1,
         borderRadius: 10,
-        marginLeft:'15%',
-        marginBottom:'10%'
+        marginLeft:'23%',
+        // marginBottom:'10%'
+        alignItems: 'center',
+        justifyContent: 'center',
+        
+        
     },
 
-    dropdownContainer: {
-        width: '50%',
-        borderColor: 'darkgrey',
-        marginLeft:'15%',
-        
-      },
+    // dropdownContainer: {
+    //     width: '100%',
+    //     borderColor: 'darkgrey',
+    //     marginLeft:'15%',
+       
+    //   },
    
     Hi:{
         fontSize:35,
@@ -163,8 +159,8 @@ const secondaryColor = '#ff5757' ;
         width: '85%',
         padding: 10,
         borderRadius: 20,
-        justifyContent: 'space-evenly',
-        marginVertical: '5%',
+        //justifyContent: 'space-evenly',
+        marginVertical: '4%',
         borderColor: 'grey',
         borderWidth: 0.2,
 
@@ -261,10 +257,10 @@ const secondaryColor = '#ff5757' ;
     },
     
 
-    Role:{
-        marginBottom:'2%',
-       marginLeft: '-53%'
-    },
+    // Role:{
+    //     marginBottom:'2%',
+    //    marginLeft: '-53%'
+    // },
     textBtn: {
         color: 'white',
         textAlign: 'center',
@@ -295,18 +291,17 @@ const secondaryColor = '#ff5757' ;
     },
 
     rolesContainer: {
-        height: '20%',
-        width: '90%',
-        // backgroundColor: 'black',
-        justifyContent: 'space-evenly',
+        height:100,
+        width: '100%',
         alignItems: 'center',
-      
+        justifyContent: 'space-evenly',
+        //backgroundColor: 'black',
     },
 
     inputContainer:{
-        height: 100,
+        height: 140,
         width: '100%',
-
+        alignItems: 'center',
     },
 
 })

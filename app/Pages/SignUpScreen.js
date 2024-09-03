@@ -221,7 +221,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         justifyContent: 'space-evenly',
         marginVertical: '5%',
-        backgroundColor: '#d9d9d9',
         borderWidth: 0.2,
     },
 
@@ -233,7 +232,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         justifyContent: 'space-evenly',
         marginVertical: '8%',
-        backgroundColor: '#d9d9d9',
         borderWidth: 0.2,
     },
 
