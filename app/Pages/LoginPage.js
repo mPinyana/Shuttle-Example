@@ -10,6 +10,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { AllStyles, primaryColor}  from '../shared/AllStyles';
 
 
+
 const l_logo = require("../assets/L_logo.png")
 const r_logo = require("../assets/R_logo.png")
 const background = require("../assets/uct buses.webp")
@@ -22,7 +23,7 @@ const validateEmail = (email) => {
   };
   
 
-function LoginPage(props) {
+function LoginPage({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -35,7 +36,7 @@ function LoginPage(props) {
   ]);
 
     const auth = Firebase_Auth;
-    const navigation = useNavigation();
+    //const navigation = useNavigation();
 
     const logginIn = async() => {
 
@@ -61,44 +62,44 @@ function LoginPage(props) {
 
     }
 
-    const SignUp = async() => {
+    // const SignUp = async() => {
 
-        if (!validateEmail(email)) {
-            alert('Invalid email format');
-            return;
-          }
+    //     if (!validateEmail(email)) {
+    //         alert('Invalid email format');
+    //         return;
+    //       }
 
-        setLoading(true);
-        try{
-            const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-            const userID = userCredentials.user.uid;
+    //     setLoading(true);
+    //     try{
+    //         const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
+    //         const userID = userCredentials.user.uid;
 
-            const userData = {
-                id: userID,
-                email: email
-            }
+    //         const userData = {
+    //             id: userID,
+    //             email: email
+    //         }
 
-            const userRef = doc(Firebase_DB, 'Profiles', userID);
-            await setDoc(userRef, userData);
+    //         const userRef = doc(Firebase_DB, 'Profiles', userID);
+    //         await setDoc(userRef, userData);
 
-            setEmail('');
-            setPassword('');
+    //         setEmail('');
+    //         setPassword('');
 
-            console.log('User added to database collection - Profiles');
-            console.log('User successfully registered');
+    //         console.log('User added to database collection - Profiles');
+    //         console.log('User successfully registered');
 
-            alert('Succcesful, Check your email')
-        }  
+    //         alert('Succcesful, Check your email')
+    //     }  
 
-        catch(error){
-            console.log(error);
-            alert('Sign up failed: '+ error.message);
-        }
-        finally{
-            setLoading(false);
-        }
+    //     catch(error){
+    //         console.log(error);
+    //         alert('Sign up failed: '+ error.message);
+    //     }
+    //     finally{
+    //         setLoading(false);
+    //     }
+    // }
 
-}
 
 
 
@@ -158,7 +159,7 @@ function LoginPage(props) {
         </TouchableOpacity>
         
     
-        <TouchableOpacity style={AllStyles.btnSignIn} onPress={SignUp}>
+        <TouchableOpacity style={AllStyles.btnSignIn} onPress={() => navigation.navigate('SignUp')}>
             <Text style={AllStyles.textBtn}>Sign Up</Text>
         </TouchableOpacity>
 
