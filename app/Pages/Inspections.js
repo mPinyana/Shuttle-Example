@@ -4,7 +4,6 @@ import  Modal  from 'react-native-modal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Picker } from '@react-native-picker/picker';
 import { TextInput } from 'react-native-gesture-handler';
-
 import { collection,getDocs,query,where, addDoc } from 'firebase/firestore';
 import { Firebase_DB,Firebase_Auth } from '../../FirebaseConfig';
 import { AllStyles, primaryColor } from '../shared/AllStyles';

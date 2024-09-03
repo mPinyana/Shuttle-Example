@@ -120,7 +120,7 @@ function LoginPage({navigation}) {
                     <Text style={AllStyles.Hi}>Hello!</Text><Text style={AllStyles.Welkom}> Welcome, Please enter login details</Text>
                     </View>
 
-                    
+                <View style={AllStyles.inputContainer}> 
                     <TextInput
                         style={AllStyles.input}
                         placeholder="Enter email"
@@ -136,7 +136,7 @@ function LoginPage({navigation}) {
                         onChangeText={(text) => setPassword(text.trim())}
                         secureTextEntry={true}
                     />
-
+                </View>  
                     <Text style = {AllStyles.Role}>User Role:</Text>
                     
                     <DropDownPicker
@@ -159,7 +159,6 @@ function LoginPage({navigation}) {
                         <Text style={AllStyles.textBtn}>Login</Text>
                     </TouchableOpacity>
                     
-
                 
                  <TouchableOpacity style={AllStyles.btnSignIn} onPress={() => navigation.navigate('SignUp')}>
             <Text style={AllStyles.textBtn}>Sign Up</Text>

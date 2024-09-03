@@ -36,10 +36,10 @@ const secondaryColor = '#ff5757' ;
     //     padding: 10,
     //     marginBottom:'10%',
     //   //  marginLeft: '20%'
-    height: '35%',
+    height: 45,
     width:'70%',
     backgroundColor: primaryColor,
-    borderRadius: 20,
+    borderRadius: 30,
     justifyContent:'space-evenly',
     alignItems: 'center',
     marginVertical: 10, 
@@ -47,20 +47,14 @@ const secondaryColor = '#ff5757' ;
     },
 
     btnSignIn:{
-    //     width:'60%',
-    //     borderRadius:10,
-    //     backgroundColor: secondaryColor,
-    //     padding: 10,
-    //   //  marginLeft: '20%'
-        height: '35%',
+
+        height: 45,
         width:'70%',
         backgroundColor: secondaryColor,
-
-        borderRadius: 20,
+        borderRadius: 30,
         justifyContent:'space-evenly',
         alignItems: 'center',
         marginVertical: 10, 
-
 
     },
 
@@ -165,7 +159,7 @@ const secondaryColor = '#ff5757' ;
         // marginBottom:'8%', 
         // //marginLeft: '15%'
 
-        height: '30%',
+        height: 40,
         width: '85%',
         padding: 10,
         borderRadius: 20,
@@ -307,6 +301,12 @@ const secondaryColor = '#ff5757' ;
         justifyContent: 'space-evenly',
         alignItems: 'center',
       
+    },
+
+    inputContainer:{
+        height: 100,
+        width: '100%',
+
     },
 
 })
