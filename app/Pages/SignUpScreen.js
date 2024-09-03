@@ -34,9 +34,8 @@ function SignUpScreen(){
     const [items, setItems] = useState([
         { label: 'Driver', value: 'Driver' },
         { label: 'Fleet Controller', value: 'Fleet Controller' },
-        {label: 'Management', value: 'Management'},
-        
-  ]);
+        {label: 'Management', value: 'Management'},   
+    ]);
 
     const auth = Firebase_Auth;
     //const navigation = useNavigation();
@@ -45,7 +44,7 @@ function SignUpScreen(){
     // const [newUser, setNewUser] = useState('');
 
     const handleInputChange = (text, field) => {
-        setUser({ ...user, [field]: text }); // Update specific car property
+        setUser({ ...user, [field]: text }); // Update specific  property
       };
 
     const handleFormSubmit = () => {
@@ -79,7 +78,6 @@ function SignUpScreen(){
             setUser({ ...user, email: '' });
             setUser({ ...user, surname: '' });
             setUser({ ...user, password: '' });
-
 
 
             console.log('User added to database collection - Profiles');

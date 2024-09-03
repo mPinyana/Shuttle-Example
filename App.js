@@ -34,7 +34,7 @@ export default function App() {
                    headerTitleAlign: 'center',
                     headerShown: false
                     }} />
-              <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerShown: false}} /> 
+              <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerBackVisible: true, headerTitle: false}} /> 
              </Stack.Navigator>
            </NavigationContainer>
   

@@ -25,31 +25,40 @@ const validateEmail = (email) => {
   
 
 function LoginPage({navigation}) {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
     
-    const [open, setOpen] = useState(false);
-    const [roleValue, setValue] = useState('Driver');
-    const [items, setItems] = useState([
-        { label: 'Driver', value: 'Driver' },
-        { label: 'Fleet Controller', value: 'Fleet Controller' },
+    // const [open, setOpen] = useState(false);
+    // const [roleValue, setValue] = useState('Driver');
+    // const [items, setItems] = useState([
+    //     { label: 'Driver', value: 'Driver' },
+    //     { label: 'Fleet Controller', value: 'Fleet Controller' },
         
-  ]);
+    const [user, setUser] = useState({
+        name: '',
+        surname: '',
+        email: '',
+        password: '',
+    });
+
+    const [loading, setLoading] = useState(false);
+
+
 
     const auth = Firebase_Auth;
-    //const navigation = useNavigation();
+ 
 
     const logginIn = async() => {
 
 
-        if (!validateEmail(email)) {
+        if (!validateEmail(user.email)) {
             alert('Invalid email format');
             return;
           }
 
             setLoading(true);
             try{
-                const response = await signInWithEmailAndPassword(auth, email.toString(), password);
+                const response = await signInWithEmailAndPassword(auth, user.email.toString(), user.password.toString());
                 console.log(response);
                 navigation.navigate('Home', {});
             }     
@@ -63,45 +72,8 @@ function LoginPage({navigation}) {
 
     }
 
-    // const SignUp = async() => {
-
-    //     if (!validateEmail(email)) {
-    //         alert('Invalid email format');
-    //         return;
-    //       }
-
-    //     setLoading(true);
-    //     try{
-    //         const userCredentials = await createUserWithEmailAndPassword(auth, email, password);
-    //         const userID = userCredentials.user.uid;
-
-    //         const userData = {
-    //             id: userID,
-    //             email: email
-    //         }
-
-    //         const userRef = doc(Firebase_DB, 'Profiles', userID);
-    //         await setDoc(userRef, userData);
-
-    //         setEmail('');
-    //         setPassword('');
-
-    //         console.log('User added to database collection - Profiles');
-    //         console.log('User successfully registered');
-
-    //         alert('Succcesful, Check your email')
-    //     }  
-
-    //     catch(error){
-    //         console.log(error);
-    //         alert('Sign up failed: '+ error.message);
-    //     }
-    //     finally{
-    //         setLoading(false);
-    //     }
-    // }
-
-
+ 
+   
 
 
     return (
@@ -124,39 +96,19 @@ function LoginPage({navigation}) {
                     <TextInput
                         style={AllStyles.input}
                         placeholder="Enter email"
-                        value={email}
-                        onChangeText={(text) => setEmail(text.trim())}
+                        value={user.email}
+                        onChangeText={(text) => setUser({ ...user, email: text.trim() })}
                     />
                             
 
                     <TextInput
                         style={AllStyles.input}
                         placeholder="Enter password"
-                        value={password}
-                        onChangeText={(text) => setPassword(text.trim())}
+                        value={user.password}
+                        onChangeText={(text) => setUser({ ...user, password: text.trim() })}
                         secureTextEntry={true}
                     />
                 </View>
-
-                {/* <View style={AllStyles.rolesContainer}>
-                    <Text style = {AllStyles.roleText}>User Role:</Text>
-                    
-                    <DropDownPicker
-                    open={open}
-                    value={roleValue}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    searchable={true}
-                    placeholder="Choose your Role"
-                    style={AllStyles.dropdown}
-                    dropDownContainerStyle={AllStyles.dropdownContainer}
-                    listMode="SCROLLVIEW" // Use a scroll view to display the items
-                    searchablePlaceholder="Type to search..."
-                    searchableError="No items found"
-                    />
-                </View>   */}
                         
                     <TouchableOpacity style={AllStyles.btnLogin} onPress={logginIn}>
                         <Text style={AllStyles.textBtn}>Login</Text>
