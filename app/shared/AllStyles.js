@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions,  } from "react-native";
 
 
 
@@ -15,23 +15,55 @@ const secondaryColor = '#ff5757' ;
 
     },
 
-    btnLogin:{
-        width:'60%',
-        borderRadius:10,
-        backgroundColor: primaryColor,
-        padding: 10,
-        marginBottom:'10%',
-      
-        
-    },
-    btnSignIn:{
-        width:'60%',
-        borderRadius:10,
-        backgroundColor: secondaryColor,
-        padding: 10,
-    
+    backgroundImg:{
+        flex:1,
+        justifyContent: 'center',
 
     },
+
+    buttonContainer: {
+        height: 120,
+        width:'100%',
+        justifyContent:'space-evenly',
+        alignItems: 'center',
+    },
+
+    btnLogin:{
+
+    //     width:'60%',
+    //     borderRadius:10,
+    //     backgroundColor: primaryColor,
+    //     padding: 10,
+    //     marginBottom:'10%',
+    //   //  marginLeft: '20%'
+    height: '35%',
+    width:'70%',
+    backgroundColor: primaryColor,
+    borderRadius: 20,
+    justifyContent:'space-evenly',
+    alignItems: 'center',
+    marginVertical: 10, 
+
+    },
+
+    btnSignIn:{
+    //     width:'60%',
+    //     borderRadius:10,
+    //     backgroundColor: secondaryColor,
+    //     padding: 10,
+    //   //  marginLeft: '20%'
+        height: '35%',
+        width:'70%',
+        backgroundColor: secondaryColor,
+
+        borderRadius: 20,
+        justifyContent:'space-evenly',
+        alignItems: 'center',
+        marginVertical: 10, 
+
+
+    },
+
     btnAdd:{
             position: 'absolute',
             width: 60,
@@ -74,23 +106,25 @@ const secondaryColor = '#ff5757' ;
         width:'100%',
         alignItems:'Center',
         padding:10
-    
+   
     },
+   
     checkItem:{
         flexDirection: 'row',
         flexWrap: 'wrap',
         //top:'15%',
         //left: '2%',
         justifyContent:'space-between'
-        
+      
     },
+   
     dropdown: {
         width: '50%',
         borderColor: 'darkgrey',
         borderWidth: 1,
         borderRadius: 10,
         marginLeft:'15%',
-        marginBottom:'30%'
+        marginBottom:'10%'
     },
 
     dropdownContainer: {
@@ -108,20 +142,37 @@ const secondaryColor = '#ff5757' ;
     Heading:{
         color:'#00308F',
         fontSize:22,
-        top:30,
-        left:'22%',
-        
+        top:7,
+        alignItems: 'center',
     }, 
 
+    InputBoxes:{
+        height: 132,
+        width:'100%',
+        justifyContent:'space-evenly',
+        alignItems: 'center',
+        paddingBottom: 10,
+        
+    },
+
     input:{
-        height: '6%',
-        width:'70%',
-        borderColor: 'darkgrey',
-        borderWidth:1,
-        paddingHorizontal: 15,
-        borderRadius:10,
-        marginBottom:'8%', 
-        //marginLeft: '15%'
+        // height: '6%',
+        // width:'70%',
+        // borderColor: 'darkgrey',
+        // borderWidth:1,
+        // paddingHorizontal: 15,
+        // borderRadius:10,
+        // marginBottom:'8%', 
+        // //marginLeft: '15%'
+
+        height: '30%',
+        width: '85%',
+        padding: 10,
+        borderRadius: 20,
+        justifyContent: 'space-evenly',
+        marginVertical: '5%',
+        borderColor: 'grey',
+        borderWidth: 0.2,
 
     },
     
@@ -145,14 +196,20 @@ const secondaryColor = '#ff5757' ;
     label:{
        // fontStyle:'italic',
        //marginRight:'5%',
-       fontSize:19,
-       width:'80%'
+
+       fontSize:15
     },
-    leftLogo:{
-        height:'70%',
-        width:'16%',
-        marginTop:20
+   
+    loader:{
+        alignItems:'center',
+        justifyContent: 'center'
     },
+    loadText:{
+        color:'yellow',
+        fontSize:20
+    },
+
+
     modal:{
         justifyContent:'flex-end',
         margin:0,
@@ -168,22 +225,47 @@ const secondaryColor = '#ff5757' ;
         borderColor:'#6495ED',
       },
 
-      
-    NavBar: {
-        width:'100%',
-        height:'10%',
-        backgroundColor: '#fff',
-        justifyContent:'space-between',
-        alignItems:'Center',
-        flexDirection: 'row',  
+
+    // logoContainer:{
+    //     height: 100,
+    //     width:'100%',
+    //     justifyContent: "space-evenly",
+    //     alignItems: "center",
+    // },
+
+
+      leftLogo:{
+        height:50,
+        width:70,
+        marginTop:5,
+
         
     },
+
     rightLogo:{
-        height:'70%',
-        width:'16%',
-        marginTop:20,
-        marginLeft:40
+
+        height:50,
+        width:70,
+        marginTop:5,
+        // marginLeft:40
+
     },
+    
+    NavBar: {
+        // width:'100%',
+        // height:'10%',
+        // backgroundColor: '#fff',
+        // justifyContent:'Top',
+        // alignItems:'Center',
+        // flexDirection: 'row',  
+
+        flexDirection: 'row',  
+        height: 100,
+        width:'100%',
+        justifyContent: "space-evenly",
+        alignItems: "center",
+    },
+    
 
     Role:{
         marginBottom:'2%',
@@ -199,7 +281,7 @@ const secondaryColor = '#ff5757' ;
         alignItems:'center',
         width:'100%',
         top:'2%',
-        marginBottom:'20%'
+        marginBottom:'10%'
     },
     section:{
         fontSize: 20,
@@ -210,12 +292,22 @@ const secondaryColor = '#ff5757' ;
        
         marginBottom:'8%'
     },
-    Welkom:{
-       
-        fontSize:22,
-        color: primaryColor,
-    }
 
+    Welkom:{
+
+        fontStyle:'bold',
+        fontSize:18,
+        color: primaryColor,
+    },
+
+    rolesContainer: {
+        height: '20%',
+        width: '90%',
+        // backgroundColor: 'black',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+      
+    },
 
 })
 

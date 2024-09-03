@@ -25,6 +25,7 @@ export default function DriverCompartment_inspectCh({navigation}){
         <View style={AllStyles.container}>
            
                     <Text style={AllStyles.section}>Driver's component </Text>
+
                         <ScrollView contentContainerStyle={{flexGrow:1}}>
                             <DriverCompartmentChecklist
                                 driverCompartment={driverCompartment}
@@ -40,6 +41,7 @@ export default function DriverCompartment_inspectCh({navigation}){
                                     },
                                     updateInspections
                                   })}  >
+
                             <Text style ={AllStyles.textBtn} >Next</Text>
                         </TouchableOpacity>
                         </View>

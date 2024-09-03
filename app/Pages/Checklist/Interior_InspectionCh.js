@@ -23,6 +23,7 @@ import InteriorChecklist from './InteriorChecklist'
         <View style={AllStyles.container}>
            
         <Text style={AllStyles.section}>Interior </Text>
+
             
                 <InteriorChecklist
                     interior={interior}
@@ -38,6 +39,7 @@ import InteriorChecklist from './InteriorChecklist'
                         },
                         updateInspections
                       })}  >
+
                 <Text style ={AllStyles.textBtn} >Next</Text>
             </TouchableOpacity>
             </View>

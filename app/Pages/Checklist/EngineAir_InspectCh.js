@@ -40,6 +40,7 @@ export default function EngineAir_InspectCh({navigation}){
                         />
                         </ScrollView>
 
+
                         <View style={AllStyles.btnContainer}>
                                 <TouchableOpacity style ={AllStyles.btn}
                                          onPress={()=> navigation.navigate("InteractiveTest", {
@@ -51,6 +52,7 @@ export default function EngineAir_InspectCh({navigation}){
                                         })} >
                                     <Text style ={AllStyles.textBtn} >Next</Text>
                                 </TouchableOpacity>
+
                         </View>
 
                 

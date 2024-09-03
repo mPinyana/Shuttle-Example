@@ -23,6 +23,7 @@ import BodyWorksChecklist from "./BodyworksChecklist";
         <View style={AllStyles.container}>
            
                     <Text style={AllStyles.section}>Bodyworks </Text>
+
                         <ScrollView>
                         <BodyWorksChecklist
                                 bodyWorks={bodyworks}
@@ -38,6 +39,7 @@ import BodyWorksChecklist from "./BodyworksChecklist";
                                     },
                                     updateInspections
                                   })}  >
+
                             <Text style ={AllStyles.textBtn} >Next</Text>
                         </TouchableOpacity>
                         </View>

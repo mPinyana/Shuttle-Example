@@ -24,6 +24,7 @@ export default function Electric_InspectionCh({navigation }){
         <View style={AllStyles.container}>
            
                     <Text style={AllStyles.section}>Electric </Text>
+
                         <ScrollView style={{flexGrow:1}}>
                             <ElectricChecklist
                              electric={electric}
@@ -41,6 +42,7 @@ export default function Electric_InspectionCh({navigation }){
                                           })}>
                                     <Text style ={AllStyles.textBtn} >Next</Text>
                                 </TouchableOpacity>
+
                         </View>
 
                 

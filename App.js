@@ -4,6 +4,10 @@ import LoginPage from './app/Pages/LoginPage';
 import HomePage from  './app/Pages/HomePage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SafeAreaView} from 'react-native';
+import * as Font from 'expo-font';
+import SignUpScreen from './app/Pages/SignUpScreen';
+
 
 
 
@@ -30,6 +34,7 @@ export default function App() {
                    headerTitleAlign: 'center',
                     headerShown: false
                     }} />
+              <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerShown: false}} /> 
              </Stack.Navigator>
            </NavigationContainer>
   

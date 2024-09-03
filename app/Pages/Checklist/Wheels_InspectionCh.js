@@ -22,6 +22,8 @@ import WheelsChecklist from './WheelsChecklist';
             <View style={AllStyles.container}>
            
                     <Text style={AllStyles.section}>Wheels </Text>
+
+
                         
                             <WheelsChecklist
                             wheels={wheels}
