@@ -140,7 +140,7 @@ function SignUpScreen(){
             </View>
 
             
-
+            <View style={AllStyles.rolesContainer}>
                 <Text style = {AllStyles.Role}>User Role:</Text>
                     <DropDownPicker
                     open={open}
@@ -157,6 +157,7 @@ function SignUpScreen(){
                     searchablePlaceholder="Type to search..."
                     searchableError="No items found"
                 />
+            </View>
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity 
@@ -235,6 +236,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#d9d9d9',
         borderWidth: 0.2,
     },
+
+    
 
     buttonContainer: {
         height: 120,

@@ -254,7 +254,17 @@ const secondaryColor = '#ff5757' ;
         fontStyle:'bold',
         fontSize:18,
         color: primaryColor,
-    }
+    },
+
+    rolesContainer: {
+        height: '20%',
+        width: '90%',
+        // backgroundColor: 'black',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+      
+    },
+
 })
 
 export { primaryColor, secondaryColor, AllStyles };
