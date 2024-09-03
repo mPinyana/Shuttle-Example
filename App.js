@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, { useState } from 'react';
 import LoginPage from './app/Pages/LoginPage';
 import HomePage from  './app/Pages/HomePage';
@@ -12,8 +13,10 @@ import SignUpScreen from './app/Pages/SignUpScreen';
 
 const Stack = createNativeStackNavigator();
 
+
+
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+
 
 
     return (
@@ -24,11 +27,11 @@ export default function App() {
              <Stack.Screen name= "Login" component={LoginPage} options={{ headerShown: false}} /> 
              <Stack.Screen name="Home" component={HomePage} options={{
                     headerBackVisible: false,
-                    title: 'Home',
-                    headerTitleStyle: { color: '#004aad',
+                   title: 'Home',
+                   headerTitleStyle: { color: '#004aad',
                                         fontSize: 25
                      },
-                    headerTitleAlign: 'center',
+                   headerTitleAlign: 'center',
                     headerShown: false
                     }} />
               <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerShown: false}} /> 

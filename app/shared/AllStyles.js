@@ -29,6 +29,7 @@ const secondaryColor = '#ff5757' ;
     },
 
     btnLogin:{
+
     //     width:'60%',
     //     borderRadius:10,
     //     backgroundColor: primaryColor,
@@ -42,6 +43,7 @@ const secondaryColor = '#ff5757' ;
     justifyContent:'space-evenly',
     alignItems: 'center',
     marginVertical: 10, 
+
     },
 
     btnSignIn:{
@@ -53,10 +55,12 @@ const secondaryColor = '#ff5757' ;
         height: '35%',
         width:'70%',
         backgroundColor: secondaryColor,
+
         borderRadius: 20,
         justifyContent:'space-evenly',
         alignItems: 'center',
         marginVertical: 10, 
+
 
     },
 
@@ -67,7 +71,7 @@ const secondaryColor = '#ff5757' ;
             alignItems: 'center',
             justifyContent:'center',
             right: 30,
-            bottom: 50
+            bottom: 80
     },
     btnClose: {
         position: 'absolute',
@@ -75,19 +79,45 @@ const secondaryColor = '#ff5757' ;
         right: 10,
         zIndex: 1,
       },
+      btn:{
+        //position: 'absolute',
+        width:'50%',
+        borderRadius:10,
+        backgroundColor: primaryColor,
+        padding: 10,
+       // bottom: '%'
+      },
+
+        btnContainer:{
+            position:'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor:'white',
+            height:'10%',
+            width:'100%',
+            justifyContent:'center',
+            alignItems:'center'
+               },
+      
 
     checklist:{
         flex:1,
+        width:'100%',
         alignItems:'Center',
-        marginBottom:30,
+        padding:10
+   
     },
+   
     checkItem:{
         flexDirection: 'row',
         flexWrap: 'wrap',
-        top:'15%',
-        left: '4%',
-        justifyContent:'space-between'   
+        //top:'15%',
+        //left: '2%',
+        justifyContent:'space-between'
+      
     },
+   
     dropdown: {
         width: '50%',
         borderColor: 'darkgrey',
@@ -105,8 +135,6 @@ const secondaryColor = '#ff5757' ;
       },
    
     Hi:{
-       
-        fontStyle:'Bold',
         fontSize:35,
         color:'#00308F',
     },
@@ -115,7 +143,6 @@ const secondaryColor = '#ff5757' ;
         color:'#00308F',
         fontSize:22,
         top:7,
-        // left:'22%',
         alignItems: 'center',
     }, 
 
@@ -148,18 +175,28 @@ const secondaryColor = '#ff5757' ;
         borderWidth: 0.2,
 
     },
+    
     inspectItem:{
         width:'95%',
-        height:'7%',
+        height:'9%',
         top:'6%',
-        borderRadius:10,
-        backgroundColor: primaryColor,
-        justifyContent:'center',
-        alignItems:'center'
+        //borderRadius:10,
+        backgroundColor: 'white',
+        alignItems:'center',
+        marginBottom:'3%',
+        borderTopWidth:0.5,
+        flexDirection:'row',
+        justifyContent:'space-between'
+    },
+    inspectionFeild:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        marginBottom:20
     },
     label:{
        // fontStyle:'italic',
        //marginRight:'5%',
+
        fontSize:15
     },
    
@@ -172,6 +209,7 @@ const secondaryColor = '#ff5757' ;
         fontSize:20
     },
 
+
     modal:{
         justifyContent:'flex-end',
         margin:0,
@@ -179,13 +217,14 @@ const secondaryColor = '#ff5757' ;
     },
     modalContent: {
        
-        height: height * 0.7,
+        height: height * 0.8,
         padding: 20,
         backgroundColor: 'white',
         borderRadius: 15,
-        borderWidth:1,
-        borderColor:'grey',
+        borderWidth:2,
+        borderColor:'#6495ED',
       },
+
 
     // logoContainer:{
     //     height: 100,
@@ -199,14 +238,17 @@ const secondaryColor = '#ff5757' ;
         height:50,
         width:70,
         marginTop:5,
+
         
     },
 
     rightLogo:{
+
         height:50,
         width:70,
         marginTop:5,
         // marginLeft:40
+
     },
     
     NavBar: {
@@ -235,7 +277,6 @@ const secondaryColor = '#ff5757' ;
         fontWeight: 'bold',
         
     },
-
     Salutations:{
         alignItems:'center',
         width:'100%',
@@ -245,12 +286,15 @@ const secondaryColor = '#ff5757' ;
     section:{
         fontSize: 20,
         color:'black',
-        alignItems:'center',
+       // alignItems:'center',
         top:'3%',
-        fontWeight:'bold'
+        fontWeight:'bold',
+       
+        marginBottom:'8%'
     },
 
     Welkom:{
+
         fontStyle:'bold',
         fontSize:18,
         color: primaryColor,

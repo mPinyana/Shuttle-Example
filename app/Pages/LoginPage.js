@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text,TextInput,TouchableOpacity, Image, ImageBackground} from 'react-native'; 
+import {View, Text,TextInput,TouchableOpacity, Image, TouchableWithoutFeedback, Keyboard} from 'react-native'; 
+
 import  { useState } from 'react';
 import { Firebase_Auth } from '../../FirebaseConfig';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
@@ -28,7 +29,7 @@ function LoginPage({navigation}) {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
+    const [roleValue, setValue] = useState('Driver');
     const [items, setItems] = useState([
         { label: 'Driver', value: 'Driver' },
         { label: 'Fleet Controller', value: 'Fleet Controller' },
@@ -50,7 +51,7 @@ function LoginPage({navigation}) {
             try{
                 const response = await signInWithEmailAndPassword(auth, email.toString(), password);
                 console.log(response);
-                navigation.navigate('Home');
+                navigation.navigate('Home', {roleValue});
             }     
             catch(error){
                 console.log(error);
@@ -104,67 +105,71 @@ function LoginPage({navigation}) {
 
 
     return (
-    <View style ={AllStyles.container}>
-  
-        <View  style ={AllStyles.NavBar}>
-            <Image source={l_logo} style = {AllStyles.leftLogo}/>
-            <Text style={AllStyles.Heading} >UCT Shuttle Services</Text>
-            <Image source={r_logo} style ={AllStyles.rightLogo}/>
-        </View>
 
-        
-        <View style={AllStyles.Salutations}>
-        <Text style={AllStyles.Hi}>Hello!</Text><Text style={AllStyles.Welkom}> Welcome, Please enter login details</Text>
-        </View>
-        
-        
-    <View style={AllStyles.InputBoxes}> 
-        <TextInput
-            style={AllStyles.input}
-            placeholder="Enter email"
-            value={email}
-            onChangeText={(text) => setEmail(text.trim())}
-        />
+        <TouchableWithoutFeedback onPress={()=>{Keyboard.dismiss()}}>
+                <View style ={AllStyles.container}>
+                    
+                    <View  style ={AllStyles.NavBar}>
+                        <Image source={l_logo} style = {AllStyles.leftLogo}/>
+                        <Text style={AllStyles.Heading} >UCT Shuttle Services
+                        </Text>
+                        <Image source={r_logo} style ={AllStyles.rightLogo}/>
+                    </View>
+                    
+                    <View style={AllStyles.Salutations}>
+                    <Text style={AllStyles.Hi}>Hello!</Text><Text style={AllStyles.Welkom}> Welcome, Please enter login details</Text>
+                    </View>
+
+                    
+                    <TextInput
+                        style={AllStyles.input}
+                        placeholder="Enter email"
+                        value={email}
+                        onChangeText={(text) => setEmail(text.trim())}
+                    />
+                            
+
+                    <TextInput
+                        style={AllStyles.input}
+                        placeholder="Enter password"
+                        value={password}
+                        onChangeText={(text) => setPassword(text.trim())}
+                        secureTextEntry={true}
+                    />
+
+                    <Text style = {AllStyles.Role}>User Role:</Text>
+                    
+                    <DropDownPicker
+                    open={open}
+                    value={roleValue}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    searchable={true}
+                    placeholder="Choose your Role"
+                    style={AllStyles.dropdown}
+                    dropDownContainerStyle={AllStyles.dropdownContainer}
+                    listMode="SCROLLVIEW" // Use a scroll view to display the items
+                    searchablePlaceholder="Type to search..."
+                    searchableError="No items found"
+                />
+                        
+                    <TouchableOpacity style={AllStyles.btnLogin} onPress={logginIn}>
+                        <Text style={AllStyles.textBtn}>Login</Text>
+                    </TouchableOpacity>
+                    
+
                 
-
-        <TextInput
-            style={AllStyles.input}
-            placeholder="Enter password"
-            value={password}
-            onChangeText={(text) => setPassword(text.trim())}
-            secureTextEntry={true}
-        />
-    </View>
-
-        <Text style = {AllStyles.Role}>User Role:</Text>
-        
-        <DropDownPicker
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        searchable={true}
-        placeholder="Choose your Role"
-        style={AllStyles.dropdown}
-        dropDownContainerStyle={AllStyles.dropdownContainer}
-        listMode="SCROLLVIEW" // Use a scroll view to display the items
-        searchablePlaceholder="Type to search..."
-        searchableError="No items found"
-      />
-    <View style={AllStyles.buttonContainer}>
-        <TouchableOpacity style={AllStyles.btnLogin} onPress={logginIn}>
-            <Text style={AllStyles.textBtn}>Login</Text>
-        </TouchableOpacity>
-        
-    
-        <TouchableOpacity style={AllStyles.btnSignIn} onPress={() => navigation.navigate('SignUp')}>
+                 <TouchableOpacity style={AllStyles.btnSignIn} onPress={() => navigation.navigate('SignUp')}>
             <Text style={AllStyles.textBtn}>Sign Up</Text>
         </TouchableOpacity>
 
-    </View>
-    </View>
+
+                </View>
+
+    </TouchableWithoutFeedback>
+
         
     );
 }

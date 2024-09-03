@@ -3,10 +3,11 @@ import inspection from "../Pages/Inspections";
 import docPage from "../Pages/Checklist/Documentation_inspectionCh"; // 1/7
 import driverCompartmentPage from '../Pages/Checklist/DriverCompartment_inspectCh'; // 2/7
 import interiorPage from '../Pages/Checklist/Interior_InspectionCh'; // 3/7
-import engineAirPage from '../Pages/Checklist/EngineAir_InspectCh'; // 4/7
-import wheelsPage from '../Pages/Checklist/Wheels_InspectionCh'; // 5/7
-import bodyWorksPage from '../Pages/Checklist/BodyWorks_InspectionCh'; // 6/7
-import electricPage from '../Pages/Checklist/Electric_InspectionCh'; // 7/7
+import electricPage from '../Pages/Checklist/Electric_InspectionCh'; // 4/7
+import engineAirPage from '../Pages/Checklist/EngineAir_InspectCh'; // 5/7
+import wheelsPage from '../Pages/Checklist/Wheels_InspectionCh'; // 6/7
+import bodyWorksPage from '../Pages/Checklist/BodyWorks_InspectionCh'; // 7/7
+import InteractiveTest from "../Pages/InteractiveTest";
 import CustomHeader from '../shared/CustomHeader';
 
 
@@ -50,7 +51,7 @@ function InspectionStack(){
                         },
                         headerStyle:{borderBottomWidth: 2,}
                     }}/>
-                <Stack.Screen name="engineAir" component={ engineAirPage}
+                <Stack.Screen name="electric" component={ electricPage}
                         options={{
                             title:'Checklist (4/7)',
                             headerTitleStyle: { color: '#004aad',
@@ -78,9 +79,8 @@ function InspectionStack(){
                         headerStyle:{borderBottomWidth: 2,}
                     }}
                 
-                
                 />
-                <Stack.Screen name="electric" component={electricPage} 
+                <Stack.Screen name="engineAir" component={engineAirPage} 
                     options={{
                         title:'Checklist (7/7)',
                         headerTitleStyle: { color: '#004aad',
@@ -88,9 +88,15 @@ function InspectionStack(){
                         },
                         headerStyle:{borderBottomWidth: 2,}
                     }}
-                
-                
-                
+                />
+                 <Stack.Screen name="InteractiveTest" component={InteractiveTest} 
+                    options={{
+                        title:'Blocks',
+                        headerTitleStyle: { color: '#004aad',
+                            fontSize: 25,
+                        },
+                        headerStyle:{borderBottomWidth: 2,}
+                    }}
                 />
             </Stack.Navigator>
     )

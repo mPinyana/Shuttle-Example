@@ -7,8 +7,7 @@ const CustomHeader = ({ navigation }) => {
     <TouchableOpacity 
       style={{ marginLeft: 15 }}
       onPress={() => {
-        // Example: Navigate to a user profile screen
-        navigation.navigate('UserProfile');
+        () => navigation.openDrawer()
       }}
     >
       <FontAwesome name="user-circle" size={32} color="#004aad" />
