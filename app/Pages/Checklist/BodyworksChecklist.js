@@ -25,9 +25,34 @@ const BodyWorksChecklist = ({ bodyWorks, setBody }) => {
     }));
   };
 
+  const handleSelectAll = (isChecked) => {
+    const updatedBodyworks = Object.keys(bodyWorks).reduce((acc, key) => {
+      acc[key] = isChecked;
+      return acc;
+    }, {});
+    setBody(updatedBodyworks);
+  };
+
+  const isAllChecked = Object.values(bodyWorks).every(value => value === true);
+
+ 
   return (
     <ScrollView style={{flex:1}}>
     <View style={AllStyles.checklist}>
+
+      <View style={[AllStyles.checkItem, { marginBottom: 10 }]}>
+        <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Select All</Text>
+        <BouncyCheckbox
+          size={30}
+          fillColor="green"
+          unfillColor="#FFFFFF"
+          isChecked={isAllChecked}
+          onPress={(isChecked) => handleSelectAll(isChecked)}
+          style={AllStyles.checkbox}
+        />
+      </View>
+
+
       {Object.entries(bodyWorks).map(([key, value]) => (
         <View key={key} style={AllStyles.checkItem}>
           <Text style={AllStyles.label}>{labelMap[key]}</Text>
