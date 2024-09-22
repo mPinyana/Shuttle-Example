@@ -1,58 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
-import BouncyCheckbox from 'react-native-bouncy-checkbox'
-import { useRoute, useNavigation } from '@react-navigation/native';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { AllStyles } from '../../shared/AllStyles';
 
-
 const labelMap = {
-    licenceDisc: "Licence Disc",
-    operatorsDisc: "Operator's Disc",
-    permit: "Permit (Document is safe)",
-    fuelCard: "Fuel Card",
+  licenceDisc: "Licence Disc",
+  operatorsDisc: "Operator's Disc",
+  permit: "Permit (Document is safe)",
+  fuelCard: "Fuel Card",
+};
+
+const DocumentationChecklist = ({ documents, setDocuments, setIsValid }) => {
+  const handleCheckboxChange = (key) => {
+    setDocuments((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }));
   };
-  
-  const DocumentationChecklist = ({ /*inspection, setInspection,*/ documents, setDocuments }) => {
-   // const [documents, setDocuments] = useState(inspection.documentation);
-  
-    // Update the `documents` state when a checkbox is toggled
-/*     const handleCheckboxChange = (key) => {
-      setDocuments((prevState) => {
-        const newState = { ...prevState, [key]: !prevState[key] };
-        const updatedInspection = { ...inspection, documentation: newState };
-        // Update the inspection object in the parent component
-        setInspection(updatedInspection);
-        return newState;
-      });
-    }; */
 
+  const handleSelectAll = (isChecked) => {
+    const updatedDocuments = Object.keys(documents).reduce((acc, key) => {
+      acc[key] = isChecked;
+      return acc;
+    }, {});
+    setDocuments(updatedDocuments);
+  };
 
-    const handleCheckboxChange = (key) => {
-      setDocuments((prevState) => ({
-        ...prevState,
-        [key]: !prevState[key],
-      }));
-    };
+  const isAllChecked = Object.values(documents).every(value => value === true);
 
-    
-  
-    // Map through the `documentation` object and `labelMap`
-    return (
-      <View style={AllStyles.checklist}>
-        {Object.entries(documents).map(([key, value]) => (
-          <View key={key} style={AllStyles.checkItem}>
-            <Text style={AllStyles.label}>{labelMap[key]}</Text>
-            <BouncyCheckbox
-              size={30}
-              fillColor="green"
-              isChecked={value}
-              onPress={() => handleCheckboxChange(key)}
-              style={AllStyles.checkbox}
-            />
-          </View>
-        ))}
+  useEffect(() => {
+    setIsValid(isAllChecked);
+  }, [documents, setIsValid]);
+
+  return (
+    <View style={AllStyles.checklist}>
+      <View style={[AllStyles.checkItem, { marginBottom: 10 }]}>
+        <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Select All</Text>
+        <BouncyCheckbox
+          size={30}
+          fillColor="green"
+          unfillColor="#FFFFFF"
+          isChecked={isAllChecked}
+          onPress={(isChecked) => handleSelectAll(isChecked)}
+          style={AllStyles.checkbox}
+        />
       </View>
-    );
-  };
-  
-  export default DocumentationChecklist;
+      {Object.entries(documents).map(([key, value]) => (
+        <View key={key} style={AllStyles.checkItem}>
+          <Text style={AllStyles.label}>{labelMap[key]}</Text>
+          <BouncyCheckbox
+            size={30}
+            fillColor="green"
+            unfillColor="#FFFFFF"
+            isChecked={value}
+            onPress={() => handleCheckboxChange(key)}
+            style={AllStyles.checkbox}
+          />
+        </View>
+      ))}
+    </View>
+  );
+};
+
+export default DocumentationChecklist;

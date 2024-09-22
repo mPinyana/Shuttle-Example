@@ -254,7 +254,7 @@ const [electric, setElectric] = useState({
 
         <View style = {AllStyles.container}>
                 
-                <Text style ={AllStyles.section}>Welcome, {currentUser.name +" "+ currentUser.surname} your inspections are waiting for you</Text> 
+                <Text style ={AllStyles.section}>Welcome, {currentUser.name +" "+ currentUser.surname} inspections are waiting for you</Text> 
                 <ScrollView contentContainerStyle={{flexGrow:1, width:'100%'}}>
                 {inspections.map((inspection, index) => (
                         <TouchableOpacity

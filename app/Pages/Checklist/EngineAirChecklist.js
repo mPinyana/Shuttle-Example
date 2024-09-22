@@ -11,7 +11,6 @@ const EngineAirChecklist = ({ engineAir, setEngineAir }) => {
         drainAirTanks: "Drain Air Tanks",
     };
 
-
     return (
         <View style={AllStyles.checklist}>
           {Object.entries(labelMap).map(([key, label]) => (
