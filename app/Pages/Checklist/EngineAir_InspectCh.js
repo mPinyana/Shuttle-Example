@@ -42,7 +42,7 @@ export default function EngineAir_InspectCh({navigation}){
 
                         <View style={AllStyles.btnContainer}>
                                 <TouchableOpacity style ={AllStyles.btn}
-                                         onPress={()=> navigation.navigate("InteractiveTest", {
+                                         onPress={()=> navigation.navigate("DriverSide", {
                                           inspection: {
                                             ...inspection,
                                             engine_Air: engineAir

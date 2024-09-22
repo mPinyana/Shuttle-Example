@@ -23,12 +23,13 @@ import BodyWorksChecklist from "./BodyworksChecklist";
         <View style={AllStyles.container}>
            
                     <Text style={AllStyles.section}>Bodyworks </Text>
-                        <ScrollView>
+                       
                         <BodyWorksChecklist
                                 bodyWorks={bodyworks}
                                 setBody={setBody}
                             />
-                        </ScrollView>
+                       
+                        
                         <View style={AllStyles.btnContainer}>
                         <TouchableOpacity style ={AllStyles.btn}
                                 onPress={()=> navigation.navigate("engineAir",{

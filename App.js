@@ -1,9 +1,13 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
+import SignUpScreen from './app/Pages/SignUpScreen';
 import LoginPage from './app/Pages/LoginPage';
 import HomePage from  './app/Pages/HomePage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoaderProvider from './app/shared/LoaderContext';
+import InspectionProvider from './app/shared/InspectionContext';
+import VehicleProvider from './app/shared/VehicleContext';
 
 
 
@@ -16,22 +20,19 @@ export default function App() {
 
 
     return (
-   
-        
-           <NavigationContainer>  
+        <LoaderProvider>
+          <VehicleProvider>
+          <InspectionProvider>
+           <NavigationContainer>   
              <Stack.Navigator initialRouteName='Login'>
              <Stack.Screen name= "Login" component={LoginPage} options={{ headerShown: false}} /> 
-             <Stack.Screen name="Home" component={HomePage} options={{
-                    headerBackVisible: false,
-                   title: 'Home',
-                   headerTitleStyle: { color: '#004aad',
-                                        fontSize: 25
-                     },
-                   headerTitleAlign: 'center',
-                    headerShown: false
-                    }} />
+             <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerBackVisible: true}} /> 
+             <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
              </Stack.Navigator>
            </NavigationContainer>
+           </InspectionProvider>
+           </VehicleProvider>
+           </LoaderProvider>
   
 
   );

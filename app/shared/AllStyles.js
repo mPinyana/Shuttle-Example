@@ -15,8 +15,78 @@ const secondaryColor = '#ff5757' ;
 
     },
 
+    btn:{
+        //position: 'absolute',
+        width:'50%',
+        borderRadius:10,
+        backgroundColor: primaryColor,
+        padding: 10,
+       // bottom: '%'
+      },
+      btnAdd:{
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent:'center',
+        right: '10%',
+        bottom: '10%'
+},
+
+btnArrowR:{
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent:'center',
+    right: '5%',
+    bottom: '7%',
+    borderRadius:50,
+    backgroundColor: primaryColor,
+    padding:10
+},
+
+btnBackArrow:{
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent:'center',
+    left: '3%',
+    top: '7%',
+    borderRadius:50,
+    backgroundColor: 'white',
+    padding:10
+},
+btnCamera:{
+    position: 'absolute',
+        width: 50,
+        height: 50,
+        alignItems: 'center',
+        justifyContent:'center',
+        right: '5%',
+        bottom: '19%',
+
+
+    borderRadius:50,
+    backgroundColor: primaryColor,
+    padding:10
+},
+btnClose: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+  },
+  btnContainer:{
+    position:'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor:'white',
+    height:'10%',
+    width:'100%',
+    justifyContent:'center',
+    alignItems:'center'
+       },
+
     btnLogin:{
         width:'60%',
+        top:'15%',
         borderRadius:10,
         backgroundColor: primaryColor,
         padding: 10,
@@ -26,49 +96,13 @@ const secondaryColor = '#ff5757' ;
     },
     btnSignIn:{
         width:'60%',
+        top:'15%',
         borderRadius:10,
         backgroundColor: secondaryColor,
         padding: 10,
     
 
-    },
-    btnAdd:{
-            position: 'absolute',
-            width: 60,
-            height: 60,
-            alignItems: 'center',
-            justifyContent:'center',
-            right: 30,
-            bottom: 80
-    },
-    btnClose: {
-        position: 'absolute',
-        top: 10,
-        right: 10,
-        zIndex: 1,
-      },
-      btn:{
-        //position: 'absolute',
-        width:'50%',
-        borderRadius:10,
-        backgroundColor: primaryColor,
-        padding: 10,
-       // bottom: '%'
-      },
-
-        btnContainer:{
-            position:'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor:'white',
-            height:'10%',
-            width:'100%',
-            justifyContent:'center',
-            alignItems:'center'
-               },
-      
-
+    }, 
     checklist:{
         flex:1,
         width:'100%',
@@ -85,16 +119,17 @@ const secondaryColor = '#ff5757' ;
         
     },
     dropdown: {
-        width: '50%',
+        width: '55%',
         borderColor: 'darkgrey',
         borderWidth: 1,
         borderRadius: 10,
         marginLeft:'15%',
-        marginBottom:'30%'
+        marginBottom:'20%',
+        //marginTop:'5%',
     },
 
     dropdownContainer: {
-        width: '50%',
+        width: '55%',
         borderColor: 'darkgrey',
         marginLeft:'15%',
         
@@ -114,8 +149,8 @@ const secondaryColor = '#ff5757' ;
     }, 
 
     input:{
-        height: '6%',
-        width:'70%',
+        height: 50,
+        width:300,
         borderColor: 'darkgrey',
         borderWidth:1,
         paddingHorizontal: 15,
@@ -126,10 +161,9 @@ const secondaryColor = '#ff5757' ;
     },
     
     inspectItem:{
-        width:'95%',
+        width:'100%',
         height:'9%',
         top:'6%',
-        //borderRadius:10,
         backgroundColor: 'white',
         alignItems:'center',
         marginBottom:'3%',
@@ -155,17 +189,24 @@ const secondaryColor = '#ff5757' ;
     },
     modal:{
         justifyContent:'flex-end',
-        margin:0,
-        
+        margin:0,  
     },
     modalContent: {
        
-        height: height * 0.8,
+       height: height * 0.6,
         padding: 20,
         backgroundColor: 'white',
         borderRadius: 15,
         borderWidth:2,
         borderColor:'#6495ED',
+        shadowColor: 'black',
+        shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 4,
+          elevation: 5
       },
 
       
@@ -177,6 +218,17 @@ const secondaryColor = '#ff5757' ;
         alignItems:'Center',
         flexDirection: 'row',  
         
+    },
+
+    pfp:{
+       //borderRadius:100,
+        width:145,
+        height:145,
+        marginBottom:'5%',
+        justifyContent:'center',
+        alignItems:'center',
+        marginTop:'5%',
+    
     },
     rightLogo:{
         height:'70%',

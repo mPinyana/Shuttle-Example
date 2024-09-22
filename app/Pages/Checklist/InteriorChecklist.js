@@ -31,7 +31,7 @@ const labelMap = {
     return (
       <View style={AllStyles.container}>
         
-        <ScrollView>
+        
           <View style={AllStyles.checklist}>
             {Object.entries(interior).map(([key, value]) => (
               <View key={key} style={AllStyles.checkItem}>
@@ -46,7 +46,7 @@ const labelMap = {
               </View>
             ))}
           </View>
-        </ScrollView>
+        
       </View>
     );
   };

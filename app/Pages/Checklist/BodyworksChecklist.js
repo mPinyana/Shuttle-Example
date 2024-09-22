@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox'
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { AllStyles } from '../../shared/AllStyles';
@@ -26,6 +26,7 @@ const BodyWorksChecklist = ({ bodyWorks, setBody }) => {
   };
 
   return (
+    <ScrollView style={{flex:1}}>
     <View style={AllStyles.checklist}>
       {Object.entries(bodyWorks).map(([key, value]) => (
         <View key={key} style={AllStyles.checkItem}>
@@ -40,6 +41,7 @@ const BodyWorksChecklist = ({ bodyWorks, setBody }) => {
         </View>
       ))}
     </View>
+    </ScrollView>
   );
 };
 
