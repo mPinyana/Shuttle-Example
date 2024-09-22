@@ -30,7 +30,7 @@ export default function DriverCompartment_inspectCh({navigation}){
         } else {
             Alert.alert(
                 "Incomplete Checklist",
-                "Please check all items before proceeding.",
+                "Please ensure all inspection items are checked before proceeding.",
                 [{ text: "OK", onPress: () => console.log("OK Pressed") }]
             );
         }

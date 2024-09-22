@@ -36,7 +36,7 @@ export default function Electric_InspectionCh({ navigation }) {
     } else {
       Alert.alert(
         "Incomplete Checklist",
-        "Please ensure all electric items are checked before proceeding.",
+        "Please ensure all inspection items are checked before proceeding.",
         [{ text: "OK" }]
       );
     }

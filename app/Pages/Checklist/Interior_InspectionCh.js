@@ -36,7 +36,7 @@ export default function Interior_InspectionCh({ navigation }) {
     } else {
       Alert.alert(
         "Incomplete Checklist",
-        "Please ensure all interior items are checked before proceeding.",
+        "Please ensure all inspection items are checked before proceeding.",
         [{ text: "OK" }]
       );
     }
