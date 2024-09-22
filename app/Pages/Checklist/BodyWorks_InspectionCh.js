@@ -35,7 +35,7 @@ export default function BodyWorks_InspectionCh({ navigation }) {
             } else {
                 Alert.alert(
                     "Incomplete Checklist",
-                    "Please check all bodyworks items before proceeding.",
+                    "Please ensure all inspection items are checked before proceeding.",
                     [{ text: "OK" }]
                 );
             }

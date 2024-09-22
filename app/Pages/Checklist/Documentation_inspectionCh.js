@@ -46,7 +46,7 @@ export default function Documentation_inspectionCh() {
     } else {
       Alert.alert(
         "Incomplete Checklist",
-        "Please ensure all documentation items are checked before proceeding.",
+        "Please ensure all inspection items are checked before proceeding.",
         [{ text: "OK" }]
       );
     }
