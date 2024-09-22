@@ -23,12 +23,12 @@ import InteriorChecklist from './InteriorChecklist'
         <View style={AllStyles.container}>
            
         <Text style={AllStyles.section}>Interior </Text>
-            
+            <ScrollView>
                 <InteriorChecklist
                     interior={interior}
                     setInterior={setInterior}
                 />
-           
+           </ScrollView>
             <View style = {AllStyles.btnContainer}>
             <TouchableOpacity style ={AllStyles.btn}
                     onPress={()=> navigation.navigate("electric",{

@@ -22,12 +22,12 @@ import WheelsChecklist from './WheelsChecklist';
             <View style={AllStyles.container}>
            
                     <Text style={AllStyles.section}>Wheels </Text>
-                        
+                        <ScrollView>
                             <WheelsChecklist
                             wheels={wheels}
                             setWheels={setWheels}
                             />
-
+                          </ScrollView>
                         <View style={AllStyles.btnContainer}>
                                 <TouchableOpacity style ={AllStyles.btn}
                                     onPress={()=> navigation.navigate("bodyWorks",{
