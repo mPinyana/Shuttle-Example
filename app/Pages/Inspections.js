@@ -34,6 +34,7 @@ export default function Inspection({ navigation ,route}){
   const { loader, setLoader } = useContext(LoaderContext);
   const {inspections, setInspection} = useContext(InspectContext);
   const {vehicles, setVehicles} = useContext(VehicleContext);
+  
 
   const [formatedVecs, setFormated] = useState(vehicles.map(car => ({
     label: car.fleetNo+ ' '+ car.model,   // Label and value can be the same for strings
@@ -325,9 +326,11 @@ const toggleDeleteIcon = (index) => {
         ))}
       </ScrollView>
                 
+      {currentUser.role !== 'Driver' && (
                 <TouchableOpacity style ={AllStyles.btnAdd}>
                   <Ionicons name="add-circle" size={60} color={primaryColor} onPress={()=> setIsModalVisible(true)} />
                 </TouchableOpacity>
+      )}
                
                 <Modal
                     visible={isModalVisible}
