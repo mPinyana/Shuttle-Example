@@ -8,7 +8,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 //Database
-import { collection,getDocs,query,where, addDoc } from 'firebase/firestore';
+import { collection,getDocs,query,where, addDoc,deleteDoc, doc } from 'firebase/firestore';
 import { Firebase_DB,Firebase_Auth } from '../../FirebaseConfig';
 
 //Styling,and ICONS
@@ -25,6 +25,8 @@ import LoadingDots from "react-native-loading-dots";
 
 
 export default function Inspection({ navigation ,route}){
+  
+  const [showDeleteIcon, setShowDeleteIcon] = useState({});
  
  
   const profiles = useContext(ProfilesContext);// implement context as the same as below
@@ -130,8 +132,24 @@ const [electric, setElectric] = useState({
   windscreenWipes:false,
   reverseLight:false,
 })
+//handle delete
+const handleDeleteInspection = async (inspectionId) => {
+  try {
+    await deleteDoc(doc(Firebase_DB, 'Inspections', inspectionId));
+    setInspection(prevInspections => prevInspections.filter(inspection => inspection.id !== inspectionId));
+    Alert.alert('Success', 'Inspection deleted successfully');
+  } catch (error) {
+    console.error('Error deleting inspection: ', error);
+    Alert.alert('Error', 'Failed to delete inspection. Please try again.');
+  }
+};
 
-
+const toggleDeleteIcon = (index) => {
+  setShowDeleteIcon(prev => ({
+    ...prev,
+    [index]: !prev[index]
+  }));
+};
 
 // INSPECTIONS Event Handling
   const handleAddInspect =async ()=>{
@@ -252,63 +270,60 @@ const [electric, setElectric] = useState({
 
     return(
 
-        <View style = {AllStyles.container}>
-                
-                <Text style ={AllStyles.section}>Welcome, {currentUser.name +" "+ currentUser.surname} inspections are waiting for you</Text> 
-                <ScrollView contentContainerStyle={{flexGrow:1, width:'100%'}}>
-                {inspections.map((inspection, index) => (
-                        <TouchableOpacity
-                          key={index}
-                          style={AllStyles.inspectItem}
-                          onPress={() => navigation.navigate('Documentation', { inspection, setInspection })}
-                        >
-                          <Text style={{ fontSize: 17, color: primaryColor, fontWeight: 'bold', marginLeft:'5%' }}>
-                            {inspection.fleetNo} Inspection
-                          </Text>
-                          
-                          <View style={{
-                                flexDirection:'row',
-                                justifyContent:'space-between',
-                                alignItems:'center',
-                                marginTop:'9%',
-                                marginLeft:'43%'
-                              
-                          }}>
+      <View style={AllStyles.container}>
+      <Text style={AllStyles.section}>Welcome, {currentUser.name + " " + currentUser.surname} inspections are waiting for you</Text>
+      <ScrollView contentContainerStyle={{flexGrow: 1, width: '100%'}}>
+        {inspections.map((inspection, index) => (
+          <TouchableOpacity
+            key={index}
+            style={[AllStyles.inspectItem, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}
+            onPress={() => navigation.navigate('Documentation', { inspection, setInspection })}
+          >
+            <Text style={{ fontSize: 17, color: primaryColor, fontWeight: 'bold', marginLeft: '5%' }}>
+              {inspection.fleetNo} Inspection
+            </Text>
+            
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: '5%',
+              marginLeft: '24%'
+            }}>
+              <Feather name="clock" size={13} color="black" style={{marginLeft: '5%'}} />
+              <Text style={{ fontSize: 13 }}>
+                {new Date(inspection.time).toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false
+                })}
+              </Text>
+            </View>
 
-
-                            
-
-                          <Feather name="clock" size={13} 
-                          color="black"
-                          style={{marginLeft:'5%'}}
-                           />
-                          <Text
-                            style={{ fontSize:13}}
-                          >{new Date(inspection.time).toLocaleTimeString('en-US',
-                            {
-                              hour: '2-digit',
-                              minute: '2-digit',
-                              hour12: false // 24-hour format
-                            }
-                          )}</Text>
-
-                          
-                          </View>
-                          <TouchableWithoutFeedback
-                          onPress={(e)=>{    e.stopPropagation();  // Prevents parent Touchable from triggering
-                                    }}
-                          >
-                          <Feather name="more-vertical" size={18} color="black"
-                                style={{
-                                    height:'30%',
-                                  marginBottom:'7%',
-                                  marginRight:'5%'
-                                }} 
-                            />
-                            </TouchableWithoutFeedback>
-                        </TouchableOpacity>
-                  ))}
-                 </ScrollView>
+            <TouchableWithoutFeedback
+              onPress={(e) => {
+                e.stopPropagation();
+                toggleDeleteIcon(index);
+              }}
+            >
+              
+                {showDeleteIcon[index] ? (
+                  <TouchableOpacity
+                    onPress={(e) => {
+                      e.stopPropagation();
+                      handleDeleteInspection(inspection.id);
+                    }}
+                  >
+                    <Feather name="trash-2" size={24} color="red" />
+                  </TouchableOpacity>
+                ) : (
+                  <Feather name="more-vertical" size={22} color="black" />
+                )}
+              
+            </TouchableWithoutFeedback>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
                 
                 <TouchableOpacity style ={AllStyles.btnAdd}>
                   <Ionicons name="add-circle" size={60} color={primaryColor} onPress={()=> setIsModalVisible(true)} />
