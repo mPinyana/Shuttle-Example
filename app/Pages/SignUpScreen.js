@@ -15,7 +15,7 @@ import Toast from 'react-native-toast-message';
 
 
 const defaultpfp = require("../assets/defaultpfp.png")
-
+ 
 
 
 const validateEmail = (email) => {

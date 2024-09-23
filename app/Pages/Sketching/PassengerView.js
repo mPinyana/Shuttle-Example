@@ -11,11 +11,21 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
 
     
-  const route = useRoute();
+  const route =useRoute();
+  const { inspection, updateInspections } = route.params;
+  
+  const [passenger_Side, setPassengerSide] = useState(inspection.passengerSide); 
 
   const translation = useRef(new Animated.Value(-100)).current;
   const [headerShown, setHeaderShown] = useState(false);
 
+
+  useEffect(() => {
+    updateInspections({
+      ...inspection,
+      passengerSide: passenger_Side,
+    });
+  }, [passenger_Side]);
 
   useEffect(() => {
     Animated.timing(translation, {
@@ -32,65 +42,65 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
 
   const [Passengerparts, setPassenger] = useState([
     { id:'1P1',
-    label: 'Back of bus (Passenger view)', d: "M 390 120 Q 395 100,150 105 V 130 H 390 Z", colorIndex: 0 },
+    label: 'Back of bus (Passenger view)', d: "M 390 120 Q 395 100,150 105 V 130 H 390 Z", damageLvl: 0 },
     { id:'1P2',
-    label: 'roof (passenger View)', x: 365, y: 130, width: 25, height: 920, colorIndex: 0 },
+    label: 'roof (passenger View)', x: 365, y: 130, width: 25, height: 920, damageLvl: 0 },
     { id: '1P3',
-    label:'window 7', x: 260, y: 135, width: 100, height: 70, rx: 10, ry: 10, colorIndex: 0 },
+    label:'window 7', x: 260, y: 135, width: 100, height: 70, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1P4',
-    label: 'window 6', x: 260, y: 215, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
+    label: 'window 6', x: 260, y: 215, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1P5',
-    label: 'window 5', x: 260, y: 335, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
+    label: 'window 5', x: 260, y: 335, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1P6',
-    label: 'window 4', x: 260, y: 455, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
+    label: 'window 4', x: 260, y: 455, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1P7',
-    label: 'window 3', x: 260, y: 575, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
+    label: 'window 3', x: 260, y: 575, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1P8',
-    label: 'window 2', x: 260, y: 695, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
+    label: 'window 2', x: 260, y: 695, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1P9',
-    label: 'window 1', x: 260, y: 815, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
+    label: 'window 1', x: 260, y: 815, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1P10',
-    label: 'Passenger door left', x: 90, y: 938, width: 260, height: 45, colorIndex: 0 },
+    label: 'Passenger door left', x: 90, y: 938, width: 260, height: 45, damageLvl: 0 },
     { id:'1P11',
-        label: 'Passenger door right', x:90, y:997, width:260, height: 45, colorIndex: 0 },
+        label: 'Passenger door right', x:90, y:997, width:260, height: 45, damageLvl: 0 },
     { id:'1P12',
-    label: 'Windscreen (Passenger view)', d: "M 390 1050 H 150 V 1080 Q 391 1070,390 1050 M 315 1050 Q 215 1050, 200 1078", colorIndex: 0 },
+    label: 'Windscreen (Passenger view)', d: "M 390 1050 H 150 V 1080 Q 391 1070,390 1050 M 315 1050 Q 215 1050, 200 1078", damageLvl: 0 },
     { id:'1P13',
-    label:'middle Sheet 7', d: "M 150 130 V 160 H 165 V 260 H 250 V 130 Z", colorIndex: 0 },
+    label:'middle Sheet 7', d: "M 150 130 V 160 H 165 V 260 H 250 V 130 Z", damageLvl: 0 },
     { id:'1P14',
-     label:'middle Sheet 6', x:150, y:260, width:100, height:120, colorIndex: 0 },
+     label:'middle Sheet 6', x:150, y:260, width:100, height:120, damageLvl: 0 },
     { id:'1P15',
-    label: 'middle Sheet 5', x:150, y:380, width:100, height:120, colorIndex: 0 },
+    label: 'middle Sheet 5', x:150, y:380, width:100, height:120, damageLvl: 0 },
     { id:'1P16',
-    label: 'middle Sheet 4', x:150, y:500, width:100, height:120, colorIndex: 0 },
+    label: 'middle Sheet 4', x:150, y:500, width:100, height:120, damageLvl: 0 },
     { id:'1P17',
-    label: 'middle Sheet 3', x:150, y:620, width:100, height:120, colorIndex: 0 },
+    label: 'middle Sheet 3', x:150, y:620, width:100, height:120, damageLvl: 0 },
     { id:'1P18',
-    label:'middle Sheet 2', x:150, y:740, width:100, height:120, colorIndex: 0 },
+    label:'middle Sheet 2', x:150, y:740, width:100, height:120, damageLvl: 0 },
     { id:'1P19',
-    label: 'middle Sheet 1', x:150, y:860, width:100, height:70, colorIndex: 0 },
+    label: 'middle Sheet 1', x:150, y:860, width:100, height:70, damageLvl: 0 },
     { id:'1P20',
-    label: 'bottom Back (Passenger)', d: "M 150 105 Q 100 105,80 120 V 130 H 150 Z", colorIndex: 0 },
+    label: 'bottom Back (Passenger)', d: "M 150 105 Q 100 105,80 120 V 130 H 150 Z", damageLvl: 0 },
     { id:'1P21',
-     label:'lowerS heet 1', d: "M 80 130 H 150 V 160 H 165 V 260 H 80 Z", colorIndex: 0 },
+     label:'lowerS heet 1', d: "M 80 130 H 150 V 160 H 165 V 260 H 80 Z", damageLvl: 0 },
     { id:'1P22', 
-    label:'lower Sheet 2', x:80, y:260, width:70, height:60, colorIndex: 0 },
+    label:'lower Sheet 2', x:80, y:260, width:70, height:60, damageLvl: 0 },
     { id:'1P23',
-    label: 'back Wheel (Passenger side)', cx: 80, cy: 380, r: 50, colorIndex: 0 },
+    label: 'back Wheel (Passenger side)', cx: 80, cy: 380, r: 50, damageLvl: 0 },
     { id:'1P24',
-    label: 'lower Sheet 3',x:80, y:440, width:70,height:40, colorIndex: 0 },
+    label: 'lower Sheet 3',x:80, y:440, width:70,height:40, damageLvl: 0 },
     { id:'1P25',
-    label: 'lower Sheet 4',x:80, y:480, width:70, height:100, colorIndex: 0 },
+    label: 'lower Sheet 4',x:80, y:480, width:70, height:100, damageLvl: 0 },
     { id:'1P26',
-    label: 'lower Sheet 5', x:80, y:580, width:70, height:40, colorIndex: 0 },
+    label: 'lower Sheet 5', x:80, y:580, width:70, height:40, damageLvl: 0 },
     { id:'1P27',
-    label: 'lower Sheet 6', x:80, y:620, width:70, height:90, colorIndex: 0 },
+    label: 'lower Sheet 6', x:80, y:620, width:70, height:90, damageLvl: 0 },
     { id:'1P28',
-    label: 'lower Sheet 7', x:80, y:710, width:70, height:90, colorIndex: 0 },
+    label: 'lower Sheet 7', x:80, y:710, width:70, height:90, damageLvl: 0 },
     { id:'1P29',
-    label: 'front Wheel (passenger side)', cx: 80, cy: 860, r: 50, colorIndex: 0 },
+    label: 'front Wheel (passenger side)', cx: 80, cy: 860, r: 50, damageLvl: 0 },
     { id:'1P30',
-    label: 'lower Sheet 8', x: 80, y: 1050, width: 70, height: 30, colorIndex: 0 },
+    label: 'lower Sheet 8', x: 80, y: 1050, width: 70, height: 30, damageLvl: 0 },
   ]);
 
   useEffect(() => {
@@ -109,12 +119,17 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
   const handlePress = (id) => {
     setPassenger(Passengerparts.map(part => 
       part.id === id 
-        ? { ...part, colorIndex: (part.colorIndex + 1) % colors.length }
+        ? { ...part, damageLvl: (part.damageLvl + 1) % colors.length }
         : part
     ));
   };
 
-  
+  const handleDamageLog = () => {
+    // Update the driver side parts state
+    const updatedPassengerSide = { ...passenger_Side, parts: Passengerparts };
+    setPassengerSide(updatedPassengerSide);
+    return updatedPassengerSide; // Return the updated state for use
+  };
 
   return (
     <View style={AllStyles.container}>
@@ -170,7 +185,13 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
       </Animated.View>
 
       <TouchableOpacity
-          onPress={()=> navigation.navigate('DriverSide')}
+          onPress={()=> navigation.navigate('FrontView', {
+            inspection: {
+              ...inspection,
+              passengerSide: passenger_Side,
+            },
+            updateInspections,
+          })}
           style={{
             padding: 10, // Make sure there is enough space to touch
           }}
@@ -192,7 +213,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
               {part.d ? (
                 <Path
                   d={part.d}
-                  fill={colors[part.colorIndex]}
+                  fill={colors[part.damageLvl]}
                   stroke="black"
                   strokeWidth="1"
                 />
@@ -201,7 +222,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
                   cx={part.cx}
                   cy={part.cy}
                   r={part.r}
-                  fill={colors[part.colorIndex]}
+                  fill={colors[part.damageLvl]}
                   stroke="black"
                   strokeWidth="1"
                 />
@@ -213,7 +234,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
                   height={part.height}
                   rx={part.rx}
                   ry={part.ry}
-                  fill={colors[part.colorIndex]}
+                  fill={colors[part.damageLvl]}
                   stroke="black"
                   strokeWidth="4"
                 />
@@ -225,7 +246,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
                   height={part.height}
                   rx={part.rx}
                   ry={part.ry}
-                  fill={colors[part.colorIndex]}
+                  fill={colors[part.damageLvl]}
                   stroke="black"
                   strokeWidth="1"
                 />
@@ -278,7 +299,16 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
         <SimpleLineIcons name="camera" size={30} color="white" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={AllStyles.btnArrowR} onPress={()=> navigation.navigate('BackView')}>
+      <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
+                                                              const updatedPassengerSide = handleDamageLog(); // Get updated driver side
+                                                              navigation.navigate('BackView', {
+                                                                inspection: {
+                                                                  ...inspection,
+                                                                  passengeSide: updatedPassengerSide, // Pass the updated driver side
+                                                                },
+                                                                updateInspections,
+                                                              });
+                                                            }}>
       <AntDesign name="arrowright" size={30} color="white" />
       </TouchableOpacity>
     </View>
