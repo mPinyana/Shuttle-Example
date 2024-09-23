@@ -1,47 +1,65 @@
-import { View,TouchableOpacity,Text, ScrollView } from "react-native";
 import React, { useState, useEffect } from 'react';
+import { View, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
-import InteriorChecklist from './InteriorChecklist'
+import InteriorChecklist from './InteriorChecklist';
 
- export default function Interior_InspectionCh({navigation}){
+export default function Interior_InspectionCh({ navigation }) {
+  const route = useRoute();
+  const { inspection, updateInspections } = route.params;
 
-        const route = useRoute();
-        const { inspection, updateInspections } = route.params;
-      
-        const [interior, setInterior] = useState(inspection.busInterior);
-      
-        useEffect(() => {
-          // Update the inspection state in the parent component
-          updateInspections({
-            ...inspection,
-            busInterior: interior
-          });
-        }, [interior]);    
+  const [interior, setInterior] = useState(inspection.busInterior);
+  const [isValid, setIsValid] = useState(false);
 
-    return(
-        <View style={AllStyles.container}>
-           
-        <Text style={AllStyles.section}>Interior </Text>
-            <ScrollView>
-                <InteriorChecklist
-                    interior={interior}
-                    setInterior={setInterior}
-                />
-           </ScrollView>
-            <View style = {AllStyles.btnContainer}>
-            <TouchableOpacity style ={AllStyles.btn}
-                    onPress={()=> navigation.navigate("electric",{
-                        inspection: {
-                          ...inspection,
-                          busInterior: interior
-                        },
-                        updateInspections
-                      })}  >
-                <Text style ={AllStyles.textBtn} >Next</Text>
-            </TouchableOpacity>
-            </View>
-    
-</View>
-    );
+  useEffect(() => {
+    updateInspections({
+      ...inspection,
+      busInterior: interior
+    });
+  }, [interior]);
+
+  const validateChecklist = () => {
+    const allChecked = Object.values(interior).every(value => value === true);
+    setIsValid(allChecked);
+    return allChecked;
+  };
+
+  const handleNextPress = () => {
+    if (validateChecklist()) {
+      navigation.navigate("electric", {
+        inspection: {
+          ...inspection,
+          busInterior: interior
+        },
+        updateInspections
+      });
+    } else {
+      Alert.alert(
+        "Incomplete Checklist",
+        "Please ensure all inspection items are checked before proceeding.",
+        [{ text: "OK" }]
+      );
+    }
+  };
+
+  return (
+    <View style={AllStyles.container}>
+      <Text style={AllStyles.section}>Interior</Text>
+      <ScrollView>
+        <InteriorChecklist
+          interior={interior}
+          setInterior={setInterior}
+          setIsValid={setIsValid}
+        />
+      </ScrollView>
+      <View style={AllStyles.btnContainer}>
+        <TouchableOpacity 
+          style={AllStyles.btn}
+          onPress={handleNextPress}
+        >
+          <Text style={AllStyles.textBtn}>Next</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 }
