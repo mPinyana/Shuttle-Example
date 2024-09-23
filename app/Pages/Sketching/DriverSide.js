@@ -4,18 +4,32 @@ import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
+import { Firebase_DB } from '../../../FirebaseConfig';
+import { doc, updateDoc } from 'firebase/firestore';
+
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
+const DriverSide = ({ aspectRatio = 300 / 100 }) => {
 
     
-  const route = useRoute();
+  const navigation= useNavigation();
+  const route =useRoute();
+  const { inspection, updateInspections } = route.params;
+
+  const [driver_Side, setDriverSide] = useState(inspection.driverSide);
 
   const translation = useRef(new Animated.Value(-100)).current;
   const [headerShown, setHeaderShown] = useState(false);
 
+
+  useEffect(() => {
+    updateInspections({
+      ...inspection,
+      driverSide: driver_Side,
+    });
+  }, [driver_Side]);
 
   useEffect(() => {
     Animated.timing(translation, {
@@ -28,67 +42,67 @@ const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
   const colors = ['white', 'yellow', '#fa0707']; // Define the color sequence
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
   const [Driverparts, setDriver] = useState([
-    { id:'1D1',
+     { id:'1D1',
       label: 'Back driver perspective', 
-      d: "M 655 70 Q 660 50, 415 55 V 80 H 655 Z", colorIndex: 0 },
-    { id:'1D2',
-      label: 'roof', x: 630, y: 80, width: 25, height: 925, colorIndex: 0 },
-    { id:'1D3',
-      label: 'window 7', x: 525, y: 85, width: 100, height: 70, rx: 10, ry: 10, colorIndex: 0 },
-    { id:'1D4',
-      label: 'window 6', x: 525, y: 165, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
-    { id:'1D5',
-      label: 'window 5', x: 525, y: 285, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
-    { id:'1D6',
-      label:'window 4', x: 525, y: 405, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
-    { id:'1D7',
-      label: 'window 3', x: 525, y: 525, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
-    { id:'1D8',
-      label: 'window 2', x: 525, y: 645, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
+      d: "M 655 70 Q 660 50, 415 55 V 80 H 655 Z", damageLvl: 0 },
+     { id:'1D2',
+      label: 'roof', x: 630, y: 80, width: 25, height: 925, damageLvl: 0 },
+     { id:'1D3',
+      label: 'window 7', x: 525, y: 85, width: 100, height: 70, rx: 10, ry: 10, damageLvl: 0 },
+     { id:'1D4',
+      label: 'window 6', x: 525, y: 165, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
+     { id:'1D5',
+      label: 'window 5', x: 525, y: 285, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
+     { id:'1D6',
+      label:'window 4', x: 525, y: 405, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
+     { id:'1D7',
+      label: 'window 3', x: 525, y: 525, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
+   { id:'1D8',
+      label: 'window 2', x: 525, y: 645, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1D9',
-      label: 'window 2', x: 525, y: 765, width: 100, height: 110, rx: 10, ry: 10, colorIndex: 0 },
+      label: 'window 2', x: 525, y: 765, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
     { id:'1D10',
-      label:'driver Door', x: 425, y: 890, width: 170, height: 100, colorIndex: 0 },
+      label:'driver Door', x: 425, y: 890, width: 170, height: 100, damageLvl: 0 },
     { id:'1D11',
-      label:'windscreen driver view', d: "M 655 1000 H 415 V 1030 Q 656 1020, 655 1000 M 580 1000 Q 480 1000, 465 1028", colorIndex: 0 },
+      label:'windscreen driver view', d: "M 655 1000 H 415 V 1030 Q 656 1020, 655 1000 M 580 1000 Q 480 1000, 465 1028", damageLvl: 0 },
     { id:'1D12',
-      label:'middle Sheet 7', d: "M 415 80 V 110 H 430 V 210 H 515 V 80 Z", colorIndex: 0 },
+      label:'middle Sheet 7', d: "M 415 80 V 110 H 430 V 210 H 515 V 80 Z", damageLvl: 0 },
     { id:'1D13',
-      label: 'middle Sheet 6', x:415, y:210, width:100, height:120, colorIndex: 0 },
+      label: 'middle Sheet 6', x:415, y:210, width:100, height:120, damageLvl: 0 },
     { id:'1D14',
-      label: 'middle Sheet 5', x:415, y:330, width:100, height:120, colorIndex: 0 },
+      label: 'middle Sheet 5', x:415, y:330, width:100, height:120, damageLvl: 0 },
     { id:'1D15',
-      label: 'middle Sheet 4', x:415, y:450, width:100, height:120, colorIndex: 0 },
+      label: 'middle Sheet 4', x:415, y:450, width:100, height:120, damageLvl: 0 },
     { id:'1D16',
-      label: 'middle Sheet 3', x:415, y:570, width:100, height:120, colorIndex: 0 },
+      label: 'middle Sheet 3', x:415, y:570, width:100, height:120, damageLvl: 0 },
     { id:'1D17',
-      label: 'middle Sheet 2', x:415, y:690, width:100, height:120, colorIndex: 0 },
+      label: 'middle Sheet 2', x:415, y:690, width:100, height:120, damageLvl: 0 },
     { id:'1D18',
-      label: 'middle Sheet 1', x:415, y:810, width:100, height:70, colorIndex: 0 },
+      label: 'middle Sheet 1', x:415, y:810, width:100, height:70, damageLvl: 0 },
     { id:'1D19',
-      label:'bottom Back', d: "M 415 55 Q 365 55, 345 70 V 80 H 415 Z", colorIndex: 0 },
+      label:'bottom Back', d: "M 415 55 Q 365 55, 345 70 V 80 H 415 Z", damageLvl: 0 },
     { id:'1D20',
-      label: 'lower Sheet 9', d: "M 345 80 H 415  V 110 H 430 V 210 H 345 Z", colorIndex: 0 },
+      label: 'lower Sheet 9', d: "M 345 80 H 415  V 110 H 430 V 210 H 345 Z", damageLvl: 0 },
     { id:'1D21',
-      label:'lower Sheet 8', x:345, y:210, width:70, height:60, colorIndex: 0 },
+      label:'lower Sheet 8', x:345, y:210, width:70, height:60, damageLvl: 0 },
     { id:'1D22',
-      label: 'back Wheel (diver side)', cx: 345, cy: 330, r: 50, colorIndex: 0 },
+      label: 'back Wheel (diver side)', cx: 345, cy: 330, r: 50, damageLvl: 0 },
     { id:'1D23',
-       label:'lower Sheet 7',x:345, y:390, width:70,height:40, colorIndex: 0 },
+       label:'lower Sheet 7',x:345, y:390, width:70,height:40, damageLvl: 0 },
     { id:'1D24',
-       label:'lower Sheet 6',x:345, y:430, width:70, height:100, colorIndex: 0 },
+       label:'lower Sheet 6',x:345, y:430, width:70, height:100, damageLvl: 0 },
     { id:'1D25',
-      label:'lower Sheet 5', x:345, y:530, width:70, height:40, colorIndex: 0 },
+      label:'lower Sheet 5', x:345, y:530, width:70, height:40, damageLvl: 0 },
     { id:'1D26',
-      label: 'lowerSheet 4', x:345, y:570, width:70, height:90, colorIndex: 0 },
+      label: 'lowerSheet 4', x:345, y:570, width:70, height:90, damageLvl: 0 },
     { id:'1D27',
-      label: 'lower Sheet 3', x:345, y:660, width:70, height:90, colorIndex: 0 },
+      label: 'lower Sheet 3', x:345, y:660, width:70, height:90, damageLvl: 0 },
     { id:'1D28',
-      label: 'front Wheel (driver side)', cx: 345, cy: 810, r: 50, colorIndex: 0 },
+      label: 'front Wheel (driver side)', cx: 345, cy: 810, r: 50, damageLvl: 0 },
     { id:'1D29',
-      label: 'lower Sheet 2', x: 345, y: 870, width: 70, height: 130, colorIndex: 0 },
+      label: 'lower Sheet 2', x: 345, y: 870, width: 70, height: 130, damageLvl: 0 },
     { id:'1D30',
-      label:'lower Sheet 1', x: 345, y: 1000, width: 70, height: 30, colorIndex: 0 },
+      label:'lower Sheet 1', x: 345, y: 1000, width: 70, height: 30, damageLvl: 0 },
   ]);
 
 
@@ -102,12 +116,17 @@ const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
   const handlePress = (id) => {
     setDriver(Driverparts.map(part => 
       part.id === id 
-        ? { ...part, colorIndex: (part.colorIndex + 1) % colors.length }
+        ? { ...part, damageLvl: (part.damageLvl + 1) % colors.length }
         : part
     ));
   };
 
-  
+  const handleDamageLog = () => {
+    // Update the driver side parts state
+    const updatedDriverSide = { ...driver_Side, parts: Driverparts };
+    setDriverSide(updatedDriverSide);
+    return updatedDriverSide; // Return the updated state for use
+  };
 
   return (
     <View style={AllStyles.container}>
@@ -160,12 +179,19 @@ const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
          //S flexWrap: 'wrap'
         }} 
         >
-          Driver's Side
+          Driver's Side 
         </Text>
       </Animated.View>
       
+    {/*   previous page navigation */}
       <TouchableOpacity
-          onPress={()=>navigation.navigate('FrontView')}
+          onPress={()=>navigation.navigate('engineAir', {
+            inspection: {
+              ...inspection,
+              driverSide: driver_Side,
+            },
+            updateInspections,
+          })}
           style={{
             padding: 10, // Make sure there is enough space to touch
           }}
@@ -183,11 +209,11 @@ const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
         <Svg height="100%" width="100%" viewBox="200 100 600 600">
 
           {Driverparts.map((part) => (
-            <TouchableWithoutFeedback key={part.id} onPress={() => handlePress(part.id)}>
+            <TouchableWithoutFeedback key={part.id} onPress={() =>handlePress(part.id)}>
               {part.d ? (
                 <Path
                   d={part.d}
-                  fill={colors[part.colorIndex]}
+                  fill={colors[part.damageLvl]}
                   stroke="black"
                   strokeWidth="1"
                 />
@@ -196,7 +222,7 @@ const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
                   cx={part.cx}
                   cy={part.cy}
                   r={part.r}
-                  fill={colors[part.colorIndex]}
+                  fill={colors[part.damageLvl]}
                   stroke="black"
                   strokeWidth="1"
                 />
@@ -208,7 +234,7 @@ const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
                   height={part.height}
                   rx={part.rx}
                   ry={part.ry}
-                  fill={colors[part.colorIndex]}
+                  fill={colors[part.damageLvl]}
                   stroke="black"
                   strokeWidth="4"
                 />
@@ -220,7 +246,7 @@ const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
                   height={part.height}
                   rx={part.rx}
                   ry={part.ry}
-                  fill={colors[part.colorIndex]}
+                  fill={colors[part.damageLvl]}
                   stroke="black"
                   strokeWidth="1"
                 />
@@ -266,9 +292,20 @@ const DriverSide = ({ navigation, aspectRatio = 300 / 100 }) => {
         <SimpleLineIcons name="camera" size={30} color="white" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={AllStyles.btnArrowR} onPress={()=> navigation.navigate('FrontView')}>
+      <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
+                                                              const updatedDriverSide = handleDamageLog(); // Get updated driver side
+                                                              navigation.navigate('FrontView', {
+                                                                inspection: {
+                                                                  ...inspection,
+                                                                  driverSide: updatedDriverSide, // Pass the updated driver side
+                                                                },
+                                                                updateInspections,
+                                                              });
+                                                            }}>
       <AntDesign name="arrowright" size={30} color="white" />
       </TouchableOpacity>
+
+
     </View>
   );
 };

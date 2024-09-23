@@ -12,7 +12,7 @@ import { collection,getDocs,query,where, addDoc } from 'firebase/firestore';
 import { Firebase_DB,Firebase_Auth } from '../../FirebaseConfig';
 
 //Styling,and ICONS
-import { AllStyles, primaryColor, secondaryColor, height } from '../shared/AllStyles';
+import { AllStyles, primaryColor, secondaryColor} from '../shared/AllStyles';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 
@@ -33,24 +33,29 @@ export default function Inspection({ navigation ,route}){
   const {inspections, setInspection} = useContext(InspectContext);
   const {vehicles, setVehicles} = useContext(VehicleContext);
 
-  const [formatedVecs, setFormated] = useState(vehicles.map(car => ({
-    label: car.fleetNo+ ' '+ car.model,   // Label and value can be the same for strings
-    value: car.fleetNo
-   
-  })));
 
   useEffect(() => {
     const checkDataReady = async () => {
         setLoader(true);
         // Check if necessary data is ready to render inspection
-        if (profiles.length > 0 && currentUser/*  && inspections.length > 0 */) {
+        if (profiles.length > 0 && currentUser ) {
             setIsInspectionReady(true);
             setLoader(false);
         }
     };
   
     checkDataReady();
-  }, [profiles, currentUser , inspections ]);
+  }, [profiles, currentUser,inspections]);
+
+  useEffect(() => {
+    if (vehicles.length > 0) {
+      const formattedVehicles = vehicles.map(car => ({
+        label: car.fleetNo + ' ' + car.model,
+        value: car.fleetNo,
+      }));
+      setVecItems(formattedVehicles); // Update once vehicles are loaded
+    }
+  }, [vehicles]);
 
 
   const [addLoader, setAddLoader] = useState(false);
@@ -62,7 +67,11 @@ const [isInspectionReady, setIsInspectionReady] = useState(false);
 // Driver data structure
 const [vec, setVec] =useState(0);
 const [openCars, setCarsOpen] = useState(false);
-const [vecItems,setVecItems] =useState(formatedVecs);
+const [vecItems,setVecItems] =useState(vehicles.map(car => ({
+  label: car.fleetNo+ ' '+ car.model,   // Label and value can be the same for strings
+  value: car.fleetNo
+ 
+})));
 
 
 // Checlist 
@@ -133,6 +142,8 @@ const [electric, setElectric] = useState({
 
 
 
+
+
 // INSPECTIONS Event Handling
   const handleAddInspect =async ()=>{
 
@@ -153,6 +164,23 @@ const [electric, setElectric] = useState({
             body:bodyWorks,
             engine_Air:engineAir,
             driverId: profiles.find(profile => profile.email === drvEmail).id,
+
+            driverSide:{
+              parts:{},
+              damagePics:{}
+            },
+            frontSide:{
+              parts:{},
+              damagePics:{}
+            },
+            passengerSide:{
+              parts:{},
+              damagePics:{}
+            },
+            backSide:{
+              parts:{},
+              damagePics:{}
+            },
         };
 
         try {
