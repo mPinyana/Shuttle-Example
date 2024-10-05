@@ -134,7 +134,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
   return (
     <View style={AllStyles.container}>
-      <Text style={AllStyles.section}>Bus Sketch 4</Text>
+    
 
 
       <View style={{ width: svgWidth, height: svgHeight,justifyContent: 'center', alignItems: 'center', marginTop: '10%' }}>

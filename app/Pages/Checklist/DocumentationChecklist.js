@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView,View, Text } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { AllStyles } from '../../shared/AllStyles';
 
@@ -33,7 +33,9 @@ const DocumentationChecklist = ({ documents, setDocuments, setIsValid }) => {
   }, [documents, setIsValid]);
 
   return (
-    <View style={AllStyles.checklist}>
+    <View style={AllStyles.container}>
+      <ScrollView>
+        <View style={AllStyles.checklist}>
       <View style={[AllStyles.checkItem, { marginBottom: 10 }]}>
         <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Select All</Text>
         <BouncyCheckbox
@@ -58,6 +60,8 @@ const DocumentationChecklist = ({ documents, setDocuments, setIsValid }) => {
           />
         </View>
       ))}
+      </View>
+      </ScrollView>
     </View>
   );
 };
