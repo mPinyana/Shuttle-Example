@@ -154,11 +154,21 @@ const handleDeleteInspection = async (inspectionId) => {
   }
 };
 
+// const toggleDeleteIcon = (index) => {
+//   setShowDeleteIcon(prev => ({
+//     ...prev,
+//     [index]: !prev[index]
+//   }));
+// };
+
 const toggleDeleteIcon = (index) => {
-  setShowDeleteIcon(prev => ({
-    ...prev,
-    [index]: !prev[index]
-  }));
+  // Only allow toggling if the user is not a driver
+  if (currentUser.role !== 'Driver') {
+    setShowDeleteIcon(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  }
 };
 
 
@@ -264,11 +274,6 @@ const toggleDeleteIcon = (index) => {
       })
     : 'Select Time';
 
-
- 
-    
-
-
          if (loader || !isInspectionReady) {
           return (
               <View style={{flex:1,alignItems:'center', justifyContent:'center', marginTop:'30%', justifyContent:'space-between'}}>
@@ -329,13 +334,13 @@ const toggleDeleteIcon = (index) => {
               </Text>
             </View>
 
-            <TouchableWithoutFeedback
-              onPress={(e) => {
-                e.stopPropagation();
-                toggleDeleteIcon(index);
-              }}
-            >
-              
+            {currentUser.role !== 'Driver' && (
+              <TouchableWithoutFeedback
+                onPress={(e) => {
+                  e.stopPropagation();
+                  toggleDeleteIcon(index);
+                }}
+              >
                 {showDeleteIcon[index] ? (
                   <TouchableOpacity
                     onPress={(e) => {
@@ -350,11 +355,13 @@ const toggleDeleteIcon = (index) => {
                 )}
               
             </TouchableWithoutFeedback>
+            )}
           </TouchableOpacity>
         ))}
       </ScrollView>
-                
-      {currentUser.role !== 'Driver' && (
+
+               
+      {currentUser.role !== 'Driver' && (//hide add inspection button for drivers
                 <TouchableOpacity style ={AllStyles.btnAdd}>
                   <Ionicons name="add-circle" size={60} color={primaryColor} onPress={()=> setIsModalVisible(true)} />
                 </TouchableOpacity>
@@ -371,6 +378,7 @@ const toggleDeleteIcon = (index) => {
                       {addLoader? (
                           <View style ={{
                             marginTop:'10%',
+                            
                             height:'60%',
                             padding: 100,
                             backgroundColor: 'white',
