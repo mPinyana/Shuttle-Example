@@ -12,7 +12,8 @@ const Vehicle=()=>{
         regNo: '',
         model: '',
         type: '',
-        mileage:''
+        mileage:'',
+        inspections:[]
     });
 
     const handleInputChange = (text, field) => {

@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions } from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
-import { AllStyles, primaryColor } from '../../shared/AllStyles';
+import { AllStyles, primaryColor } from '../../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
+const PassengerSmall = ({ navigation, aspectRatio = 300 / 100 }) => {
 
     
   const route =useRoute();
@@ -41,66 +41,93 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
 
 
   const [Passengerparts, setPassenger] = useState([
-    { id:'1P1',
-    label: 'Back of bus (Passenger view)', d: "M 390 120 Q 395 100,150 105 V 130 H 390 Z", damageLvl: 0 },
-    { id:'1P2',
-    label: 'roof (passenger View)', x: 365, y: 130, width: 25, height: 920, damageLvl: 0 },
-    { id: '1P3',
-    label:'window 7', x: 260, y: 135, width: 100, height: 70, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P4',
-    label: 'window 6', x: 260, y: 215, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P5',
-    label: 'window 5', x: 260, y: 335, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P6',
-    label: 'window 4', x: 260, y: 455, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P7',
-    label: 'window 3', x: 260, y: 575, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P8',
-    label: 'window 2', x: 260, y: 695, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P9',
-    label: 'window 1', x: 260, y: 815, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P10',
-    label: 'Passenger door left', x: 90, y: 938, width: 260, height: 45, damageLvl: 0 },
-    { id:'1P11',
-        label: 'Passenger door right', x:90, y:997, width:260, height: 45, damageLvl: 0 },
-    { id:'1P12',
-    label: 'Windscreen (Passenger view)', d: "M 390 1050 H 150 V 1080 Q 391 1070,390 1050 M 315 1050 Q 215 1050, 200 1078", damageLvl: 0 },
-    { id:'1P13',
-    label:'middle Sheet 7', d: "M 150 130 V 160 H 165 V 260 H 250 V 130 Z", damageLvl: 0 },
-    { id:'1P14',
-     label:'middle Sheet 6', x:150, y:260, width:100, height:120, damageLvl: 0 },
-    { id:'1P15',
-    label: 'middle Sheet 5', x:150, y:380, width:100, height:120, damageLvl: 0 },
-    { id:'1P16',
-    label: 'middle Sheet 4', x:150, y:500, width:100, height:120, damageLvl: 0 },
-    { id:'1P17',
-    label: 'middle Sheet 3', x:150, y:620, width:100, height:120, damageLvl: 0 },
-    { id:'1P18',
-    label:'middle Sheet 2', x:150, y:740, width:100, height:120, damageLvl: 0 },
-    { id:'1P19',
-    label: 'middle Sheet 1', x:150, y:860, width:100, height:70, damageLvl: 0 },
-    { id:'1P20',
-    label: 'bottom Back (Passenger)', d: "M 150 105 Q 100 105,80 120 V 130 H 150 Z", damageLvl: 0 },
-    { id:'1P21',
-     label:'lowerS heet 1', d: "M 80 130 H 150 V 160 H 165 V 260 H 80 Z", damageLvl: 0 },
-    { id:'1P22', 
-    label:'lower Sheet 2', x:80, y:260, width:70, height:60, damageLvl: 0 },
-    { id:'1P23',
-    label: 'back Wheel (Passenger side)', cx: 80, cy: 380, r: 50, damageLvl: 0 },
-    { id:'1P24',
-    label: 'lower Sheet 3',x:80, y:440, width:70,height:40, damageLvl: 0 },
-    { id:'1P25',
-    label: 'lower Sheet 4',x:80, y:480, width:70, height:100, damageLvl: 0 },
-    { id:'1P26',
-    label: 'lower Sheet 5', x:80, y:580, width:70, height:40, damageLvl: 0 },
-    { id:'1P27',
-    label: 'lower Sheet 6', x:80, y:620, width:70, height:90, damageLvl: 0 },
-    { id:'1P28',
-    label: 'lower Sheet 7', x:80, y:710, width:70, height:90, damageLvl: 0 },
-    { id:'1P29',
-    label: 'front Wheel (passenger side)', cx: 80, cy: 860, r: 50, damageLvl: 0 },
-    { id:'1P30',
-    label: 'lower Sheet 8', x: 80, y: 1050, width: 70, height: 30, damageLvl: 0 },
+    { id:'2P1',
+    label: 'Bottom Back (Side View)', 
+    d: "M270 1300 Q195 1305,195 1305 Q 190 1295,190 1245 H 270 V 1300", damageLvl: 0 },
+    { id:'2P2',
+    label: 'Upper Back (Side View)', 
+    d: "M270 1300 Q 540 1290,540 1280 Q 555 1275,550 1245 H 270 Z M520 1245 Q405 1290,390 1245 M300 1299 Q 325 1285,325 1270 H 333 V 1297", damageLvl: 0 },
+    { id:'2P3',
+    label: 'roof (passenger View)', x: 520, y: 245, width: 30, height: 1000, damageLvl: 0 },
+    { id: '2P4',
+    label:'window 6', x: 395, y: 1090, width: 115, height: 150, rx: 5, ry: 5, damageLvl: 0 },
+    { id:'2P5',
+    label: 'window 5', x: 395, y: 930, width: 115, height: 150, rx: 5, ry: 5, damageLvl: 0 },
+    { id:'2P6',
+    label: 'window 4', x: 395, y: 775, width: 115, height: 145, rx: 5, ry: 5, damageLvl: 0 },
+    { id:'2P7',
+    label: 'window 3', x: 395, y: 625, width: 115, height: 135, rx: 5, ry: 5, damageLvl: 0 },
+    { id:'2P8',
+    label: 'window 2', x: 395, y: 480, width: 115, height: 135, rx: 5, ry: 5, damageLvl: 0 },
+    
+    { id:'2P9',
+    label: 'Front window',
+     d:'M395 322 H 515 Q 515 250,510 242 Q 490 195,385 170 Q 368 220,383 255 Q400 290,395 322 ', damageLvl: 0 },
+    { id:'2P10',
+    label: 'WindScreen (Side View)', 
+    d: "M520 245 Q 480 180,385 165 L 405,135 Q 530 170,550 245 Z M 540 218 L 530,225 L 410, 155 L 420, 140", damageLvl: 0 },
+    { id:'2P11',
+    label:'Bumper (Side View)', 
+    d: "M385 165 L 405, 135 Q 310 100,200 130 L 170,165 Z M 385 165 Q 300 120,190 140 M 315 140 L 345 120 Q 325 116,315 117 L 305, 122 Q 315 130,315 140", damageLvl: 0 },
+    { id:'2P12',
+     label:'Lower metal Sheet 1', 
+     d:'M 170,165 V 190 Q 250 170,270 260 V 165 Z', damageLvl: 0 },
+    { id:'2P13',
+    label: 'Lower metal Sheet 2', 
+    d:'M 270 260 Q 260 325,170 325 V 340 H 270 V 260', damageLvl: 0 },
+    { id:'2P14',
+    label: 'Door 1', 
+    x: 185, y: 355, width: 320, height: 45, damageLvl: 0 },
+    { id:'2P15',
+    label: 'Door 2', 
+    x: 185, y: 415, width: 320, height: 45, damageLvl: 0 },
+    { id:'2P16',
+    label: 'lower metal Sheet 4', 
+    x:170, y:480, width:100, height:80, damageLvl: 0 },
+    { id:'2P17',
+    label: 'lower metal Sheet 5', 
+    x:170, y:560, width:100, height:120, damageLvl: 0 },
+    { id:'2P18',
+    label:'lower metal Sheet 6',
+     x:170, y:660, width:100, height:110, damageLvl: 0 },
+     { id:'2P19',
+    label:'lower metal Sheet 7',
+    d:'M 170 770 V820 Q 260 800,270 900 V 770', damageLvl: 0 },
+    { id:'2P20',
+    label:'lower metal Sheet 8',
+    d:'M 270 900 Q 270 990,170 980 L 175,1030 H 270 Z', damageLvl: 0 },
+    { id:'2P21',
+    label:'lower metal Sheet 9',
+    d:'M175,1030 L 180,1110 H 270  V 1030 H175', damageLvl: 0 },
+    { id:'2P22',
+    label:'lower metal Sheet 10',
+    d:'M180,1109 L190,1245 H 270 V 1109 Z', damageLvl: 0 },
+    { id:'2P23',
+    label: 'middle Sheet 8', 
+    x:270, y:1115, width:120, height:130, damageLvl: 0 },
+    { id:'2P24',
+        label: 'middle Sheet 7', 
+        x:270, y:985, width:120, height:130, damageLvl: 0 },
+    { id:'2P25',
+    label: 'middle Sheet 6', 
+     x:270, y:855, width:120, height:130, damageLvl: 0 },
+     { id:'2P26',
+    label: 'middle Sheet 5', 
+    x:270, y:725, width:120, height:130, damageLvl: 0 },
+    { id:'2P27',
+    label: 'middle Sheet 4', 
+    x:270, y:595, width:120, height:130, damageLvl: 0 },
+    { id:'2P28',
+    label: 'middle Sheet 3', 
+    x:270, y:480, width:120, height:130, damageLvl: 0 },
+    { id:'2P29',
+    label: 'middle Sheet 1', 
+    x:270, y:165, width:100, height:160, damageLvl: 0 },
+    { id:'2P30',
+    label: 'back Wheel ', cx: 180, cy: 900, r: 70, damageLvl: 0 },
+    { id:'2P31',
+    label: 'front Wheel', cx: 180, cy: 255, r: 60, damageLvl: 0 },
+    
   ]);
 
   useEffect(() => {
@@ -185,7 +212,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
       </Animated.View>
 
       <TouchableOpacity
-          onPress={()=> navigation.navigate('FrontView', {
+          onPress={()=> navigation.navigate('FrontSmall', {
             inspection: {
               ...inspection,
               passengerSide: passenger_Side,
@@ -206,7 +233,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
         </TouchableOpacity>
 
       <View style={{ width: screenWidth, height: screenHeight, justifyContent: 'center', alignItems: 'center'}}>
-        <Svg height="100%" width="100%" viewBox="-50 120 600 600">
+        <Svg height="100%" width="100%" viewBox="30 150 720 800">
 
           {Passengerparts.map((part) => (
             <TouchableWithoutFeedback key={part.id} onPress={() => handlePress(part.id)}>
@@ -226,7 +253,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
                   stroke="black"
                   strokeWidth="1"
                 />
-              ) : part.label == 'Passenger door left' || part.label == 'Passenger door right'  ?(
+              ) : part.label == 'Door 1' || part.label == 'Door 2'  ?(
                 <Rect
                   x={part.x}
                   y={part.y}
@@ -255,40 +282,17 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
           ))}
 
           {/* Non-interactive elements */}
-          <Path d="M 365 1050 Q 365 1085, 360 1080 Q 350 1090 , 325 1080 H 360" fill="none" stroke="black" strokeWidth="1" />
-         
-          <Rect x="220" y="870" width="20" height="50" fill={"none"} stroke={"black"} strokeWidth={2}/>
-
-          <Polyline points="160,450 200,400 245,450" fill="none" stroke="#8c8f91" strokeWidth="4" />
-          <SvgText font-family="Arial" fill="#8c8f91" transform="rotate(90 260,510)">
-                <TSpan x="240" y="575" fontSize="25">UCT Shuttle</TSpan>
-                <TSpan x="260" y="600" fontSize="18">Services</TSpan>
-        </SvgText>
-            <Polyline points="160,650 200,700 245,650"
-                        fill="none" stroke="#8c8f91" strokeWidth="4" />
           
-          <Line x1="160" y1="170" x2="90" y2="170" stroke="black" stroke-width="2" />
-            <Line x1="160" y1="180" x2="90" y2="180" stroke="black" stroke-width="2" />
-            <Line x1="160" y1="190" x2="90" y2="190" stroke="black" stroke-width="2" />
-            <Line x1="160" y1="200" x2="90" y2="200" stroke="black" stroke-width="2" />
-            <Line x1="160" y1="210" x2="90" y2="210" stroke="black" stroke-width="2" />
-            <Line x1="160" y1="220" x2="90" y2="220" stroke="black" stroke-width="2" />
-            <Line x1="160" y1="230" x2="90" y2="230" stroke="black" stroke-width="2" />
-            <Line x1="160" y1="240" x2="90" y2="240" stroke="black" stroke-width="2" />
-            <Line x1="160" y1="250" x2="90" y2="250" stroke="black" stroke-width="2" />
-        <Path d="M 80 320 A 35,30 0 0,1 80,440" fill={"none"} stroke={"black"} />
-        <Path d="M 80 800 A 35,30 0 0,1 80,920" fill={"none"} stroke='black'/>
-        <Circle cx="80" cy="380" r="5" style="fill:black;stroke:black;stroke-width:1;" />
-        <Circle cx="80" cy="860" r="5" style="fill:black;stroke:black;stroke-width:1;" />
+          
+         
+        <Path d="M 170 340
+           V480" fill={"none"} stroke={"black"} />
+        
+        <Circle cx="180" cy="900" r="5" fill={'black'} />
+        <Circle cx="180" cy="255" r="5" fill={'black'} />
 
         
-        <Rect x="135" y="625" width="10" height="20" fill={"none"} stroke={"black"} strokeWidth={1.5}/>
-        <Rect x="90" y="660" width="15" height="5" fill={"none"} stroke={"black"} strokeWidth={1.5} />
-        <Rect x="90" y="750" width="15" height="5" fill={"none"} stroke={"black"} strokeWidth={1.5}/>
-
-        <Line x1="80" y1="1050" x2="80" y2="920" stroke="black" stroke-width="1" />
-
-        <Path d="M 80 930 H 150" fill="none" stroke="black" strokeWidth="1" /> 
+ 
         </Svg>
 
    
@@ -301,7 +305,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
 
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
                                                               const updatedPassengerSide = handleDamageLog(); // Get updated driver side
-                                                              navigation.navigate('BackView', {
+                                                              navigation.navigate('BackSmall', {
                                                                 inspection: {
                                                                   ...inspection,
                                                                   passengeSide: updatedPassengerSide, // Pass the updated driver side
@@ -315,4 +319,4 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
   );
 };
 
-export default PassengerView;
+export default PassengerSmall;

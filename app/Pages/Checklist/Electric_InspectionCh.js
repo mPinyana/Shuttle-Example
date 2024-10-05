@@ -41,11 +41,11 @@ export default function Electric_InspectionCh({ navigation }) {
       );
     }
   };
-
+ 
   return (
     <View style={AllStyles.container}>
       <Text style={AllStyles.section}>Electric</Text>
-      <ScrollView style={{flexGrow: 1}}>
+      <ScrollView contentContainerStyle={{flexGrow:1}}>
         <ElectricChecklist
           electric={electric}
           setElectric={setElectric}

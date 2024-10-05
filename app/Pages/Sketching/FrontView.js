@@ -156,18 +156,27 @@ return (
     
     </View>
     <TouchableOpacity style={AllStyles.btnCamera}>
-        <SimpleLineIcons name="camera" size={30} color="white" />
+        <SimpleLineIcons name="camera" size={37} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
                                                               const updatedFrontSide = handleDamageLog(); // Get updated driver side
-                                                              navigation.navigate('PassengerSide', {
-                                                                inspection: {
-                                                                  ...inspection,
-                                                                  frontSide: updatedFrontSide, // Pass the updated driver side
-                                                                },
-                                                                updateInspections,
-                                                              });
+                                                              if (inspection.fleetNo === '101' || inspection.fleetNo === '102') {
+                                                                navigation.navigate('PassengerWchair', {
+                                                                  inspection: {
+                                                                    ...inspection,
+                                                                    frontSide: updatedFrontSide, // Pass the updated front side
+                                                                  },
+                                                                  updateInspections,
+                                                                });
+                                                              } else {
+                                                                navigation.navigate('PassengerSide', {
+                                                                  inspection: {
+                                                                    ...inspection,
+                                                                    frontSide: updatedFrontSide, // Pass the updated front side
+                                                                  },
+                                                                  updateInspections,
+                                                                });}
                                                             }}>
       <AntDesign name="arrowright" size={30} color="white" />
       </TouchableOpacity>

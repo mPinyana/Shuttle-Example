@@ -45,7 +45,7 @@ export default function Wheels_InspectionCh({ navigation }) {
   return (
     <View style={AllStyles.container}>
       <Text style={AllStyles.section}>Wheels</Text>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{flexGrow:1}}>
         <WheelsChecklist
           wheels={wheels}
           setWheels={setWheels}
