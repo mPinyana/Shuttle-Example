@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView,View, Text } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import { AllStyles } from "../../shared/AllStyles";
-import { ScrollView } from 'react-native-gesture-handler';
+//import { ScrollView } from 'react-native-gesture-handler';
 
 const labelMap = {
   interiorLights: "Check all interior lights",
@@ -40,7 +40,7 @@ const ElectricChecklist = ({ electric, setElectric, setIsValid }) => {
 
   return (
     <View style={AllStyles.container}>
-      <ScrollView>
+      <ScrollView >
           <View style={AllStyles.checklist}>
           <View style={[AllStyles.checkItem, { marginBottom: 10 }]}>
                 <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Select All</Text>
