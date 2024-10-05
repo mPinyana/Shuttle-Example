@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {ScrollView, View, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
+import { View, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute } from '@react-navigation/native';
 import WheelsChecklist from './WheelsChecklist';
