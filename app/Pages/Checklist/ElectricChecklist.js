@@ -41,33 +41,31 @@ const ElectricChecklist = ({ electric, setElectric, setIsValid }) => {
   return (
     <View style={AllStyles.container}>
       <ScrollView>
-
-      <View style={AllStyles.checklist}>
-
-      <View style={[AllStyles.checkItem, { marginBottom: 10 }]}>
-            <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Select All</Text>
-            <BouncyCheckbox
-              size={30}
-              fillColor='green'
-              unfillColor="#FFFFFF"
-              isChecked={isAllChecked}
-              onPress={(isChecked) => handleSelectAll(isChecked)}
-              style={AllStyles.checkbox}
-            />
+          <View style={AllStyles.checklist}>
+          <View style={[AllStyles.checkItem, { marginBottom: 10 }]}>
+                <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Select All</Text>
+                <BouncyCheckbox
+                  size={30}
+                  fillColor='green'
+                  unfillColor="#FFFFFF"
+                  isChecked={isAllChecked}
+                  onPress={(isChecked) => handleSelectAll(isChecked)}
+                  style={AllStyles.checkbox}
+                />
+              </View>
+            {Object.entries(electric).map(([key, value]) => (
+              <View key={key} style={AllStyles.checkItem}>
+                <Text style={AllStyles.label}>{labelMap[key]}</Text>
+                <BouncyCheckbox
+                  size={30}
+                  fillColor="green"
+                  isChecked={value}
+                  onPress={() => handleCheckboxChange(key)}
+                  style={AllStyles.checkbox}
+                />
+              </View>
+            ))}
           </View>
-        {Object.entries(electric).map(([key, value]) => (
-          <View key={key} style={AllStyles.checkItem}>
-            <Text style={AllStyles.label}>{labelMap[key]}</Text>
-            <BouncyCheckbox
-              size={30}
-              fillColor="green"
-              isChecked={value}
-              onPress={() => handleCheckboxChange(key)}
-              style={AllStyles.checkbox}
-            />
-          </View>
-        ))}
-      </View>
       </ScrollView>
     </View>
     

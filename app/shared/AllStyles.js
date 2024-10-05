@@ -54,8 +54,8 @@ btnBackArrow:{
 },
 btnCamera:{
     position: 'absolute',
-        width: 50,
-        height: 50,
+        width: '16%',
+        height: '9%',
         alignItems: 'center',
         justifyContent:'center',
         right: '5%',
@@ -162,12 +162,12 @@ btnClose: {
     
     inspectItem:{
         width:'100%',
-        height:'9%',
-        top:'6%',
+        height:70,
+        top:10,
         backgroundColor: 'white',
-        alignItems:'center',
-        marginBottom:'3%',
+      
         borderTopWidth:0.5,
+        borderBottomWidth:0.5,
         flexDirection:'row',
         justifyContent:'space-between'
     },

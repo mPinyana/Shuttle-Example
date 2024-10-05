@@ -1,9 +1,10 @@
+//Atchitecture 
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect, useState,  useRef, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Firebase_Auth,Firebase_DB } from '../../FirebaseConfig';
 import { doc,getDoc, collection,getDocs,query,where, addDoc } from 'firebase/firestore';
 
-
+//Checlisting
 import inspection from "../Pages/Inspections";
 import docPage from "../Pages/Checklist/Documentation_inspectionCh"; // 1/7
 import driverCompartmentPage from '../Pages/Checklist/DriverCompartment_inspectCh'; // 2/7
@@ -18,15 +19,16 @@ import BackView from "../Pages/Sketching/BackView";
 import DriverSide from "../Pages/Sketching/DriverSide";
 import PassengerSide from "../Pages/Sketching/PassengerView";
 import CustomHeader from '../shared/CustomHeader';
+import PassengerWchair from "../Pages/Sketching/PassengerWchair";
+    //Small bus (volaire)
+import BackSmall from "../Pages/Sketching/SmallBus/BackSmall";
+import DriverSmall from "../Pages/Sketching/SmallBus/DriverSmall";
+import FrontSmall from "../Pages/Sketching/SmallBus/FrontSmall";
+import PassengerSmall from "../Pages/Sketching/SmallBus/PassengerSmall";
 
-//Data sharing
-import { LoaderContext } from "../shared/LoaderContext";
-import { InspectContext } from "../shared/InspectionContext";
-import { VehicleContext } from "../shared/VehicleContext";
 
-export const ProfilesContext = React.createContext();
-export const UserContext = React.createContext();
-export const LoadingContext = React.createContext();
+
+
 
 
 
@@ -36,113 +38,11 @@ const Stack = createStackNavigator();
 
 function InspectionStack(){
 
-    const [profiles, setProfiles] = useState([]);
-    const [currentUser, setCurrentUser] = useState(null);
-    const [isProfileLoaded,setIsprofileLoaded] = useState(false);
-    const {inspections, setInspection } = useContext(InspectContext)
-    const { loader, setLoader } = useContext(LoaderContext);
-    const {vehicles, setVehicles} = useContext(VehicleContext)
 
-    useEffect(() => {
-        const fetchAllProfiles_n_Vehicles = async () => {
-          try {
-            // Fetch all user profiles
-            const profilesCollectionRef = collection(Firebase_DB, 'Profiles');
-            const profilesSnapshot = await getDocs(profilesCollectionRef);
-
-            // Fetch all vehicles
-            const VehiclesCollectionRef = collection(Firebase_DB, 'vehicles');
-            const VehiclesSnapshot = await getDocs(VehiclesCollectionRef);
-    
-            // Convert the snapshot into an array of profiles
-            const profilesArray = profilesSnapshot.docs.map(doc => ({
-              id: doc.id,
-              ...doc.data(),
-            }));
-
-            // get Vehicles array
-            const vehiclesArray = VehiclesSnapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data(),
-              }));
-
-              vehiclesArray.sort((a, b) => a.fleetNo - b.fleetNo);
-
-              setVehicles(vehiclesArray);
-            
-            const user = Firebase_Auth.currentUser;
-     
-            // Filter out current user from profile Array
-            const filteredProfiles = profilesArray.filter(
-              (profile) => profile.id !== user.uid
-            );
-    
-            // sort them alphabetically
-            const sortedProfiles = filteredProfiles.sort((a, b) =>
-              a.email.localeCompare(b.email)
-            );
-            setProfiles(sortedProfiles);
-    
-            
-            if (user) {
-              const currentUserProfile = profilesArray.find(profile => profile.id === user.uid);
-              setCurrentUser(currentUserProfile);
-              setIsprofileLoaded(true);
-             
-            } else {
-              console.log('No user is currently logged in.');
-            }
-          } catch (error) {
-            console.error('Error fetching vehicles and profiles:', error);
-          } finally {
-            setLoader(false);
-            console.log('done loading.');
-          }
-        };
-    
-        fetchAllProfiles_n_Vehicles();
-      }, []);
-    
-    
-      useEffect(() => {
-        if (!isProfileLoaded) return;
-    
-        const fetchInspections = async () => {
-          try {
-    
-            const inspectionsRef = collection(Firebase_DB, 'Inspections');
-    
-            const driverQuery = query(inspectionsRef, where('driverId', '==', currentUser.id));
-    
-            const fleetCtrlQuery = query(inspectionsRef, where('fleetCtrl_id', '==', currentUser.id));
-    
-            const [driverSnapshot, fleetCtrlSnapshot] = await Promise.all([
-              getDocs(driverQuery),
-              getDocs(fleetCtrlQuery),
-            ]);
-    
-            const fetchedInspections = [...driverSnapshot.docs, ...fleetCtrlSnapshot.docs].map(doc => ({
-              id: doc.id,
-              ...doc.data(),
-             
-            }));
-    
-            setInspection(fetchedInspections);
-            console.log(fetchedInspections);
-          } catch (e) {
-            console.error('Error fetching inspections: ', e);
-          }
-        };
-    
-        fetchInspections();
-      }, [isProfileLoaded, currentUser]);
-    
     
 
     return(
-        <UserContext.Provider value={currentUser}>
-                <ProfilesContext.Provider value={profiles}>
-                    
+                
                         <Stack.Navigator initialRouteName="Inspections">
                             <Stack.Screen name="Inspections" component={inspection} options={{
                                         headerLeft: ()=> <CustomHeader /*navigation={navigation}*//>,
@@ -252,9 +152,42 @@ function InspectionStack(){
                                         headerShown: route.params?.headerVisible ?? false, // Use the param to control visibility
                                     })}
                                 />
+                                       <Stack.Screen name="PassengerWchair" component={PassengerWchair} 
+                                    options={ {headerShown:  false,} }
+                                />
                             <Stack.Screen name="BackView" component={BackView} 
                                 options={{
-                                    title:'Back View',
+                                    title:'BackSide',
+                                    headerTitleStyle: { color: '#004aad',
+                                        fontSize: 25,
+                                    },
+                                    headerStyle:{borderBottomWidth: 2,}
+                                }}
+                            />
+                            <Stack.Screen name="FrontSmall" component={FrontSmall} 
+                                options={{
+                                    title:'Front Side',
+                                    headerTitleStyle: { color: '#004aad',
+                                        fontSize: 25,
+                                    },
+                                    headerStyle:{borderBottomWidth: 2,}
+                                }}
+                            />
+                            <Stack.Screen name="DriverSmall" component={DriverSmall} 
+                                    options={({ route }) => ({
+                                     
+                                        headerShown: false, 
+                                    })}
+                                />
+                            <Stack.Screen name="PassengerSmall" component={PassengerSmall} 
+                                    options={({ route }) => ({
+                                     
+                                        headerShown: false, 
+                                    })}
+                                />
+                            <Stack.Screen name="BackSmall" component={BackSmall} 
+                                options={{
+                                    title:'Back Side ',
                                     headerTitleStyle: { color: '#004aad',
                                         fontSize: 25,
                                     },
@@ -262,9 +195,7 @@ function InspectionStack(){
                                 }}
                             />
                         </Stack.Navigator>
-                 
-                </ProfilesContext.Provider>
-            </UserContext.Provider>
+               
     )
 
 }

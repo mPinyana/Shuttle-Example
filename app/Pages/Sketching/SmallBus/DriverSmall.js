@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions } from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
-import { AllStyles, primaryColor } from '../../shared/AllStyles';
+import { AllStyles, primaryColor } from '../../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
-
 
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const DriverSide = ({ aspectRatio = 300 / 100 }) => {
+const DriverSmall = () => {
 
     
   const navigation= useNavigation();
@@ -41,67 +40,95 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
   const colors = ['white', 'yellow', '#fa0707']; // Define the color sequence
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
   const [Driverparts, setDriver] = useState([
-     { id:'1D1',
-      label: 'Back driver perspective', 
-      d: "M 655 70 Q 660 50, 415 55 V 80 H 655 Z", damageLvl: 0 },
-     { id:'1D2',
-      label: 'roof', x: 630, y: 80, width: 25, height: 925, damageLvl: 0 },
-     { id:'1D3',
-      label: 'window 7', x: 525, y: 85, width: 100, height: 70, rx: 10, ry: 10, damageLvl: 0 },
-     { id:'1D4',
-      label: 'window 6', x: 525, y: 165, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-     { id:'1D5',
-      label: 'window 5', x: 525, y: 285, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-     { id:'1D6',
-      label:'window 4', x: 525, y: 405, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-     { id:'1D7',
-      label: 'window 3', x: 525, y: 525, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-   { id:'1D8',
-      label: 'window 2', x: 525, y: 645, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1D9',
-      label: 'window 2', x: 525, y: 765, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1D10',
-      label:'driver Door', x: 425, y: 890, width: 170, height: 100, damageLvl: 0 },
-    { id:'1D11',
-      label:'windscreen driver view', d: "M 655 1000 H 415 V 1030 Q 656 1020, 655 1000 M 580 1000 Q 480 1000, 465 1028", damageLvl: 0 },
-    { id:'1D12',
-      label:'middle Sheet 7', d: "M 415 80 V 110 H 430 V 210 H 515 V 80 Z", damageLvl: 0 },
-    { id:'1D13',
-      label: 'middle Sheet 6', x:415, y:210, width:100, height:120, damageLvl: 0 },
-    { id:'1D14',
-      label: 'middle Sheet 5', x:415, y:330, width:100, height:120, damageLvl: 0 },
-    { id:'1D15',
-      label: 'middle Sheet 4', x:415, y:450, width:100, height:120, damageLvl: 0 },
-    { id:'1D16',
-      label: 'middle Sheet 3', x:415, y:570, width:100, height:120, damageLvl: 0 },
-    { id:'1D17',
-      label: 'middle Sheet 2', x:415, y:690, width:100, height:120, damageLvl: 0 },
-    { id:'1D18',
-      label: 'middle Sheet 1', x:415, y:810, width:100, height:70, damageLvl: 0 },
-    { id:'1D19',
-      label:'bottom Back', d: "M 415 55 Q 365 55, 345 70 V 80 H 415 Z", damageLvl: 0 },
-    { id:'1D20',
-      label: 'lower Sheet 9', d: "M 345 80 H 415  V 110 H 430 V 210 H 345 Z", damageLvl: 0 },
-    { id:'1D21',
-      label:'lower Sheet 8', x:345, y:210, width:70, height:60, damageLvl: 0 },
-    { id:'1D22',
-      label: 'back Wheel (diver side)', cx: 345, cy: 330, r: 50, damageLvl: 0 },
-    { id:'1D23',
-       label:'lower Sheet 7',x:345, y:390, width:70,height:40, damageLvl: 0 },
-    { id:'1D24',
-       label:'lower Sheet 6',x:345, y:430, width:70, height:100, damageLvl: 0 },
-    { id:'1D25',
-      label:'lower Sheet 5', x:345, y:530, width:70, height:40, damageLvl: 0 },
-    { id:'1D26',
-      label: 'lowerSheet 4', x:345, y:570, width:70, height:90, damageLvl: 0 },
-    { id:'1D27',
-      label: 'lower Sheet 3', x:345, y:660, width:70, height:90, damageLvl: 0 },
-    { id:'1D28',
-      label: 'front Wheel (driver side)', cx: 345, cy: 810, r: 50, damageLvl: 0 },
-    { id:'1D29',
-      label: 'lower Sheet 2', x: 345, y: 870, width: 70, height: 130, damageLvl: 0 },
-    { id:'1D30',
-      label:'lower Sheet 1', x: 345, y: 1000, width: 70, height: 30, damageLvl: 0 },
+     { id:'2D1',
+      label: 'Bottom Back (Side View)', 
+      d: "M270 100 Q195 95,195 95 Q 190 105,190 155 H 270 V 100", damageLvl: 0 },
+    { id:'2D2',
+      label: 'Upper Back (Side View)', 
+      d: "M270 100 Q540 110,540 120  Q 555 125,550 155 H 270 Z M520 155 Q 405 110,390 155 M300 101 Q 325 115,325 130  H 333 V 103", damageLvl: 0 },
+     { id:'2D3',
+      label: 'Bus roof sideView', x: 520, y: 155, width: 30, height: 1000, damageLvl: 0 },
+     { id:'2D4',
+      label: 'window 6', x: 395, y: 160, width: 115, height: 150, rx: 5, ry: 5, damageLvl: 0 },
+     { id:'2D5',
+      label: 'window 5', x: 395, y: 320, width: 115, height: 150, rx: 5, ry: 5, damageLvl: 0 },
+     { id:'2D6',
+      label:'window 4', x: 395, y: 480, width: 115, height: 150, rx: 5, ry: 5, damageLvl: 0 },
+     { id:'2D7',
+      label: 'window 3', x: 395, y: 640, width: 115, height: 135, rx: 5, ry: 5, damageLvl: 0 },
+   { id:'2D8',
+      label: 'window 2', x: 395, y: 785, width: 115, height: 135, rx: 5, ry: 5, damageLvl: 0 },
+    { id:'2D9',
+      label: 'window 1', x: 395, y: 930, width: 115, height: 140, rx: 5, ry: 5, damageLvl: 0 },
+    { id:'2D10',
+      label:'Front window', 
+      d: "M395 1078 H 515 Q 515 1150,510 1158 Q 490 1205,385 1230 Q 368 1180,383 1145 Q 400 1110 ,395 1078  ", damageLvl: 0 },
+    { id:'2D11',
+      label:'WindScreen(Side View)',
+       d: "M520 1155 Q 480 1220,385 1235 L 405,1265 Q 530 1230,550 1155 Z M 540 1182 L 530,1175 L 410, 1245 L 420, 1260", damageLvl: 0 },
+    { id:'2D12',
+      label:'Bumper Side View', 
+      d: "M385 1235 L405, 1265 Q 310 1300,200 1270  L 170,1235  Z  M385 1235 Q 300 1280,190 1260  M 315 1260  L 345 1280  Q 325 1284,315 1283  L 305, 1278 Q 315 1270,315 1260", damageLvl: 0 },
+    { id:'2D13',
+      label: 'Lower metal sheet 1', 
+      d:'M 170,1235 V 1210 Q 250 1230,270 1140 V 1235 Z', damageLvl: 0 },
+    { id:'2D14',
+      label: 'Lower metal sheet 2',
+       d:'M 270 1140 Q 260 1075,170 1075 V 1040 H 270 V 1140', damageLvl: 0 },
+    { id:'2D15',
+      label: 'Lower metal sheet 3', x:170, y:940, width:100, height:100, damageLvl: 0 },
+    { id:'2D16',
+      label: 'Lower metal sheet 4', x:170, y:840, width:100, height:100, damageLvl: 0 },
+    { id:'2D17',
+      label: 'Lower Metal Sheet 5', x:170, y:740, width:100, height:110, damageLvl: 0 },
+      { id:'2D18',
+        label: 'Lower Metal Sheet 5', x:170, y:630, width:100, height:110, damageLvl: 0 },
+    { id:'2D19',
+      label: 'Lower metal sheet 7', 
+      d:'M 170 630 V 580 Q 260 600 ,270 500 V 630', damageLvl: 0 },
+     { id:'2D20',
+      label: 'Lower metal sheet 8', 
+      d:'M 270 500 Q 270 410 ,170 420 L 175,370 H 270 Z', damageLvl: 0 },
+    { id:'2D21',
+    label: 'Lower metal sheet 9', 
+    d:'M175 370 L 185,255 H 270 V 370 175', damageLvl: 0 },
+    { id:'2D22',
+    label: 'Lower metal sheet 10', 
+    d:'M185 255 L 190,155 H 270 V 255 Z', damageLvl: 0 },
+    { id:'2D23',
+      label: 'Middle Sheet 9', 
+      x:270, y:155, width:120, height:130, damageLvl: 0 },
+    { id:'2D24',
+      label:'Middle sheet 8',
+       x:270, y:285, width:120, height:130, damageLvl: 0 },
+    { id:'2D25',
+      label: 'Middle sheet 7', x: 270, y: 415,width:120,height:130, damageLvl: 0 },
+      { id:'2D26',
+        label:'Middle Sheet 6',
+        x:270, y:545, width:120,height:130, damageLvl: 0 },
+
+    { id:'2D27',
+       label:'Middle Sheet 5',
+       x:270, y:285, width:120,height:130, damageLvl: 0 },
+    { id:'2D28',
+       label:'Middle Sheet 4',
+       x:270, y:675, width:120, height:130, damageLvl: 0 },
+    { id:'2D29',
+      label:'Middle Sheet 3', 
+      x:270, y:805, width:120, height:130, damageLvl: 0 },
+    { id:'2D30',
+      label: 'Middle Sheet 2', 
+      x:270, y:935, width:120, height:140, damageLvl: 0 },
+      { id:'2D31',
+        label: 'Middle Sheet 1', 
+        x:270, y:1075, width:100, height:160, damageLvl: 0 },
+    { id:'2D32',
+      label: 'front Wheel ', 
+      cx: 180, cy: 1145, r: 60, damageLvl: 0 },
+      { id:'2D33',
+        label: 'Back Wheel ', 
+        cx: 180, cy: 500, r: 70, damageLvl: 0 },
+   
   ]);
 
 
@@ -205,7 +232,7 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
 
 
       <View style={{ width: screenWidth, height: screenHeight, justifyContent: 'center', alignItems: 'center'}}>
-        <Svg height="100%" width="100%" viewBox="200 100 600 600">
+        <Svg height="100%" width="100%" viewBox="30 60 700 1100">
 
           {Driverparts.map((part) => (
             <TouchableWithoutFeedback key={part.id} onPress={() =>handlePress(part.id)}>
@@ -253,34 +280,12 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
             </TouchableWithoutFeedback>
           ))}
 
-          {/* Non-interactive elements */}
-          <Path d="M 630 1000 Q 630 1035, 625 1030 Q 615 1040, 590 1030 H 625" fill="none" stroke="black" strokeWidth="1" />
-          <Path d="M 415 810 V 1000" fill="none" stroke="black" strokeWidth="1" /> 
-
-          <Polyline points="495,380 465,350 435,380" fill="none" stroke="#8c8f91" strokeWidth="4" />
-          <SvgText font-family="Arial" fill="#8c8f91" transform="rotate(90 465,395)">
-                <TSpan x="460" y="395" fontSize="25">UCT Shuttle</TSpan>
-                <TSpan x="493" y="422" fontSize="18">Services</TSpan>
-        </SvgText>
-            <Polyline points="495,530 465,560 435,530"
-                        fill="none" stroke="#8c8f91" strokeWidth="4" />
-          
-        <Line x1="425" y1="120" x2="355" y2="120" stroke="black" stroke-width="2" />
-        <Line x1="425" y1="130" x2="355" y2="130" stroke="black" stroke-width="2" />
-        <Line x1="425" y1="140" x2="355" y2="140" stroke="black" stroke-width="2" />
-        <Line x1="425" y1="150" x2="355" y2="150" stroke="black" stroke-width="2" />
-        <Line x1="425" y1="160" x2="355" y2="160" stroke="black" stroke-width="2" />
-        <Line x1="425" y1="170" x2="355" y2="170" stroke="black" stroke-width="2" />
-        <Line x1="425" y1="180" x2="355" y2="180" stroke="black" stroke-width="2" />
-        <Line x1="425" y1="190" x2="355" y2="190" stroke="black" stroke-width="2" />
-        <Line x1="425" y1="200" x2="355" y2="200" stroke="black" stroke-width="2" />
-        <Path d="M 345 270 A 35,30 0 0,1 345,390" fill={"none"} stroke={"black"} />
-        <Path d="M 345 750 A 35,30 0 0,1 345,870" fill={"none"} stroke='black'/>
-        <Circle cx="345" cy="330" r="5" style="fill:black;stroke:black;stroke-width:1;" />
-        <Circle cx="345" cy="810" r="5" style="fill:black;stroke:black;stroke-width:1;" />
-        <Rect x="400" y="575" width="10" height="20" fill={"none"} stroke={"black"} strokeWidth={1.5}/>
-        <Rect x="355" y="610" width="15" height="5" fill={"none"} stroke={"black"} strokeWidth={1.5} />
-        <Rect x="355" y="700" width="15" height="5" fill={"none"} stroke={"black"} strokeWidth={1.5}/>
+    
+    
+        {/* Back & front Axle (Non Interactive)  */}
+        <Circle cx="180" cy="500" r="5"  />
+        <Circle cx="180" cy="1145" r="5"  />
+    
         </Svg>
 
    
@@ -293,7 +298,7 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
 
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
                                                               const updatedDriverSide = handleDamageLog(); // Get updated driver side
-                                                              navigation.navigate('FrontView', {
+                                                              navigation.navigate('FrontSmall', {
                                                                 inspection: {
                                                                   ...inspection,
                                                                   driverSide: updatedDriverSide, // Pass the updated driver side
@@ -309,4 +314,4 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
   );
 };
 
-export default DriverSide;
+export default DriverSmall;

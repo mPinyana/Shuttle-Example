@@ -37,9 +37,9 @@ const BodyWorksChecklist = ({ bodyWorks, setBody }) => {
 
  
   return (
-    <ScrollView style={{flex:1}}>
-    <View style={AllStyles.checklist}>
-
+    <View style={AllStyles.container}>
+        <ScrollView >
+      <View style={AllStyles.checklist}>
       <View style={[AllStyles.checkItem, { marginBottom: 10 }]}>
         <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Select All</Text>
         <BouncyCheckbox
@@ -65,8 +65,10 @@ const BodyWorksChecklist = ({ bodyWorks, setBody }) => {
           />
         </View>
       ))}
+      </View>
+      </ScrollView>
     </View>
-    </ScrollView>
+    
   );
 };
 

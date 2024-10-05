@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
+import {ScrollView, View, TouchableOpacity, Text, ScrollView, Alert } from 'react-native';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute } from '@react-navigation/native';
 import WheelsChecklist from './WheelsChecklist';
@@ -45,7 +45,7 @@ export default function Wheels_InspectionCh({ navigation }) {
   return (
     <View style={AllStyles.container}>
       <Text style={AllStyles.section}>Wheels</Text>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{flexGrow:1}}>
         <WheelsChecklist
           wheels={wheels}
           setWheels={setWheels}
