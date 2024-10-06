@@ -1,6 +1,6 @@
 // Architecture
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity,TouchableWithoutFeedback, ScrollView, Alert} from 'react-native';
+import { View, Text, TouchableOpacity,TouchableWithoutFeedback, ScrollView, Alert, StyleSheet, FlatList,Image, ImageBackground} from 'react-native';
 import  Modal  from 'react-native-modal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Picker } from '@react-native-picker/picker';
@@ -36,7 +36,7 @@ export default function Inspection({ navigation ,route}){
   
 
 
-
+//const drivers = profiles.filter(profile=> profile.role ==='Driver')
 
   useEffect(() => {
     if (vehicles.length > 0) {
@@ -51,13 +51,14 @@ export default function Inspection({ navigation ,route}){
 
   const [addLoader, setAddLoader] = useState(false);
 const [time, setTime] = useState(new Date());
-const [drvEmail, setDrvEmail] = useState('');
-const [isInspectionReady, setIsInspectionReady] = useState(false);
+const [drvEmail, setDrvEmail] = useState(null);
+
 
 
 // Driver data structure
 const [vec, setVec] =useState(0);
 const [openCars, setCarsOpen] = useState(false);
+const [openProfile, setProfileOpen] = useState(false);
 const [vecItems,setVecItems] =useState(vehicles.map(car => ({
   label: car.fleetNo+ ' '+ car.model,   // Label and value can be the same for strings
   value: car.fleetNo
@@ -160,7 +161,7 @@ const toggleDeleteIcon = (index) => {
     }
 
         const newInspection ={
-            fleetCtrl_id:user.id,
+            fleetCtrl_email:user.email,
             time:time.toISOString(),
             fleetNo:vec,
             documentation:documents,
@@ -170,8 +171,8 @@ const toggleDeleteIcon = (index) => {
             busWheels:wheels,
             body:bodyWorks,
             engine_Air:engineAir,
-            driverId: profiles.find(profile => profile.email === drvEmail).id,
-
+            driverEmail: drvEmail,
+            inspStatus:'Incomplete',
             driverSide:{
               parts:{},
               damagePics:{}
@@ -202,7 +203,7 @@ const toggleDeleteIcon = (index) => {
 
           Alert.alert(
             'Inspection Added',
-            `Inspection was successfully added with ID: ${docRef.id}`,
+            `Inspection was successfully added`,
             [{ text: 'OK' }]
           );
         } catch (e) {
@@ -244,6 +245,11 @@ const toggleDeleteIcon = (index) => {
       hideTimePicker();
     };
 
+    const handleSelect = (value) => {
+      setDrvEmail(value);
+      setProfileOpen(false);
+    };
+
     const formattedTime = time
     ? time.toLocaleTimeString([], {
         hour: '2-digit',
@@ -252,13 +258,6 @@ const toggleDeleteIcon = (index) => {
       })
     : 'Select Time';
 
-
- 
-    
-
-
- 
-   
 
 
 
@@ -276,6 +275,12 @@ const toggleDeleteIcon = (index) => {
             <Text style={{ top:15,fontSize: 17, color: primaryColor, fontWeight: 'bold', marginLeft: '5%' }}>
               {inspection.fleetNo} Inspection
             </Text>
+           
+            <Text style={{ top:25,fontSize: 11, color: 'grey',fontStyle:'italic'}}>
+              {inspection.inspStatus}
+            </Text>
+
+  
             
             <View style={{
               flexDirection: 'row',
@@ -283,7 +288,7 @@ const toggleDeleteIcon = (index) => {
               justifyContent: 'space-between',
               marginTop: '8%',
               height:'40%',
-              marginRight: '-53%'
+              marginRight: '-25%'
             }}>
               <Feather name="clock" size={13} color="black" style={{marginLeft: '2%'}} />
               <Text style={{ fontSize: 13 }}>
@@ -319,6 +324,8 @@ const toggleDeleteIcon = (index) => {
             </TouchableWithoutFeedback>
           </TouchableOpacity>
         ))}
+
+                      
       </ScrollView>
                 
       {user.role !== 'Driver' && (
@@ -379,21 +386,42 @@ const toggleDeleteIcon = (index) => {
                                 
                                 }}>Driver: </Text>
 
-                                  <Picker
-                                    selectedValue={drvEmail}
-                                    onValueChange={(itemValue) => setDrvEmail(itemValue)}
-                                    style={{
-                                      width:'80%',
-                                      marginTop:'-3%'
-                                      }}
-                                  >
-                                    {profiles.map((profile)=> (
-                                          <Picker.Item 
-                                            key={profile.id}
-                                            label={profile.email}
-                                            value={profile.email}
-                                          />))}
-                                  </Picker> 
+                                      <TouchableOpacity onPress={() => setProfileOpen(true)} style={{width: '50%', padding: 10, backgroundColor: '#fff', borderRadius: 5, borderColor:primaryColor, borderWidth:1 }}>
+                                              <Text>{drvEmail ? drvEmail : 'Select Driver'}</Text>
+                                            </TouchableOpacity>
+
+                                            {/* Modal for Custom Picker */}
+                                            <Modal visible={openProfile}  transparent={true} animationType='fade'>
+                                              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
+                                                <View style={{ width: '90%', backgroundColor: '#fff', borderRadius: 10, padding: 20, height: '85%' }}>
+                                                  <FlatList
+                                                    data={profiles.filter(profile=>profile.role==='Driver')}
+                                                    keyExtractor={(item) => item.id}
+                                                   
+                                                    renderItem={({ item }) => (
+                          
+                                                      <TouchableOpacity  onPress={() => handleSelect(item.email)} style={{ flexDirection:'row', padding: 10 }}>
+                                                        <Image
+                                                        source ={{uri: item.profilePic}}
+                                                        style={{ backgroundColor: 'lightgrey',width:'20%', height:50, borderRadius:100, marginBottom:10, marginTop:'5%'}}  resizeMode="contain" 
+                                                            />
+
+                                                            <View style={{marginLeft:20,top:20,flexDirection:'column'}}>
+                                                       <Text style={{ fontSize: 16 }}>{item.name + " " + item.surname}</Text>
+                                                        <Text style={{ fontSize: 10, color:'grey' }}>{item.email}</Text>
+                                                        </View>
+                                                       
+                                                      </TouchableOpacity>
+                                                    )}
+                                                  />
+                                                  <TouchableOpacity onPress={() => setProfileOpen(false)} style={{ padding: 10, marginTop: 20 }}>
+                                                    <Text style={{ textAlign: 'center', color: 'red' }}>Cancel</Text>
+                                                  </TouchableOpacity>
+                                                </View>
+                                              </View>
+                                            </Modal>
+
+                                
                         </View>
                         
                         <View style={AllStyles.inspectionFeild}>
@@ -478,4 +506,7 @@ const toggleDeleteIcon = (index) => {
             
         </View>
     );
-}
+};
+
+
+

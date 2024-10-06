@@ -296,7 +296,7 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
       </ScrollView>
 
       <TouchableOpacity style={AllStyles.btnCamera}>
-        <SimpleLineIcons name="camera" size={37} color="white" />
+        <SimpleLineIcons name="camera" size={30} color="white" />
       </TouchableOpacity>
 
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
