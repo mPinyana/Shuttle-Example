@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions } from 'react-native';
+import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions, TextInput, Modal } from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -21,6 +21,10 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
 
   const translation = useRef(new Animated.Value(-100)).current;
   const [headerShown, setHeaderShown] = useState(false);
+//comment
+  const [isCommentModalVisible, setCommentModalVisible] = useState(false);
+  const [comment, setComment] = useState('');
+
 
 
   useEffect(() => {
@@ -118,6 +122,16 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
         ? { ...part, damageLvl: (part.damageLvl + 1) % colors.length }
         : part
     ));
+  };
+
+  const handleCommentButton = () => {
+    setCommentModalVisible(true);
+  };
+
+  const handleSaveComment = () => {
+    // Here you would typically save the comment to your state or database
+    Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
+    setCommentModalVisible(false);
   };
 
   const handleDamageLog = () => {
@@ -287,9 +301,48 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
       </View>
       </ScrollView>
 
+
+
       <TouchableOpacity style={AllStyles.btnCamera}>
         <SimpleLineIcons name="camera" size={30} color="white" />
       </TouchableOpacity>
+
+      <View style={styles.btnContainer}>
+        <TouchableOpacity style={styles.btn} onPress={handleCommentButton}>
+          <Text style={styles.btnText}>Comment</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TouchableOpacity style={AllStyles.btnCamera}>
+        <SimpleLineIcons name="camera" size={30} color="white" />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={AllStyles.btnArrowR} onPress={() => navigation.navigate('FrontView')}>
+        <AntDesign name="arrowright" size={30} color="white" />
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isCommentModalVisible}
+        onRequestClose={() => setCommentModalVisible(false)}
+      >
+        <View style={styles.modalView}>
+          <TextInput
+            style={styles.input}
+            onChangeText={setComment}
+            value={comment}
+            placeholder="Enter your comment"
+            multiline
+          />
+          <TouchableOpacity
+            style={[styles.btn, styles.saveButton]}
+            onPress={handleSaveComment}
+          >
+            <Text style={styles.btnText}>Save Comment</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
 
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
                                                               const updatedDriverSide = handleDamageLog(); // Get updated driver side
@@ -307,6 +360,56 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
 
     </View>
   );
+};
+
+const styles = {
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginBottom: 20,
+    alignSelf: 'center',
+  },
+  btn: {
+    backgroundColor: primaryColor,
+    padding: 10,
+    borderRadius: 5,
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: 'center',
+  },
+  btnText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  input: {
+    height: 100,
+    width: '100%',
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    textAlignVertical: 'top'
+  },
+  saveButton: {
+    marginTop: 10,
+    width: '100%',
+  }
 };
 
 export default DriverSide;

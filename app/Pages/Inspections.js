@@ -276,7 +276,7 @@ const toggleDeleteIcon = (index) => {
               {inspection.fleetNo} Inspection
             </Text>
            
-            <Text style={{ top:25,fontSize: 11, color: 'grey',fontStyle:'italic'}}>
+            <Text style={{ top:25,fontSize: 15, color: 'black',fontStyle:'italic'}}>
               {inspection.inspStatus}
             </Text>
 
