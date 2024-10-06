@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions } from 'react-native';
+import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions, TextInput, Modal } from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -7,8 +7,12 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
+  
+  const [showCommentBox, setShowCommentBox] = useState(false);
+  const [comment, setComment] = useState('');
 
     
   const route =useRoute();
@@ -18,6 +22,23 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
 
   const translation = useRef(new Animated.Value(-100)).current;
   const [headerShown, setHeaderShown] = useState(false);
+
+  const handleCommentButtonPress = () => {
+    setShowCommentBox(!showCommentBox);
+  };
+
+  const handleSaveComment = () => {
+    if (comment.trim()) {
+      // Here you would typically save the comment to your backend or local storage
+      Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
+      setComment('');
+      setShowCommentBox(false);
+    } else {
+      Alert.alert('Error', 'Please enter a comment before saving.');
+    }
+  };
+
+  
 
 
   useEffect(() => {
@@ -102,6 +123,8 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
     { id:'1P30',
     label: 'lower Sheet 8', x: 80, y: 1050, width: 70, height: 30, damageLvl: 0 },
   ]);
+
+  
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {

@@ -68,7 +68,7 @@ function SignUpScreen(){
 
     const takePhoto = async () => {
         let result = await ImagePicker.launchCameraAsync({
-          allowsEditing: true,
+          allowsEditing: false,
           aspect: [1, 1],
           quality: 1,
         });

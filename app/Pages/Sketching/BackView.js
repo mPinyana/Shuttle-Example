@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions } from 'react-native';
+import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, TextInput, Modal } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { AllStyles } from '../../shared/AllStyles';
+import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute } from '@react-navigation/native';
 
 import { Firebase_DB } from '../../../FirebaseConfig';
@@ -73,6 +73,9 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       d: "M280 280 Q 315 288 , 316 258 V 310 H 280 M 290 295 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
   ]);
 
+  const [isCommentModalVisible, setCommentModalVisible] = useState(false);
+  const [comment, setComment] = useState('');
+
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
       setDimensions(window);
@@ -93,6 +96,18 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
     ));
   };
 
+  const handleCommentButton = () => {
+    setCommentModalVisible(true);
+  };
+
+  const handleSaveComment = () => {
+    setBackSide(prevBackSide => ({
+      ...prevBackSide,
+      comment: comment
+    }));
+    setCommentModalVisible(false);
+    Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
+  };
 /*  handleDamageLog=()=>{
     setBackSide({...back_Side, parts:BackParts})
   }
@@ -114,7 +129,8 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   
       const updatedInspection = {
         ...inspection,
-        backSide: updatedBackSide,   // Now we use the updated backSide
+        backSide: updatedBackSide, 
+        inspStatus:'Complete',  // Now we use the updated backSide
       };
   
       const inspectionRef = doc(Firebase_DB, 'Inspections', inspection.id);
@@ -161,9 +177,81 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
           onPress={() => {handleDamageLog();handleUpdateInspection()}}>
           <Text style={AllStyles.textBtn} >Submit</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[AllStyles.btn, { marginLeft: 10 }]}
+          onPress={handleCommentButton}
+        >
+          <Text style={AllStyles.textBtn}>Comment</Text>
+        </TouchableOpacity>
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isCommentModalVisible}
+        onRequestClose={() => setCommentModalVisible(false)}
+      >
+        <View style={styles.modalView}>
+          <TextInput
+            style={styles.input}
+            onChangeText={setComment}
+            value={comment}
+            placeholder="Enter your comment"
+            multiline
+          />
+          <TouchableOpacity
+            style={[AllStyles.btn, styles.saveButton]}
+            onPress={handleSaveComment}
+          >
+            <Text style={AllStyles.textBtn}>Save Comment</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
 
+const styles = {
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginTop: 20,
+  },
+  btn: {
+    backgroundColor: '#007AFF',
+    padding: 10,
+    borderRadius: 5,
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: 'center',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  input: {
+    height: 100,
+    width: '100%',
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    textAlignVertical: 'top'
+  },
+  saveButton: {
+    marginTop: 10,
+    width: '100%',
+  }
+};
 export default BackView;
