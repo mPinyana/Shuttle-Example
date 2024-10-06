@@ -18,7 +18,7 @@ const HomePage = () => {
     const {user,setUser} = useContext(CurrentUserContext);
 
 
-    if(user.role === "Fleet Controller"){
+    if(user.role === "Fleet Controller" ||user.role === "Driver"  ){
             return (
                     <FleetCtrlTabs/>
             );

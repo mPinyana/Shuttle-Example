@@ -23,7 +23,7 @@ export default function EngineAir_InspectCh({ navigation }) {
     const handleNext = () => {
         const allChecked = Object.values(engineAir).every(value => value === true);
         if (allChecked) {
-            if (Number(inspection.fleetNo) > 200 && Number(inspection.fleetNo) < 300) {
+            if (Number(inspection.fleetNo) >= 200 && Number(inspection.fleetNo) < 300) {
                 navigation.navigate('DriverSmall', {
                     inspection: {
                         ...inspection,

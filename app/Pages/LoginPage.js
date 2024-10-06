@@ -5,9 +5,10 @@ import LottieView from 'lottie-react-native';
 
 
 
-import { Firebase_Auth, Firebase_DB } from '../../FirebaseConfig';
+import { Firebase_Auth, Firebase_DB, Firebase_Storage } from '../../FirebaseConfig';
 import {  signInWithEmailAndPassword } from 'firebase/auth';
-import { doc,getDoc, collection,getDocs,query,where, addDoc } from 'firebase/firestore';
+import { collection,getDocs,query,where,   } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 import { AllStyles, primaryColor,secondaryColor}  from '../shared/AllStyles';
 import { ProfilesContext } from '../shared/ProfilesContext';
@@ -59,11 +60,23 @@ function LoginPage({navigation}) {
           const VehiclesCollectionRef = collection(Firebase_DB, 'vehicles');
           const VehiclesSnapshot = await getDocs(VehiclesCollectionRef);
     
-          const profilesArray = profilesSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
+          const profilesArray = await Promise.all(
+            profilesSnapshot.docs.map(async (doc) => {
+              const profileData = doc.data();
+              const profilePicRef = ref(Firebase_Storage, `profile_pictures/${doc.id}`);
+              
+              try {
+                const profilePicURL = await getDownloadURL(profilePicRef);
+                profileData.profilePic = profilePicURL;
+              } catch (error) {
+                console.error(`Error fetching profile picture for user ${doc.id}:`, error);
+                // Set default profile picture if there's an error
+                profileData.profilePic = require('../assets/defaultpfp.png');
+              }
     
+              return { id: doc.id, ...profileData };
+            })
+          )
           const vehiclesArray = VehiclesSnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data(),
@@ -94,8 +107,8 @@ function LoginPage({navigation}) {
       const fetchInspections = async (currentUser) => {
         try {
           const inspectionsRef = collection(Firebase_DB, 'Inspections');
-          const driverQuery = query(inspectionsRef, where('driverId', '==', currentUser.id));
-          const fleetCtrlQuery = query(inspectionsRef, where('fleetCtrl_id', '==', currentUser.id));
+          const driverQuery = query(inspectionsRef, where('driverEmail', '==', currentUser.email));
+          const fleetCtrlQuery = query(inspectionsRef, where('fleetCtrl_email', '==', currentUser.email));
     
           const [driverSnapshot, fleetCtrlSnapshot] = await Promise.all([
             getDocs(driverQuery),

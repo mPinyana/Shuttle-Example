@@ -156,9 +156,9 @@ return (
     
     </View>
     <TouchableOpacity style={AllStyles.btnCamera}>
-        <SimpleLineIcons name="camera" size={37} color="white" />
+        <SimpleLineIcons name="camera" size={30} color="white" />
       </TouchableOpacity>
-
+ 
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
                                                               const updatedFrontSide = handleDamageLog(); // Get updated driver side
                                                               if (inspection.fleetNo === '101' || inspection.fleetNo === '102') {
