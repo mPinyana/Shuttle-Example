@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions, TextInput, Modal } from 'react-native';
+import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions,TextInput, Modal, StyleSheet} from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
-
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
@@ -21,10 +21,6 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
 
   const translation = useRef(new Animated.Value(-100)).current;
   const [headerShown, setHeaderShown] = useState(false);
-//comment
-  const [isCommentModalVisible, setCommentModalVisible] = useState(false);
-  const [comment, setComment] = useState('');
-
 
 
   useEffect(() => {
@@ -108,6 +104,11 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
       label:'lower Sheet 1', x: 345, y: 1000, width: 70, height: 30, damageLvl: 0 },
   ]);
 
+  const [isCommentModalVisible, setCommentModalVisible] = useState(false);
+  const [comment, setComment] = useState(inspection.driverSide.comment || '');
+
+
+
 
   const screenWidth = dimensions.width;
   const screenHeight = dimensions.height;
@@ -124,22 +125,37 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
     ));
   };
 
-  const handleCommentButton = () => {
+  const handleCommentButtonPress = () => {
     setCommentModalVisible(true);
   };
 
   const handleSaveComment = () => {
-    // Here you would typically save the comment to your state or database
+    const updatedDriversSide = {
+      ...driver_Side,
+      comment: comment,
+    };
+
+    setDriverSide(updatedDriversSide);
+    updateInspections({
+      ...inspection,
+      driverSide: updatedDriversSide,
+    });
     Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
     setCommentModalVisible(false);
   };
 
+
   const handleDamageLog = () => {
-    // Update the driver side parts state
-    const updatedDriverSide = { ...driver_Side, parts: Driverparts };
-    setDriverSide(updatedDriverSide);
-    return updatedDriverSide; // Return the updated state for use
+    const updatedDriversSide = { 
+      ...driver_Side, 
+      parts: Driverparts,
+      comment: comment,
+    };
+    setDriverSide(updatedDriversSide);
+    return updatedDriversSide;
   };
+
+
 
   return (
     <View style={AllStyles.container}>
@@ -301,23 +317,28 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
       </View>
       </ScrollView>
 
-
-
       <TouchableOpacity style={AllStyles.btnCamera}>
         <SimpleLineIcons name="camera" size={30} color="white" />
       </TouchableOpacity>
 
-      <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.btn} onPress={handleCommentButton}>
-          <Text style={styles.btnText}>Comment</Text>
-        </TouchableOpacity>
-      </View>
-
-      <TouchableOpacity style={AllStyles.btnCamera}>
-        <SimpleLineIcons name="camera" size={30} color="white" />
+      <TouchableOpacity style={styles.btnComment} onPress={handleCommentButtonPress}>
+        <FontAwesome name="comment" size={30} color="white" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={AllStyles.btnArrowR} onPress={() => navigation.navigate('FrontView')}>
+
+      <TouchableOpacity 
+        style={AllStyles.btnArrowR}    
+        onPress={() => {
+          const updatedDriverSide = handleDamageLog(); // Get updated driver side
+          navigation.navigate('FrontView', {
+            inspection: {
+              ...inspection,
+              driverSide: updatedDriverSide, // Pass the updated driver side
+            },
+            updateInspections,
+          });
+        }}
+      >
         <AntDesign name="arrowright" size={30} color="white" />
       </TouchableOpacity>
 
@@ -327,61 +348,87 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
         visible={isCommentModalVisible}
         onRequestClose={() => setCommentModalVisible(false)}
       >
-        <View style={styles.modalView}>
-          <TextInput
-            style={styles.input}
-            onChangeText={setComment}
-            value={comment}
-            placeholder="Enter your comment"
-            multiline
-          />
-          <TouchableOpacity
-            style={[styles.btn, styles.saveButton]}
-            onPress={handleSaveComment}
-          >
-            <Text style={styles.btnText}>Save Comment</Text>
-          </TouchableOpacity>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TextInput
+              style={styles.input}
+              onChangeText={setComment}
+              value={comment}
+              placeholder="Write your comment here"
+              multiline
+            />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setCommentModalVisible(false)}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSave]}
+                onPress={handleSaveComment}
+              >
+                <Text style={styles.textStyle}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </Modal>
-
-      <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
-                                                              const updatedDriverSide = handleDamageLog(); // Get updated driver side
-                                                              navigation.navigate('FrontView', {
-                                                                inspection: {
-                                                                  ...inspection,
-                                                                  driverSide: updatedDriverSide, // Pass the updated driver side
-                                                                },
-                                                                updateInspections,
-                                                              });
-                                                            }}>
-      <AntDesign name="arrowright" size={30} color="white" />
-      </TouchableOpacity>
-
 
     </View>
   );
 };
 
-const styles = {
-  btnContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-    marginBottom: 20,
-    alignSelf: 'center',
-  },
-  btn: {
-    backgroundColor: primaryColor,
-    padding: 10,
-    borderRadius: 5,
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    marginHorizontal: 5,
+    justifyContent: 'center',
     alignItems: 'center',
   },
-  btnText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  svgContainer: {
+    width: '90%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnCamera: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnComment: {
+    position: 'absolute',
+    bottom: 20,
+    left: 5,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnArrowR: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalView: {
     margin: 20,
@@ -399,17 +446,35 @@ const styles = {
     elevation: 5
   },
   input: {
-    height: 100,
-    width: '100%',
+    height: 150,
+    width: 300,
     margin: 12,
     borderWidth: 1,
     padding: 10,
     textAlignVertical: 'top'
   },
-  saveButton: {
-    marginTop: 10,
-    width: '100%',
-  }
-};
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginHorizontal: 10
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  buttonSave: {
+    backgroundColor: '#4CAF50',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+});
 
 export default DriverSide;
