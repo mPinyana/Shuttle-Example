@@ -11,6 +11,7 @@ export default function Documentation_inspectionCh() {
   const { inspection, setInspection } = route.params;
 
   const [documents, setDocuments] = useState(inspection.documentation);
+  const [mileage, setMileage] = useState(inspection.mileage || '');
   const [isValid, setIsValid] = useState(false);
 
   const updateInspections = (updatedInspection) => {
@@ -24,14 +25,15 @@ export default function Documentation_inspectionCh() {
   useEffect(() => {
     updateInspections({
       ...inspection,
-      documentation: documents
+      documentation: documents,
+      mileage: mileage
     });
-  }, [documents]);
+  }, [documents, mileage]);
 
   const validateChecklist = () => {
     const allChecked = Object.values(documents).every(value => value === true);
-    setIsValid(allChecked);
-    return allChecked;
+    const mileageEntered = mileage.trim() !== '';
+    return allChecked && mileageEntered;
   };
 
   const handleNextPress = () => {
@@ -39,14 +41,15 @@ export default function Documentation_inspectionCh() {
       navigation.navigate("DiversCompartment", {
         inspection: {
           ...inspection,
-          documentation: documents
+          documentation: documents,
+          mileage: mileage
         },
         updateInspections
       });
     } else {
       Alert.alert(
         "Incomplete Checklist",
-        "Please ensure all inspection items are checked before proceeding.",
+        "Please ensure all inspection items are checked and mileage is entered before proceeding.",
         [{ text: "OK" }]
       );
     }
@@ -56,9 +59,11 @@ export default function Documentation_inspectionCh() {
     <View style={AllStyles.container}>
       <Text style={AllStyles.section}>Documentation</Text>
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
-        <DocumentationChecklist
+      <DocumentationChecklist
           documents={documents}
           setDocuments={setDocuments}
+          mileage={mileage}
+          setMileage={setMileage}
           setIsValid={setIsValid}
         />
       </ScrollView>

@@ -175,19 +175,23 @@ const toggleDeleteIcon = (index) => {
             inspStatus:'Incomplete',
             driverSide:{
               parts:{},
-              damagePics:{}
+              damagePics:{},
+              comments:null
             },
             frontSide:{
               parts:{},
-              damagePics:{}
+              damagePics:{},
+              comments:''
             },
             passengerSide:{
               parts:{},
-              damagePics:{}
+              damagePics:{},
+              comments:''
             },
             backSide:{
               parts:{},
-              damagePics:{}
+              damagePics:{},
+              comments:''
             },
         };
 

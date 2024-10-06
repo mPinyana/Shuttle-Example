@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions } from 'react-native';
+import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, Modal, TextInput, StyleSheet} from 'react-native';
 import Svg, { Path, Rect,Line,Circle } from 'react-native-svg';
 import { AllStyles } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
 const FrontView=({aspectRatio = 900/900})=>{
@@ -83,6 +84,27 @@ const [frontParts,SetFront] = useState([
 
 ]);
 
+const [isCommentModalVisible, setCommentModalVisible] = useState(false);
+  const [comment, setComment] = useState('');
+
+  const handleCommentButtonPress = () => {
+    setCommentModalVisible(true);
+  };
+
+  const handleSaveComment = () => {
+    const updatedFrontSide = {
+      ...front_Side,
+      comment: comment,
+    };
+    setFrontSide(updatedFrontSide);
+    updateInspections({
+      ...inspection,
+      frontSide: updatedFrontSide,
+    });
+    Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
+    setCommentModalVisible(false);
+  };
+
 const handlePress = (id) => {
     SetFront(frontParts.map(part => 
       part.id === id 
@@ -92,12 +114,14 @@ const handlePress = (id) => {
   };
 
   const handleDamageLog = () => {
-    // Update the driver side parts state
-    const updatedFrontSide = { ...front_Side, parts: frontParts };
+    const updatedFrontSide = { 
+      ...front_Side, 
+      parts: frontParts,
+      comment: comment,
+    };
     setFrontSide(updatedFrontSide);
-    return updatedFrontSide; // Return the updated state for use
+    return updatedFrontSide;
   };
-
    useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
       setDimensions(window);
@@ -158,6 +182,10 @@ return (
     <TouchableOpacity style={AllStyles.btnCamera}>
         <SimpleLineIcons name="camera" size={30} color="white" />
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.btnComment} onPress={handleCommentButtonPress}>
+        <FontAwesome name="comment" size={30} color="white" />
+      </TouchableOpacity>
  
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
                                                               const updatedFrontSide = handleDamageLog(); // Get updated driver side
@@ -180,17 +208,138 @@ return (
                                                             }}>
       <AntDesign name="arrowright" size={30} color="white" />
       </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isCommentModalVisible}
+        onRequestClose={() => setCommentModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TextInput
+              style={styles.input}
+              onChangeText={setComment}
+              value={comment}
+              placeholder="Write your comment here"
+              multiline
+            />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setCommentModalVisible(false)}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSave]}
+                onPress={handleSaveComment}
+              >
+                <Text style={styles.textStyle}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
 </View>
 );
-
-
-
-
-
-
-
-
-
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  svgContainer: {
+    width: '90%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnCamera: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnComment: {
+    position: 'absolute',
+    bottom: 20,
+    left: 5,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnArrowR: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  input: {
+    height: 150,
+    width: 300,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    textAlignVertical: 'top'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginHorizontal: 10
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  buttonSave: {
+    backgroundColor: '#4CAF50',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+});
 export default FrontView;
