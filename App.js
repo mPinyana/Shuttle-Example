@@ -1,25 +1,29 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React from 'react';
 import SignUpScreen from './app/Pages/SignUpScreen';
 import LoginPage from './app/Pages/LoginPage';
 import HomePage from  './app/Pages/HomePage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+//Context
 import LoaderProvider from './app/shared/LoaderContext';
 import InspectionProvider from './app/shared/InspectionContext';
 import VehicleProvider from './app/shared/VehicleContext';
+import CurrentUserProvider from './app/shared/CurrentUserContext';
+import ProfilesProvider from './app/shared/ProfilesContext';
 
 
 
 const Stack = createNativeStackNavigator();
 
-
-
 export default function App() {
-
+      
 
 
     return (
+      <ProfilesProvider>
+      <CurrentUserProvider>
         <LoaderProvider>
           <VehicleProvider>
           <InspectionProvider>
@@ -31,8 +35,10 @@ export default function App() {
              </Stack.Navigator>
            </NavigationContainer>
            </InspectionProvider>
-           </VehicleProvider>
-           </LoaderProvider>
+          </VehicleProvider>
+        </LoaderProvider>
+      </CurrentUserProvider>
+    </ProfilesProvider>
   
 
   );

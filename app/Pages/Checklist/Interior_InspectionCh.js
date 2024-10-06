@@ -45,7 +45,7 @@ export default function Interior_InspectionCh({ navigation }) {
   return (
     <View style={AllStyles.container}>
       <Text style={AllStyles.section}>Interior</Text>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{flexGrow:1}}>
         <InteriorChecklist
           interior={interior}
           setInterior={setInterior}

@@ -1,26 +1,26 @@
-// UI and logic
+// Architecture
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity,TouchableWithoutFeedback, ScrollView, Alert} from 'react-native';
+import { View, Text, TouchableOpacity,TouchableWithoutFeedback, ScrollView, Alert, StyleSheet, FlatList,Image, ImageBackground} from 'react-native';
 import  Modal  from 'react-native-modal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Picker } from '@react-native-picker/picker';
-import { TextInput } from 'react-native-gesture-handler';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 //Database
-import { collection,getDocs,query,where, addDoc,deleteDoc, doc } from 'firebase/firestore';
-import { Firebase_DB,Firebase_Auth } from '../../FirebaseConfig';
+import { collection, addDoc,deleteDoc, doc } from 'firebase/firestore';
+import { Firebase_DB} from '../../FirebaseConfig';
 
 //Styling,and ICONS
-import { AllStyles, primaryColor, secondaryColor, height } from '../shared/AllStyles';
+import { AllStyles, primaryColor, secondaryColor} from '../shared/AllStyles';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Feather from '@expo/vector-icons/Feather';
 
 // Data sharing
-import { UserContext,  ProfilesContext } from '../routes/InspectionStack';
+import { ProfilesContext } from '../shared/ProfilesContext';
 import { LoaderContext } from '../shared/LoaderContext';
 import { InspectContext } from '../shared/InspectionContext';
 import { VehicleContext } from '../shared/VehicleContext';
+import { CurrentUserContext } from '../shared/CurrentUserContext';
 import LoadingDots from "react-native-loading-dots";
 
 
@@ -29,43 +29,41 @@ export default function Inspection({ navigation ,route}){
   const [showDeleteIcon, setShowDeleteIcon] = useState({});
  
  
-  const profiles = useContext(ProfilesContext);// implement context as the same as below
-  const currentUser = useContext(UserContext);//    ""        ""  as the same as below
-  const { loader, setLoader } = useContext(LoaderContext);
+  const {profiles, setProfiles} = useContext(ProfilesContext);// implement context as the same as below
+  const {user,setUser} = useContext(CurrentUserContext);//    ""        ""  as the same as below
   const {inspections, setInspection} = useContext(InspectContext);
   const {vehicles, setVehicles} = useContext(VehicleContext);
   
 
-  const [formatedVecs, setFormated] = useState(vehicles.map(car => ({
-    label: car.fleetNo+ ' '+ car.model,   // Label and value can be the same for strings
-    value: car.fleetNo
-   
-  })));
+
+//const drivers = profiles.filter(profile=> profile.role ==='Driver')
 
   useEffect(() => {
-    const checkDataReady = async () => {
-        setLoader(true);
-        // Check if necessary data is ready to render inspection
-        if (profiles.length > 0 && currentUser/*  && inspections.length > 0 */) {
-            setIsInspectionReady(true);
-            setLoader(false);
-        }
-    };
-  
-    checkDataReady();
-  }, [profiles, currentUser , inspections ]);
+    if (vehicles.length > 0) {
+      const formattedVehicles = vehicles.map(car => ({
+        label: car.fleetNo + ' ' + car.model,
+        value: car.fleetNo,
+      }));
+      setVecItems(formattedVehicles); // Update once vehicles are loaded
+    }
+  }, [vehicles]);
 
 
   const [addLoader, setAddLoader] = useState(false);
 const [time, setTime] = useState(new Date());
-const [drvEmail, setDrvEmail] = useState('');
-const [isInspectionReady, setIsInspectionReady] = useState(false);
+const [drvEmail, setDrvEmail] = useState(null);
+
 
 
 // Driver data structure
 const [vec, setVec] =useState(0);
 const [openCars, setCarsOpen] = useState(false);
-const [vecItems,setVecItems] =useState(formatedVecs);
+const [openProfile, setProfileOpen] = useState(false);
+const [vecItems,setVecItems] =useState(vehicles.map(car => ({
+  label: car.fleetNo+ ' '+ car.model,   // Label and value can be the same for strings
+  value: car.fleetNo
+ 
+})));
 
 
 // Checlist 
@@ -145,33 +143,25 @@ const handleDeleteInspection = async (inspectionId) => {
   }
 };
 
-// const toggleDeleteIcon = (index) => {
-//   setShowDeleteIcon(prev => ({
-//     ...prev,
-//     [index]: !prev[index]
-//   }));
-// };
-
 const toggleDeleteIcon = (index) => {
-  // Only allow toggling if the user is not a driver
-  if (currentUser.role !== 'Driver') {
-    setShowDeleteIcon(prev => ({
-      ...prev,
-      [index]: !prev[index]
-    }));
-  }
+  setShowDeleteIcon(prev => ({
+    ...prev,
+    [index]: !prev[index]
+  }));
 };
+
+
 
 // INSPECTIONS Event Handling
   const handleAddInspect =async ()=>{
 
-    if (!currentUser || !drvEmail) {
+    if (!user || !drvEmail) {
       Alert.alert('Error', 'Please ensure you have selected a driver and that you are logged in.');
       return;
     }
 
         const newInspection ={
-            fleetCtrl_id:currentUser.id,
+            fleetCtrl_email:user.email,
             time:time.toISOString(),
             fleetNo:vec,
             documentation:documents,
@@ -181,7 +171,24 @@ const toggleDeleteIcon = (index) => {
             busWheels:wheels,
             body:bodyWorks,
             engine_Air:engineAir,
-            driverId: profiles.find(profile => profile.email === drvEmail).id,
+            driverEmail: drvEmail,
+            inspStatus:'Incomplete',
+            driverSide:{
+              parts:{},
+              damagePics:{}
+            },
+            frontSide:{
+              parts:{},
+              damagePics:{}
+            },
+            passengerSide:{
+              parts:{},
+              damagePics:{}
+            },
+            backSide:{
+              parts:{},
+              damagePics:{}
+            },
         };
 
         try {
@@ -196,7 +203,7 @@ const toggleDeleteIcon = (index) => {
 
           Alert.alert(
             'Inspection Added',
-            `Inspection was successfully added with ID: ${docRef.id}`,
+            `Inspection was successfully added`,
             [{ text: 'OK' }]
           );
         } catch (e) {
@@ -238,6 +245,11 @@ const toggleDeleteIcon = (index) => {
       hideTimePicker();
     };
 
+    const handleSelect = (value) => {
+      setDrvEmail(value);
+      setProfileOpen(false);
+    };
+
     const formattedTime = time
     ? time.toLocaleTimeString([], {
         hour: '2-digit',
@@ -246,57 +258,39 @@ const toggleDeleteIcon = (index) => {
       })
     : 'Select Time';
 
-         if (loader || !isInspectionReady) {
-          return (
-              <View style={{flex:1,alignItems:'center', justifyContent:'center', marginTop:'30%', justifyContent:'space-between'}}>
-                  
-                 
-                 <LoadingDots dots={3} colors={[primaryColor,secondaryColor,'lightblue']}/>
-          
-              </View>
-          );
-      }
- 
-      if (!currentUser) {
-        return (
-          <View style={{alignItems: 'center'}}>
-            <Text style={{fontSize: 40, color: primaryColor, padding: 70}}>User not logged in</Text>
-          </View>
-        );
-      }
 
-      if (!profiles || profiles.length === 0) {
-        return( 
-        <View style={{alignItems:'center'}}>
-        <Text style ={{fontSize:40 ,color:primaryColor,padding:70}}>No profile data found.</Text>
-        </View>
 
-    );
-    }
 
     return(
 
       <View style={AllStyles.container}>
-      <Text style={AllStyles.section}>Welcome, {currentUser.name + " " + currentUser.surname} inspections are waiting for you</Text>
+      <Text style={AllStyles.section}>Welcome, {user.name +" "+ user.surname} inspections are waiting for you</Text>
       <ScrollView contentContainerStyle={{flexGrow: 1, width: '100%'}}>
         {inspections.map((inspection, index) => (
           <TouchableOpacity
             key={index}
-            style={[AllStyles.inspectItem, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}
+            style={[AllStyles.inspectItem, { flexDirection: 'row', justifyContent: 'space-between'}]}
             onPress={() => navigation.navigate('Documentation', { inspection, setInspection })}
           >
-            <Text style={{ fontSize: 17, color: primaryColor, fontWeight: 'bold', marginLeft: '5%' }}>
+            <Text style={{ top:15,fontSize: 17, color: primaryColor, fontWeight: 'bold', marginLeft: '5%' }}>
               {inspection.fleetNo} Inspection
             </Text>
+           
+            <Text style={{ top:25,fontSize: 11, color: 'grey',fontStyle:'italic'}}>
+              {inspection.inspStatus}
+            </Text>
+
+  
             
             <View style={{
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginTop: '5%',
-              marginLeft: '24%'
+              marginTop: '8%',
+              height:'40%',
+              marginRight: '-25%'
             }}>
-              <Feather name="clock" size={13} color="black" style={{marginLeft: '5%'}} />
+              <Feather name="clock" size={13} color="black" style={{marginLeft: '2%'}} />
               <Text style={{ fontSize: 13 }}>
                 {new Date(inspection.time).toLocaleTimeString('en-US', {
                   hour: '2-digit',
@@ -306,13 +300,14 @@ const toggleDeleteIcon = (index) => {
               </Text>
             </View>
 
-            {currentUser.role !== 'Driver' && (
-              <TouchableWithoutFeedback
-                onPress={(e) => {
-                  e.stopPropagation();
-                  toggleDeleteIcon(index);
-                }}
-              >
+            <TouchableWithoutFeedback
+              onPress={(e) => {
+                e.stopPropagation();
+                toggleDeleteIcon(index);
+              }}
+
+            >
+              
                 {showDeleteIcon[index] ? (
                   <TouchableOpacity
                     onPress={(e) => {
@@ -323,19 +318,19 @@ const toggleDeleteIcon = (index) => {
                     <Feather name="trash-2" size={24} color="red" />
                   </TouchableOpacity>
                 ) : (
-                  <Feather name="more-vertical" size={22} color="black" />
+                  <Feather style={{height:'40%', marginRight:'5%'}} name="more-vertical" size={22} color="black" />
                 )}
               
             </TouchableWithoutFeedback>
-            )}
           </TouchableOpacity>
         ))}
-      </ScrollView>
 
-               
-      {currentUser.role !== 'Driver' && (//hide add inspection button for drivers
+                      
+      </ScrollView>
+                
+      {user.role !== 'Driver' && (
                 <TouchableOpacity style ={AllStyles.btnAdd}>
-                  <Ionicons name="add-circle" size={60} color={primaryColor} onPress={()=> setIsModalVisible(true)} />
+                  <Ionicons name="add-circle" size={65} color={primaryColor} onPress={()=> setIsModalVisible(true)} />
                 </TouchableOpacity>
       )}
                
@@ -350,7 +345,6 @@ const toggleDeleteIcon = (index) => {
                       {addLoader? (
                           <View style ={{
                             marginTop:'10%',
-                            
                             height:'60%',
                             padding: 100,
                             backgroundColor: 'white',
@@ -392,21 +386,42 @@ const toggleDeleteIcon = (index) => {
                                 
                                 }}>Driver: </Text>
 
-                                  <Picker
-                                    selectedValue={drvEmail}
-                                    onValueChange={(itemValue) => setDrvEmail(itemValue)}
-                                    style={{
-                                      width:'80%',
-                                      marginTop:'-3%'
-                                      }}
-                                  >
-                                    {profiles.map((profile)=> (
-                                          <Picker.Item 
-                                            key={profile.id}
-                                            label={profile.email}
-                                            value={profile.email}
-                                          />))}
-                                  </Picker> 
+                                      <TouchableOpacity onPress={() => setProfileOpen(true)} style={{width: '50%', padding: 10, backgroundColor: '#fff', borderRadius: 5, borderColor:primaryColor, borderWidth:1 }}>
+                                              <Text>{drvEmail ? drvEmail : 'Select Driver'}</Text>
+                                            </TouchableOpacity>
+
+                                            {/* Modal for Custom Picker */}
+                                            <Modal visible={openProfile}  transparent={true} animationType='fade'>
+                                              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
+                                                <View style={{ width: '90%', backgroundColor: '#fff', borderRadius: 10, padding: 20, height: '85%' }}>
+                                                  <FlatList
+                                                    data={profiles.filter(profile=>profile.role==='Driver')}
+                                                    keyExtractor={(item) => item.id}
+                                                   
+                                                    renderItem={({ item }) => (
+                          
+                                                      <TouchableOpacity  onPress={() => handleSelect(item.email)} style={{ flexDirection:'row', padding: 10 }}>
+                                                        <Image
+                                                        source ={{uri: item.profilePic}}
+                                                        style={{ backgroundColor: 'lightgrey',width:'20%', height:50, borderRadius:100, marginBottom:10, marginTop:'5%'}}  resizeMode="contain" 
+                                                            />
+
+                                                            <View style={{marginLeft:20,top:20,flexDirection:'column'}}>
+                                                       <Text style={{ fontSize: 16 }}>{item.name + " " + item.surname}</Text>
+                                                        <Text style={{ fontSize: 10, color:'grey' }}>{item.email}</Text>
+                                                        </View>
+                                                       
+                                                      </TouchableOpacity>
+                                                    )}
+                                                  />
+                                                  <TouchableOpacity onPress={() => setProfileOpen(false)} style={{ padding: 10, marginTop: 20 }}>
+                                                    <Text style={{ textAlign: 'center', color: 'red' }}>Cancel</Text>
+                                                  </TouchableOpacity>
+                                                </View>
+                                              </View>
+                                            </Modal>
+
+                                
                         </View>
                         
                         <View style={AllStyles.inspectionFeild}>
@@ -491,4 +506,7 @@ const toggleDeleteIcon = (index) => {
             
         </View>
     );
-}
+};
+
+
+

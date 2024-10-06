@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { AllStyles } from '../../shared/AllStyles';
+import { AllStyles } from '../../../shared/AllStyles';
 import { useRoute } from '@react-navigation/native';
 
-import { Firebase_DB } from '../../../FirebaseConfig';
+import { Firebase_DB } from '../../../../FirebaseConfig';
 import { doc, updateDoc } from 'firebase/firestore';
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
-const BackView = ({navigation, aspectRatio = 350 / 320}) => {
+const BackSmall = ({navigation,}) => {
 
 
   const route =useRoute();
@@ -29,48 +29,43 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   const colors = ['white','yellow', '#fa0707'];
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
   const [BackParts, setBack] = useState([
-    { id:'1B1',
-      label: 'top mid back Bar', 
-      d: "M20 17 Q 150 1, 300 17 L300,40 Q 150 15,20 40 L20,17", damageLvl: 0 },
-    { id:'1B2',
-      label: 'Top left Side Bar', 
-      d: "M20 17 L20,30 Q 15 50,20 150 L5,150 Q 0 10,20 18", damageLvl: 0 },
-    { id:'1B3',
-      title: 'Upper mid sheet', 
-      d: "M20 30 Q 15 50,20 150 L 300,150 Q 305 50,300 30 Q 150 15,20 30 M 25 50 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 M 25 70 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 M 280 50 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 M 280 70 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
-    { id:'1B4',
-      title: 'top right Side Bar', 
-      d: "M300 17 L 300,30 Q 305 50,300 150 L 315, 150 Q 320 10, 300 18", damageLvl: 0 },
-    { id:'1B5',
-      title: 'Center horizontal bar', 
-      d: "M5 150 H 315 V 170 H 5 V 150", damageLvl: 0 },
-    { id:'1B6',
-      title: 'Middle Sheet', 
-      d: "M20 170 L 40,170 Q 150 200 ,280 170 L 300,170 Q 305 195 ,300 220 H 20 Q 15 195,20 170", damageLvl: 0 },
-    { id :'1B7',
-      title: 'Left Mid Bar', 
-      d: "M5 170 H 20 Q 15 195,20 220 H 5 Q 0 225, 5 170", damageLvl: 0 },
-    { id:'1B8',
-      title: 'Right Mid Bar',
-      d: "M315 170 H 300 Q 305 195 ,300 220 H 315 Q 320 225, 315 170", damageLvl: 0 },
-    { id:'1B9',
-      title: 'Bottom Sheet', 
-      d: "M300 220 Q 290 270 ,280 280 H 45 Q 25 260, 20 220 M130,250 H 190 V 265 H 130 V 250", damageLvl: 0 },
-    { id:'1B10',
-      title: 'Left Back Lights', 
-      d: "M20 220 H 3 Q 4 280, 15 280 H 45 Q 25 260, 20 220 M 6 230 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 M 11 250 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 M 19 270 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
-    { id:'1B11',
-      id: 'Right Back Lights', 
-      d: "M300 220 H 317 Q 320 280, 300 280 H 280 Q 290 270 ,300 220 M 303 230 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 M 298 250 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 M 290 270 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
-    { id:'1B12',
-      title: 'Bottom left back bumper', 
-      d: "M5 250 Q 0 289 ,45 280 V 310 H 9 Z M 20 295 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
-    { id:'1B13',
-      title: 'Middle bottom bumper', 
-      d: "M45 280 H 280 V 310 H 45 M 90 289 L 97, 305 H 105 L 97, 289 H 90  M 220 289 L 210, 305 H 218L 228,289 Z", damageLvl: 0 },
-    { id:'1B14',
-      title: 'Bottom right back Bumper', 
-      d: "M280 280 Q 315 288 , 316 258 V 310 H 280 M 290 295 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
+    { id:'2B1',
+      label: 'Roof (back View)', 
+      d: "M50 17  Q 210 5,350 17  L353,40 Q 210 45,47 40 Z", damageLvl: 0 },
+    { id:'2B2',
+      label: 'left upper back', 
+      d: "M50 17 Q 38 80,40 250 L15,240 Q 10 20,50 17 ", damageLvl: 0 },
+    { id:'2B3',
+      title: 'Left back Lights', 
+      d: "M15 240 L40, 250 Q 40 275,47 350 L 43,350 Q 30 270,25 270 Q 28 270 ,15 245 Z", damageLvl: 0 },
+    { id:'2B4',
+      title: 'back window', 
+      d: "M47 40 Q 210 45,353 40 Q 362 80,360 190 Q 200 210,40 190 Q 43 50,47 40", damageLvl: 0 },
+    { id:'2B5',
+      title: 'center metal sheet', 
+      d: "M40 190 Q 200 210,360 190 Q 360 300,357 320 H 250 L 250,307 H 149 L 150,320 H 45 Q 37 200,40 190", damageLvl: 0 },
+    { id:'2B6',
+      title: 'Below left lights sheet', 
+      d: "M15 245 Q 30 270,38 320 L 15,320 Q 13 265,15 240", damageLvl: 0 },
+    { id :'2B7',
+      title: 'Left bottom sheet', 
+      d: "M15 320 L 38,320 Q 40 330,43 350 L 47, 350  Q 49 360,52 380  L 20,380 Q 13 335,15 320 M25 380  Q 25 355,48 352  M 20 375 L 50 ,375 M 18 370 L 50 ,370", damageLvl: 0 },
+    { id:'2B8',
+      title: 'Bottom mid sheet',
+      d: "M52 375 Q 42 325,45 320 H 150 Q 148 310,150 308 H 250  Q 250 335,240 345 H 160 Q 150 325,150 320 M 160 315  H 240  V 335 H 160 V 315  M 250 320  H 359 Q 355 370,345 380 H 52 M 48 352 H 355  Q 353 356,352 360 H 50  L 50,370 H 350 L 348,375 H 52", damageLvl: 0 },
+    { id:'2B10',
+      title: 'Below right lights sheet', 
+      d: "M385 250 Q 363 290,365 320 H 384  Q 386 255,385 250", damageLvl: 0 },
+    { id:'2B11',
+      id: 'right bottom sheet', 
+      d: "M384 320 H 364 Q 363 330,363 350 H 355 Q 355 370,345 380 H 377 Q 386 340,384 320 M 355 352 Q 370 355,370 380 M349 375  H 378 L 379,370 H 349", damageLvl: 0 },
+    { id:'2B12',
+      title: 'Right upper back', 
+      d: "M350 17 Q 362 80,360 250 L385,240 Q 388 20,350 17", damageLvl: 0 },
+    { id:'2B13',
+      title: ' Right Lights', 
+      d: "M385 240  L360,250 Q 360 300 ,356 350 H 362 Q 363 305,373 275 Q 380 255 ,385 250 V 240", damageLvl: 0 },
+   
   ]);
 
   useEffect(() => {
@@ -82,8 +77,8 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
   const screenWidth = dimensions.width;
   const screenHeight = dimensions.height;
-  const svgWidth = Math.min(screenWidth * 0.9, screenHeight * 0.9 * aspectRatio);
-  const svgHeight = svgWidth / aspectRatio;
+  const svgWidth =screenWidth*0.9;
+  const svgHeight =screenHeight*0.9 ;
 
   const handlePress = (id) => {
     setBack(BackParts.map(part => 
@@ -134,11 +129,11 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
   return (
     <View style={AllStyles.container}>
-    
+     
 
 
       <View style={{ width: svgWidth, height: svgHeight,justifyContent: 'center', alignItems: 'center', marginTop: '10%' }}>
-      <Svg height="100%" width="100%" viewBox="-15 0 350 320">
+      <Svg height="100%" width="100%" viewBox="0 0 390 700">
         {BackParts.map((part) => (
           <TouchableWithoutFeedback key={part.id} onPress={() => handlePress(part.id)}>
             <Path
@@ -166,4 +161,4 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   );
 };
 
-export default BackView;
+export default BackSmall;

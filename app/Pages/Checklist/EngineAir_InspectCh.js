@@ -23,13 +23,22 @@ export default function EngineAir_InspectCh({ navigation }) {
     const handleNext = () => {
         const allChecked = Object.values(engineAir).every(value => value === true);
         if (allChecked) {
-            navigation.navigate("DriverSide", {
-                inspection: {
-                    ...inspection,
-                    engine_Air: engineAir
-                },
-                updateInspections
-            });
+            if (Number(inspection.fleetNo) >= 200 && Number(inspection.fleetNo) < 300) {
+                navigation.navigate('DriverSmall', {
+                    inspection: {
+                        ...inspection,
+                        engine_Air: engineAir
+                    },
+                    updateInspections
+                });
+              } else {
+                navigation.navigate('DriverSide', {
+                    inspection: {
+                        ...inspection,
+                        engine_Air: engineAir
+                    },
+                    updateInspections
+                });}
         } else {
             Alert.alert(
                 "Incomplete Checklist",
@@ -39,10 +48,12 @@ export default function EngineAir_InspectCh({ navigation }) {
         }
     };
 
+    
+
     return (
         <View style={AllStyles.container}>
             <Text style={AllStyles.section}>Engine Fluid & Air System</Text>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{flexGrow:1}}>
                 <EngineAirChecklist
                     engineAir={engineAir}
                     setEngineAir={setEngineAir}

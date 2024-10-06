@@ -52,7 +52,7 @@ export default function BodyWorks_InspectionCh({ navigation }) {
     return (
         <View style={AllStyles.container}>
             <Text style={AllStyles.section}>Bodyworks</Text>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{flexGrow:1}}>
                 <BodyWorksChecklist
                     bodyWorks={bodyworks}
                     setBody={setBody}
