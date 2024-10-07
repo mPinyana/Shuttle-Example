@@ -7,7 +7,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import LoadingDots from "react-native-loading-dots";
 
 //Database
-import { collection, addDoc,deleteDoc, doc } from 'firebase/firestore';
+import { collection, addDoc,deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { Firebase_DB} from '../../FirebaseConfig';
 
 //Styling,and ICONS
@@ -35,6 +35,7 @@ export default function Inspection({ navigation ,route}){
   const { user } = useContext(CurrentUserContext);//    ""        ""  as the same as below
   const {inspections, setInspection} = useContext(InspectContext);
   const {vehicles, setVehicles} = useContext(VehicleContext);
+  
   
 
 
@@ -163,6 +164,7 @@ const toggleDeleteIcon = (index) => {
       Alert.alert('Error', 'Please ensure you have selected a driver and that you are logged in.');
       return;
     }
+    setAddLoader(true);
 
         const newInspection ={
             fleetCtrl_email:user.email,
@@ -204,16 +206,29 @@ const toggleDeleteIcon = (index) => {
           const docRef = await addDoc(collection(Firebase_DB, 'Inspections'), newInspection);
     
           // Add the new inspection to the local array
-          setInspection(I => [
-            ...I,
-            { id: docRef.id, ...newInspection }
-          ]);
+          // Add the new inspection to the local array
+        setInspection(prevInspections => [
+         ...prevInspections,
+         { id: docRef.id, ...newInspection }
+         ]);
+         // Immediately update the status to "Pending"
+      await updateDoc(doc(Firebase_DB, 'Inspections', docRef.id), {
+        inspStatus: 'Pending'
+      });
 
+      // Update the local state to reflect the new status
+      setInspection(prevInspections => 
+        prevInspections.map(insp => 
+          insp.id === docRef.id ? { ...insp, inspStatus: 'Pending' } : insp
+        )
+      );
           Alert.alert(
             'Inspection Added',
             `Inspection was successfully added`,
             [{ text: 'OK' }]
           );
+
+          setIsModalVisible(false);
         } catch (e) {
           console.error('Error adding document: ', e);
     
@@ -309,18 +324,16 @@ const toggleDeleteIcon = (index) => {
       </TouchableOpacity>
     );
 
-
-
-
     return(
 
       <View style={styles.container}>
       <Text style={styles.welcomeText}>Welcome, {user.name} {user.surname}</Text>
-      <Text style={styles.subText}>Inspections are waiting for you</Text>
+      <Text style={styles.subText}> Fined Inspections assigned..</Text>
       
       <FlatList
         data={inspections}
         renderItem={renderInspectionItem}
+        
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={styles.listContainer}
       />
