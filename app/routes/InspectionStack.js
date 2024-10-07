@@ -1,8 +1,7 @@
 //Atchitecture 
 import { createStackNavigator } from "@react-navigation/stack";
 import React, { useEffect, useState, useContext } from 'react';
-import { Firebase_Auth,Firebase_DB } from '../../FirebaseConfig';
-import { doc,getDoc, collection,getDocs,query,where, addDoc } from 'firebase/firestore';
+
 
 //Checlisting
 import inspection from "../Pages/Inspections";

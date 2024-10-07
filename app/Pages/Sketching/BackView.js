@@ -13,9 +13,12 @@ import LoadingDots from "react-native-loading-dots";
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
+
 import { VehicleContext } from '../../shared/VehicleContext';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+
+import { InspectContext } from '../../shared/InspectionContext';
 
 
 const BackView = ({navigation, aspectRatio = 350 / 320}) => {
@@ -29,6 +32,8 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   const [carNow, setCarNow]= useState(filteredcar[0]);
   const [isloading, setIsloaing] = useState(false);
   
+
+
   const [back_Side, setBackSide] = useState(inspection.backSide);
   const [damageImgs, setDamageImgs] = useState({});
   useEffect(() => {
@@ -163,41 +168,46 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
     });
   };
 
+
   const handleUpdateInspection = async () => {
+    const { inspections, setInspections } = useContext(InspectContext);
+  
     try {
       setIsloaing(true);
-      const updatedBackSide = await handleDamageLog();  // Wait for `back_Side` to be updated
+      const updatedBackSide = await handleDamageLog();
   
       const updatedInspection = {
         ...inspection,
-
         backSide: updatedBackSide,
-        time:new Date().toISOString(),
-        //update  to latest time
-       // Now we use the updated backSide
-        backSide: updatedBackSide, 
-        inspStatus:'Complete',  // Now we use the updated backSide
+        time: new Date().toISOString(),
+        inspStatus: 'Complete',
       };
-
-      handleUpdateVehicle(updatedInspection);
-      
-      uploadAllImages(updatedInspection);
+  
+      // Update the inspection in Firestore
       const inspectionRef = doc(Firebase_DB, 'Inspections', inspection.id);
-      await updateDoc(inspectionRef, updatedInspection);  // Update Firestore with synced state
+      await updateDoc(inspectionRef, updatedInspection);
+  
+      // Update the inspection in the context
+      setInspections(prevInspections => 
+        prevInspections.map(insp => 
+          insp.id === updatedInspection.id ? updatedInspection : insp
+        )
+      );
+  
+      handleUpdateVehicle(updatedInspection);
+      uploadAllImages(updatedInspection);
   
       console.log('Inspection updated successfully');
-      Alert.alert('', 'Inspection updated successfully');
-      
+      Alert.alert('Changes succesfull', 'Inspection updated successfully');
+  
       navigation.navigate("Inspections");
     } catch (error) {
       console.error('Failed to update inspection:', error);
-      Alert.alert('Failed to update inspection ', 'Unsuccessful: ' + error);
-      
+      Alert.alert('Failed to update inspection', 'Unsuccessful: ' + error);
     } finally {
       setIsloaing(false);
     }
   };
-
 
   const handleUpdateVehicle = async (inspected) => {
     try {

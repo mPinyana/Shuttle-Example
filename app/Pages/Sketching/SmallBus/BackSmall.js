@@ -12,6 +12,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { VehicleContext } from '../../../shared/VehicleContext';
+import { InspectContext } from '../../../shared/InspectionContext';
 
 const BackSmall = ({navigation,}) => {
 

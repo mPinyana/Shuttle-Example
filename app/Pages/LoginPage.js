@@ -8,7 +8,7 @@ import LottieView from 'lottie-react-native';
 import { Firebase_Auth, Firebase_DB, Firebase_Storage } from '../../FirebaseConfig';
 import {  signInWithEmailAndPassword } from 'firebase/auth';
 import { collection,getDocs,query,where,   } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL,listAll } from 'firebase/storage';
 
 import { AllStyles, primaryColor,secondaryColor}  from '../shared/AllStyles';
 import { ProfilesContext } from '../shared/ProfilesContext';
@@ -53,56 +53,92 @@ function LoginPage({navigation}) {
  
 
     const fetchProfilesAndVehicles = async () => {
-        try {
+      try {
           const profilesCollectionRef = collection(Firebase_DB, 'Profiles');
           const profilesSnapshot = await getDocs(profilesCollectionRef);
-    
-          const VehiclesCollectionRef = collection(Firebase_DB, 'vehicles');
-          const VehiclesSnapshot = await getDocs(VehiclesCollectionRef);
-    
+  
+          const vehiclesCollectionRef = collection(Firebase_DB, 'vehicles');
+          const vehiclesSnapshot = await getDocs(vehiclesCollectionRef);
+  
+          // Process profiles (as you're already doing)
           const profilesArray = await Promise.all(
-            profilesSnapshot.docs.map(async (doc) => {
-              const profileData = doc.data();
-              const profilePicRef = ref(Firebase_Storage, `profile_pictures/${doc.id}`);
-              
-              try {
-                const profilePicURL = await getDownloadURL(profilePicRef);
-                profileData.profilePic = profilePicURL;
-              } catch (error) {
-                console.error(`Error fetching profile picture for user ${doc.id}:`, error);
-                // Set default profile picture if there's an error
-                profileData.profilePic = require('../assets/defaultpfp.png');
-              }
-    
-              return { id: doc.id, ...profileData };
-            })
-          )
-          const vehiclesArray = VehiclesSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
+              profilesSnapshot.docs.map(async (doc) => {
+                  const profileData = doc.data();
+                  const profilePicRef = ref(Firebase_Storage, `profile_pictures/${doc.id}`);
+  
+                  try {
+                      const profilePicURL = await getDownloadURL(profilePicRef);
+                      profileData.profilePic = profilePicURL;
+                  } catch (error) {
+                      console.error(`Error fetching profile picture for user ${doc.id}:`, error);
+                      profileData.profilePic = require('../assets/defaultpfp.png');
+                  }
+  
+                  return { id: doc.id, ...profileData };
+              })
+          );
+  
+          // Process vehicles and fetch inspection images
+          const vehiclesArray = await Promise.all(
+              vehiclesSnapshot.docs.map(async (doc) => {
+                  const vehicleData = doc.data();
+  
+                  // Initialize an empty array for damage images
+                  vehicleData.damageImages = {};
+  
+                  if (vehicleData.inspections && vehicleData.inspections.length > 0) {
+                      // If inspections exist, fetch images for each inspection
+                      await Promise.all(vehicleData.inspections.map(async (inspectionId) => {
+                          const inspectionImagesPath = `Vehicles/${vehicleData.fleetNo}/${inspectionId}`;
+  
+                          try {
+                              const listRef = ref(Firebase_Storage, inspectionImagesPath);
+                              const listResult = await listAll(listRef); // Fetch all files in this directory
+  
+                              const inspectionImageUrls = await Promise.all(
+                                  listResult.items.map(async (imageRef) => {
+                                      return await getDownloadURL(imageRef); // Get download URL for each image
+                                  })
+                              );
+  
+                              vehicleData.damageImages[inspectionId] = inspectionImageUrls;
+                          } catch (error) {
+                              console.error(`Error fetching images for inspection ${inspectionId}:`, error);
+                          }
+                      }));
+                  } else {
+                      // No inspections found, use placeholder image
+                      vehicleData.damageImages.placeholder = [require('../assets/UCTShuttle.jpg')];
+                  }
+  
+                  return { id: doc.id, ...vehicleData };
+              })
+          );
+  
+          // Sort vehicles by fleet number and update state
           vehiclesArray.sort((a, b) => a.fleetNo - b.fleetNo);
           setVehicles(vehiclesArray);
-    
+  
+          // Process current user profile
           const currentUser = Firebase_Auth.currentUser;
           const filteredProfiles = profilesArray.filter(profile => profile.id !== currentUser.uid);
           const sortedProfiles = filteredProfiles.sort((a, b) => a.email.localeCompare(b.email));
           setProfiles(sortedProfiles);
-    
+  
           if (currentUser) {
-            const currentUserProfile = profilesArray.find(profile => profile.id === currentUser.uid);
-            setUser(currentUserProfile);
-            return currentUserProfile;  // Return the user profile after successful fetching
+              const currentUserProfile = profilesArray.find(profile => profile.id === currentUser.uid);
+              setUser(currentUserProfile);
+              return currentUserProfile;  // Return the user profile after successful fetching
           } else {
-            console.log('No user is currently logged in.');
-            return null;
+              console.log('No user is currently logged in.');
+              return null;
           }
-        } catch (error) {
+      } catch (error) {
           console.error('Error fetching profiles and vehicles:', error);
           throw error;
-        }
-      };
-
+      }
+  };
+  
       
       const fetchInspections = async (currentUser) => {
         try {
