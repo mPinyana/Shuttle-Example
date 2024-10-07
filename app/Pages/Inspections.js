@@ -1,6 +1,6 @@
 // Architecture
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity,TouchableWithoutFeedback, ScrollView, Alert, StyleSheet, FlatList,Image, ImageBackground} from 'react-native';
+import { View, Text, TouchableOpacity,TouchableWithoutFeedback, ScrollView, Alert, StyleSheet, FlatList,Image, ImageBackground,Dimensions} from 'react-native';
 import  Modal  from 'react-native-modal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Picker } from '@react-native-picker/picker';
@@ -23,6 +23,8 @@ import { VehicleContext } from '../shared/VehicleContext';
 import { CurrentUserContext } from '../shared/CurrentUserContext';
 import LoadingDots from "react-native-loading-dots";
 
+
+const { width, height } = Dimensions.get('window');
 
 export default function Inspection({ navigation ,route}){
   
@@ -264,80 +266,72 @@ const toggleDeleteIcon = (index) => {
       })
     : 'Select Time';
 
+    const renderInspectionItem = ({ item, index }) => (
+      <TouchableOpacity
+        style={styles.inspectItem}
+        onPress={() => navigation.navigate('Documentation', { inspection: item, setInspection })}
+      >
+        <View style={styles.inspectItemContent}>
+          <Text style={styles.fleetNoText}>{item.fleetNo} Inspection</Text>
+          <Text style={styles.statusText}>{item.inspStatus}</Text>
+          <View style={styles.timeContainer}>
+            <Feather name="clock" size={13} color="black" style={styles.clockIcon} />
+            <Text style={styles.timeText}>
+              {new Date(item.time).toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+              })}
+            </Text>
+          </View>
+        </View>
+        
+        {user.role !== 'Driver' && (
+          <TouchableWithoutFeedback onPress={(e) => {
+            e.stopPropagation();
+            toggleDeleteIcon(index);
+          }}>
+            {showDeleteIcon[index] ? (
+              <TouchableOpacity
+                onPress={(e) => {
+                  e.stopPropagation();
+                  handleDeleteInspection(item.id);
+                }}
+                style={styles.deleteIcon}
+              >
+                <Feather name="trash-2" size={24} color="red" />
+              </TouchableOpacity>
+            ) : (
+              <Feather name="more-vertical" size={22} color="black" style={styles.moreIcon} />
+            )}
+          </TouchableWithoutFeedback>
+        )}
+      </TouchableOpacity>
+    );
+
 
 
 
     return(
 
-      <View style={AllStyles.container}>
-      <Text style={AllStyles.section}>Welcome, {user.name + " " + user.surname} inspections are waiting for you</Text>
-      <ScrollView contentContainerStyle={{flexGrow: 1, width: '100%'}}>
-        {inspections.map((inspection, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[AllStyles.inspectItem, { flexDirection: 'row', justifyContent: 'space-between'}]}
-            onPress={() => navigation.navigate('Documentation', { inspection, setInspection })}
-          >
-            <Text style={{ top:15, fontSize: 17, color: primaryColor, fontWeight: 'bold', marginLeft: '5%' }}>
-              {inspection.fleetNo} Inspection
-            </Text>
-           
-            <Text style={{ top:25, fontSize: 15, color: 'black', fontStyle:'italic'}}>
-              {inspection.inspStatus}
-            </Text>
+      <View style={styles.container}>
+      <Text style={styles.welcomeText}>Welcome, {user.name} {user.surname}</Text>
+      <Text style={styles.subText}>Inspections are waiting for you</Text>
+      
+      <FlatList
+        data={inspections}
+        renderItem={renderInspectionItem}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.listContainer}
+      />
 
-  
-            
-            <View style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: '8%',
-              height:'40%',
-              marginRight: '-25%'
-            }}>
-              <Feather name="clock" size={13} color="black" style={{marginLeft: '2%'}} />
-              <Text style={{ fontSize: 13 }}>
-                {new Date(inspection.time).toLocaleTimeString('en-US', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: false
-                })}
-              </Text>
-            </View>
-              
-              {user.role !== 'Driver' && (
-              <TouchableWithoutFeedback
-                onPress={(e) => {
-                  e.stopPropagation();
-                  toggleDeleteIcon(index);
-                }}
-              >
-                {showDeleteIcon[index] ? (
-                  <TouchableOpacity
-                    onPress={(e) => {
-                      e.stopPropagation();
-                      handleDeleteInspection(inspection.id);
-                    }}
-                  >
-                    <Feather name="trash-2" size={24} color="red" />
-                  </TouchableOpacity>
-                ) : (
-                  <Feather style={{height:'40%', marginRight:'5%'}} name="more-vertical" size={22} color="black" />
-                )}
-              
-            </TouchableWithoutFeedback>
-              )}
-          </TouchableOpacity>
-        ))}
-
-                      
-      </ScrollView>
-                
       {user.role !== 'Driver' && (
-                <TouchableOpacity style ={AllStyles.btnAdd}>
-                  <Ionicons name="add-circle" size={65} color={primaryColor} onPress={()=> setIsModalVisible(true)} />
-                </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={() => setIsModalVisible(true)}
+        >
+          <Feather name="plus-circle" size={50} color={primaryColor} />
+        </TouchableOpacity>
       )}
                
                 <Modal
@@ -513,6 +507,85 @@ const toggleDeleteIcon = (index) => {
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: width * 0.05,
+    backgroundColor: '#f5f5f5',
+  },
+  welcomeText: {
+    fontSize: width * 0.06,
+    fontWeight: 'bold',
+    marginBottom: height * 0.01,
+  },
+  subText: {
+    fontSize: width * 0.04,
+    color: 'gray',
+    marginBottom: height * 0.02,
+  },
+  listContainer: {
+    flexGrow: 1,
+  },
+  inspectItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: width * 0.03,
+    marginBottom: height * 0.02,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  inspectItemContent: {
+    flex: 1,
+  },
+  fleetNoText: {
+    fontSize: width * 0.045,
+    fontWeight: 'bold',
+    color: primaryColor,
+    marginBottom: height * 0.005,
+  },
+  statusText: {
+    fontSize: width * 0.035,
+    color: 'black',
+    fontStyle: 'italic',
+    marginBottom: height * 0.005,
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  clockIcon: {
+    marginRight: width * 0.01,
+  },
+  timeText: {
+    fontSize: width * 0.03,
+  },
+  deleteIcon: {
+    padding: width * 0.02,
+  },
+  moreIcon: {
+    padding: width * 0.02,
+  },
+  addButton: {
+    position: 'absolute',
+    right: width * 0.05,
+    bottom: height * 0.05,
+    backgroundColor: 'white',
+    borderRadius: 30,
+    padding: width * 0.02,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+});
 
 
 
