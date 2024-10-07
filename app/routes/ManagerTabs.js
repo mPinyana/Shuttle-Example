@@ -8,6 +8,8 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
+import ViewStack from './ViewStack';
+
 const Tab = createBottomTabNavigator();
 
 const ManagerTabs=({navigation})=>{
@@ -34,7 +36,7 @@ const ManagerTabs=({navigation})=>{
 
 
       }}>
-    <Tab.Screen name='Fleet' component={Search}
+    <Tab.Screen name='Fleet' component={ViewStack}
         options={{
             tabBarIcon: ({ color, focused })=> <Ionicons name={focused?"bus":'bus-outline'} size={32} color={color} />
         }}
