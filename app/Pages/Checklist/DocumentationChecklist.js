@@ -38,13 +38,13 @@ const DocumentationChecklist = ({ documents, setDocuments, mileage, setMileage, 
       <ScrollView>
       <View style={AllStyles.checklist}>
           <View style={[AllStyles.checkItem, { marginBottom: 20 }]}>
-            <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Mileage</Text>
+            <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Enter Mileage:</Text>
             <TextInput
-              style={[AllStyles.input, { width: '50%', height: 40, borderColor: 'gray', borderWidth: 1, padding: 5 }]}
+              style={[AllStyles.input, { width: '50%', height: 40, borderColor: 'gray', borderWidth: 1, padding: 5, flexDirection:'row'}]}
               onChangeText={setMileage}
               value={mileage}
               keyboardType="numeric"
-              placeholder="Enter mileage"
+              placeholder=""
             />
           </View>
           <View style={[AllStyles.checkItem, { marginBottom: 10 }]}>
