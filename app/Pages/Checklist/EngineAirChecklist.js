@@ -23,7 +23,7 @@ const EngineAirChecklist = ({ engineAir, setEngineAir }) => {
     return (
         <View style={AllStyles.checklist}>
             <View style={AllStyles.checkItem}>
-                <Text style={AllStyles.label}>Select All</Text>
+                <Text style={[AllStyles.label, { fontWeight: 'bold' }]}>Select All</Text>
                 <BouncyCheckbox
                     size={30}
                     fillColor="green"

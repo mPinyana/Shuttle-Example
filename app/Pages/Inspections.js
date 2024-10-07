@@ -30,7 +30,7 @@ export default function Inspection({ navigation ,route}){
  
  
   const {profiles, setProfiles} = useContext(ProfilesContext);// implement context as the same as below
-  const {user,setUser} = useContext(CurrentUserContext);//    ""        ""  as the same as below
+  const { user } = useContext(CurrentUserContext);//    ""        ""  as the same as below
   const {inspections, setInspection} = useContext(InspectContext);
   const {vehicles, setVehicles} = useContext(VehicleContext);
   
@@ -144,10 +144,12 @@ const handleDeleteInspection = async (inspectionId) => {
 };
 
 const toggleDeleteIcon = (index) => {
-  setShowDeleteIcon(prev => ({
-    ...prev,
-    [index]: !prev[index]
-  }));
+  if (user.role !== 'Driver') {
+    setShowDeleteIcon(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  }
 };
 
 
@@ -268,7 +270,7 @@ const toggleDeleteIcon = (index) => {
     return(
 
       <View style={AllStyles.container}>
-      <Text style={AllStyles.section}>Welcome, {user.name +" "+ user.surname} inspections are waiting for you</Text>
+      <Text style={AllStyles.section}>Welcome, {user.name + " " + user.surname} inspections are waiting for you</Text>
       <ScrollView contentContainerStyle={{flexGrow: 1, width: '100%'}}>
         {inspections.map((inspection, index) => (
           <TouchableOpacity
@@ -276,11 +278,11 @@ const toggleDeleteIcon = (index) => {
             style={[AllStyles.inspectItem, { flexDirection: 'row', justifyContent: 'space-between'}]}
             onPress={() => navigation.navigate('Documentation', { inspection, setInspection })}
           >
-            <Text style={{ top:15,fontSize: 17, color: primaryColor, fontWeight: 'bold', marginLeft: '5%' }}>
+            <Text style={{ top:15, fontSize: 17, color: primaryColor, fontWeight: 'bold', marginLeft: '5%' }}>
               {inspection.fleetNo} Inspection
             </Text>
            
-            <Text style={{ top:25,fontSize: 15, color: 'black',fontStyle:'italic'}}>
+            <Text style={{ top:25, fontSize: 15, color: 'black', fontStyle:'italic'}}>
               {inspection.inspStatus}
             </Text>
 
@@ -303,15 +305,14 @@ const toggleDeleteIcon = (index) => {
                 })}
               </Text>
             </View>
-
-            <TouchableWithoutFeedback
-              onPress={(e) => {
-                e.stopPropagation();
-                toggleDeleteIcon(index);
-              }}
-
-            >
               
+              {user.role !== 'Driver' && (
+              <TouchableWithoutFeedback
+                onPress={(e) => {
+                  e.stopPropagation();
+                  toggleDeleteIcon(index);
+                }}
+              >
                 {showDeleteIcon[index] ? (
                   <TouchableOpacity
                     onPress={(e) => {
@@ -326,6 +327,7 @@ const toggleDeleteIcon = (index) => {
                 )}
               
             </TouchableWithoutFeedback>
+              )}
           </TouchableOpacity>
         ))}
 
