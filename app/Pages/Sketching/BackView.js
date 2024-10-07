@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, TextInput, Modal,StyleSheet, ScrollView } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 import { Firebase_DB } from '../../../FirebaseConfig';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -13,9 +13,14 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
-
+  
   const route =useRoute();
   const { inspection, updateInspections } = route.params;
+
+  const handleViewInspectionDetails = () => {
+    navigation.navigate('InspectionDetailsView', { inspection: inspection });
+  };
+
 
   const [back_Side, setBackSide] = useState(inspection.backSide);
 
@@ -179,8 +184,16 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
       <View style={AllStyles.btnContainer}>
         <TouchableOpacity style={AllStyles.btn}
-          onPress={() => {handleDamageLog();handleUpdateInspection()}}>
+          onPress={() => {handleDamageLog();handleUpdateInspection()}}
+          >
           <Text style={AllStyles.textBtn} >Submit</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity 
+          style={[AllStyles.btn, styles.viewButton]}
+          onPress={handleViewInspectionDetails}
+        >
+          <Text style={AllStyles.textBtn}>View Details</Text>
         </TouchableOpacity>
     
       </View>
@@ -319,6 +332,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center'
+  },
+  viewButton: {
+    marginLeft: 0, // Add some space between Submit and View Details buttons
+    backgroundColor: primaryColor,
+    button:20,
+    top:2
+     // Use the primary color for consistency
   },
 });
 export default BackView;
