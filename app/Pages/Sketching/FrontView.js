@@ -5,6 +5,7 @@ import { AllStyles } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import * as ImagePicker from 'expo-image-picker';
 
 
 const FrontView=({aspectRatio = 900/900})=>{
@@ -16,7 +17,7 @@ const { inspection, updateInspections } = route.params;
 
 const [front_Side, setFrontSide] = useState(inspection.frontSide); 
 
-
+const [damageImgs, setDamageImgs] = useState({});
 const colors = ['white','yellow', '#fa0707'];
 const [dimensions, setDimensions] = useState(Dimensions.get('window'));
 
@@ -83,6 +84,28 @@ const [frontParts,SetFront] = useState([
 
 ]);
 
+
+
+const takePhoto = async () => {
+  const result = await ImagePicker.launchCameraAsync({
+    allowsEditing: false,
+    quality: 1,
+  });
+
+  if (!result.canceled) {
+    // Create a unique key for the new image (e.g., using the current timestamp or an incrementing number)
+    const newImageKey = `Front image${Object.keys(damageImgs).length + 1}`;
+
+    // Update the damageImgs object with the new image URI
+    setDamageImgs((prevState) => ({
+      ...prevState,
+      [newImageKey]: result.assets[0].uri, // Add the new image URI with the generated key
+    }));
+  }
+};
+
+
+
 const handlePress = (id) => {
     SetFront(frontParts.map(part => 
       part.id === id 
@@ -93,7 +116,7 @@ const handlePress = (id) => {
 
   const handleDamageLog = () => {
     // Update the driver side parts state
-    const updatedFrontSide = { ...front_Side, parts: frontParts };
+    const updatedFrontSide = { ...front_Side, parts: frontParts, damagePics:damageImgs };
     setFrontSide(updatedFrontSide);
     return updatedFrontSide; // Return the updated state for use
   };
@@ -155,9 +178,18 @@ return (
         
     
     </View>
-    <TouchableOpacity style={AllStyles.btnCamera}>
-        <SimpleLineIcons name="camera" size={30} color="white" />
-      </TouchableOpacity>
+                  <TouchableOpacity style={AllStyles.btnCamera} onPress={takePhoto}>
+                            <SimpleLineIcons name="camera" size={30} color="white" />
+                            {/* Badge to display the number of images */}
+                            {Object.keys(damageImgs).length > 0 && (
+                              <View style={AllStyles.badgeContainer}>
+                                <Text style={AllStyles.badgeText}>
+                                  {Object.keys(damageImgs).length}
+                                </Text>
+                              </View>
+                            )}
+                          </TouchableOpacity>
+       
  
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
                                                               const updatedFrontSide = handleDamageLog(); // Get updated driver side
@@ -182,15 +214,8 @@ return (
       </TouchableOpacity>
 </View>
 );
+};
 
 
-
-
-
-
-
-
-
-}
 
 export default FrontView;

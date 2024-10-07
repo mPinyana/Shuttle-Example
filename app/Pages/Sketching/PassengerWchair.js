@@ -3,6 +3,7 @@ import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, T
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -15,7 +16,7 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
   const { inspection, updateInspections } = route.params;
   
   const [passenger_Side, setPassengerSide] = useState(inspection.passengerSide); 
-
+  const [damageImgs, setDamageImgs] = useState({});
   const translation = useRef(new Animated.Value(-100)).current;
   const [headerShown, setHeaderShown] = useState(false);
 
@@ -113,6 +114,26 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
   const screenWidth = dimensions.width;
   const screenHeight = dimensions.height;
 
+  
+  const takePhoto = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: false,
+      quality: 1,
+    });
+  
+    if (!result.canceled) {
+      // Create a unique key for the new image (e.g., using the current timestamp or an incrementing number)
+      const newImageKey = `Passenger image${Object.keys(damageImgs).length + 1}`;
+  
+      // Update the damageImgs object with the new image URI
+      setDamageImgs((prevState) => ({
+        ...prevState,
+        [newImageKey]: result.assets[0].uri, // Add the new image URI with the generated key
+      }));
+    }
+  };
+  
+  
 
  
 
@@ -126,7 +147,7 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
 
   const handleDamageLog = () => {
     // Update the driver side parts state
-    const updatedPassengerSide = { ...passenger_Side, parts: Passengerparts };
+    const updatedPassengerSide = { ...passenger_Side, parts: Passengerparts, damagePics:damageImgs };
     setPassengerSide(updatedPassengerSide);
     return updatedPassengerSide; // Return the updated state for use
   };
@@ -295,9 +316,18 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
       </View>
       </ScrollView>
 
-      <TouchableOpacity style={AllStyles.btnCamera}>
-        <SimpleLineIcons name="camera" size={30} color="white" />
-      </TouchableOpacity>
+      <TouchableOpacity style={AllStyles.btnCamera} onPress={takePhoto}>
+              <SimpleLineIcons name="camera" size={30} color="white" />
+              {/* Badge to display the number of images */}
+              {Object.keys(damageImgs).length > 0 && (
+                <View style={AllStyles.badgeContainer}>
+                  <Text style={AllStyles.badgeText}>
+                    {Object.keys(damageImgs).length}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+       
 
       <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
                                                               const updatedPassengerSide = handleDamageLog(); // Get updated driver side
@@ -314,5 +344,8 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
     </View>
   );
 };
+
+
+
 
 export default PassengerWchair;
