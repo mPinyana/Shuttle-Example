@@ -328,7 +328,7 @@ const toggleDeleteIcon = (index) => {
 
       <View style={styles.container}>
       <Text style={styles.welcomeText}>Welcome, {user.name} {user.surname}</Text>
-      <Text style={styles.subText}> Fined Inspections assigned..</Text>
+      <Text style={styles.subText}> Find Inspections assigned..</Text>
       
       <FlatList
         data={inspections}
