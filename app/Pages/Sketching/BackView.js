@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
-import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions } from 'react-native';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, TextInput, Modal,StyleSheet, ScrollView } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { AllStyles,primaryColor,secondaryColor } from '../../shared/AllStyles';
+import { AllStyles, primaryColor } from '../../shared/AllStyles';
+
 import { useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Firebase_DB,Firebase_Storage } from '../../../FirebaseConfig';
@@ -10,7 +12,11 @@ import { doc, updateDoc ,getDoc} from 'firebase/firestore';
 import LoadingDots from "react-native-loading-dots";
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
+
 import { VehicleContext } from '../../shared/VehicleContext';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
 
 const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
@@ -81,6 +87,9 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       d: "M280 280 Q 315 288 , 316 258 V 310 H 280 M 290 295 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
   ]);
 
+  const [isCommentModalVisible, setCommentModalVisible] = useState(false);
+  const [comment, setComment] = useState(inspection.backSide.comment || '');
+
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
       setDimensions(window);
@@ -100,6 +109,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
         : part
     ));
   };
+
 
 
   const takePhoto = async () => {
@@ -122,12 +132,33 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   
   
 
+  const handleCommentButtonPress = () => {
+    setCommentModalVisible(true);
+  };
+
+
+  const handleSaveComment = () => {
+    setBackSide(prevState => ({
+      ...prevState,
+      comment: comment
+    }));
+    setCommentModalVisible(false);
+    Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
+  };
+/*  handleDamageLog=()=>{
+    setBackSide({...back_Side, parts:BackParts})
+  }
+  */
+
+
   const handleDamageLog = () => {
     return new Promise((resolve) => {
       setBackSide((prevBackSide) => {
-        const updatedBackSide = { ...prevBackSide, parts: BackParts , damagePics:damageImgs};
-        resolve(updatedBackSide); // Resolving the updated state
-        return updatedBackSide;   // Returning the updated state
+
+        const updatedBackSide = { ...prevBackSide, parts: BackParts, comment: comment, damagePics:damageImgs };
+        resolve(updatedBackSide);
+        return updatedBackSide;
+
       });
     });
   };
@@ -139,10 +170,13 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   
       const updatedInspection = {
         ...inspection,
+
         backSide: updatedBackSide,
         time:new Date().toISOString(),
         //update  to latest time
        // Now we use the updated backSide
+        backSide: updatedBackSide, 
+        inspStatus:'Complete',  // Now we use the updated backSide
       };
 
       handleUpdateVehicle(updatedInspection);
@@ -253,8 +287,6 @@ const uploadImage = async (uri, path) => {
   return (
     <View style={AllStyles.container}>
     
-
-
       <View style={{ width: svgWidth, height: svgHeight,justifyContent: 'center', alignItems: 'center', marginTop: '10%' }}>
       <Svg height="100%" width="100%" viewBox="-15 0 350 320">
         {BackParts.map((part) => (
@@ -283,16 +315,154 @@ const uploadImage = async (uri, path) => {
             </TouchableOpacity>
        
 
+      <TouchableOpacity style={styles.btnComment} onPress={handleCommentButtonPress}>
+        <FontAwesome name="comment" size={30} color="white" />
+      </TouchableOpacity>
+
       <View style={AllStyles.btnContainer}>
         <TouchableOpacity style={AllStyles.btn}
           onPress={() => {handleDamageLog();handleUpdateInspection()}}>
           <Text style={AllStyles.textBtn} >Submit</Text>
         </TouchableOpacity>
+    
       </View>
+      
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isCommentModalVisible}
+        onRequestClose={() => setCommentModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TextInput
+              style={styles.input}
+              onChangeText={setComment}
+              value={comment}
+              placeholder="Write your comment here"
+              multiline
+            />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setCommentModalVisible(false)}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSave]}
+                onPress={handleSaveComment}
+              >
+                <Text style={styles.textStyle}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
+    
   );
+  
 };
 
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  svgContainer: {
+    width: '90%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnCamera: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnComment: {
+    position: 'absolute',
+    bottom: 70,
+    left: 5,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnArrowR: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  input: {
+    height: 150,
+    width: 300,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    textAlignVertical: 'top'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  button: {
+    borderRadius: 10,
+    padding: 10,
+    elevation: 2,
+    marginHorizontal: 10
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  buttonSave: {
+    backgroundColor: '#4CAF50',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+});
 
 export default BackView;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions } from 'react-native';
+import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions, TextInput, Modal, StyleSheet } from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
 
@@ -104,6 +105,9 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
     label: 'lower Sheet 8', x: 80, y: 1050, width: 70, height: 30, damageLvl: 0 },
   ]);
 
+  const [isCommentModalVisible, setCommentModalVisible] = useState(false);
+  const [comment, setComment] = useState(inspection.passengerSide.comment || '');
+
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
       setDimensions(window);
@@ -113,6 +117,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
 
   const screenWidth = dimensions.width;
   const screenHeight = dimensions.height;
+
 
 
  
@@ -137,6 +142,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
   
 
 
+
   const handlePress = (id) => {
     setPassenger(Passengerparts.map(part => 
       part.id === id 
@@ -145,11 +151,30 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
     ));
   };
 
+  const handleCommentButtonPress = () => {
+    setCommentModalVisible(true);
+  };
+
+  const handleSaveComment = () => {
+    setPassengerSide(prevState => ({
+      ...prevState,
+      comment: comment
+    }));
+    setCommentModalVisible(false);
+    Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
+  };
+
   const handleDamageLog = () => {
-    // Update the driver side parts state
-    const updatedPassengerSide = { ...passenger_Side, parts: Passengerparts ,damagePics:damageImgs};
+
+    const updatedPassengerSide = { 
+      ...passenger_Side, 
+      parts: Passengerparts,
+      comment: comment ,
+      damagePics:damageImgs
+    };
+
     setPassengerSide(updatedPassengerSide);
-    return updatedPassengerSide; // Return the updated state for use
+    return updatedPassengerSide;
   };
 
   return (
@@ -329,23 +354,160 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
             </TouchableOpacity>
        
 
-      <TouchableOpacity style={AllStyles.btnArrowR}    onPress={() => {
-                                                              const updatedPassengerSide = handleDamageLog(); // Get updated driver side
-                                                              navigation.navigate('BackView', {
-                                                                inspection: {
-                                                                  ...inspection,
-                                                                  passengeSide: updatedPassengerSide, // Pass the updated driver side
-                                                                },
-                                                                updateInspections,
-                                                              });
-                                                            }}>
-      <AntDesign name="arrowright" size={30} color="white" />
+      <TouchableOpacity style={styles.btnComment} onPress={handleCommentButtonPress}>
+        <FontAwesome name="comment" size={30} color="white" />
       </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={AllStyles.btnArrowR}    
+        onPress={() => {
+          const updatedPassengerSide = handleDamageLog();
+          navigation.navigate('BackView', {
+            inspection: {
+              ...inspection,
+              passengerSide: updatedPassengerSide,
+            },
+            updateInspections,
+          });
+        }}
+      >
+        <AntDesign name="arrowright" size={30} color="white" />
+      </TouchableOpacity>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={isCommentModalVisible}
+        onRequestClose={() => setCommentModalVisible(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <TextInput
+              style={styles.input}
+              onChangeText={setComment}
+              value={comment}
+              placeholder="Write your comment here"
+              multiline
+            />
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setCommentModalVisible(false)}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonSave]}
+                onPress={handleSaveComment}
+              >
+                <Text style={styles.textStyle}>Save</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
     </View>
   );
 };
 
 
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  svgContainer: {
+    width: '90%',
+    aspectRatio: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnCamera: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnComment: {
+    position: 'absolute',
+    bottom: 20,
+    left: 90,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  btnArrowR: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: '#007AFF',
+    borderRadius: 30,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  input: {
+    height: 150,
+    width: 300,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    textAlignVertical: 'top'
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%'
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    marginHorizontal: 10
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  buttonSave: {
+    backgroundColor: '#4CAF50',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+});
 
 export default PassengerView;
