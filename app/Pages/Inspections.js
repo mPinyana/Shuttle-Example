@@ -3,8 +3,8 @@ import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity,TouchableWithoutFeedback, ScrollView, Alert, StyleSheet, FlatList,Image, ImageBackground,Dimensions} from 'react-native';
 import  Modal  from 'react-native-modal';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { Picker } from '@react-native-picker/picker';
 import DropDownPicker from 'react-native-dropdown-picker';
+import LoadingDots from "react-native-loading-dots";
 
 //Database
 import { collection, addDoc,deleteDoc, doc } from 'firebase/firestore';
@@ -21,7 +21,7 @@ import { LoaderContext } from '../shared/LoaderContext';
 import { InspectContext } from '../shared/InspectionContext';
 import { VehicleContext } from '../shared/VehicleContext';
 import { CurrentUserContext } from '../shared/CurrentUserContext';
-import LoadingDots from "react-native-loading-dots";
+
 
 
 const { width, height } = Dimensions.get('window');
