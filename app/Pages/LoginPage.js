@@ -3,12 +3,10 @@ import {View, Text,TextInput,TouchableOpacity, Image, TouchableWithoutFeedback, 
 import LoadingDots from "react-native-loading-dots";
 import LottieView from 'lottie-react-native';
 
-
-
 import { Firebase_Auth, Firebase_DB, Firebase_Storage } from '../../FirebaseConfig';
 import {  signInWithEmailAndPassword } from 'firebase/auth';
 import { collection,getDocs,query,where,   } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL,listAll } from 'firebase/storage';
+import { ref, uploadBytes, getDownloadURL,listAll , getMetadata} from 'firebase/storage';
 
 import { AllStyles, primaryColor,secondaryColor}  from '../shared/AllStyles';
 import { ProfilesContext } from '../shared/ProfilesContext';
@@ -87,34 +85,42 @@ function LoginPage({navigation}) {
                   vehicleData.damageImages = {};
   
                   if (vehicleData.inspections && vehicleData.inspections.length > 0) {
-                      // If inspections exist, fetch images for each inspection
-                      await Promise.all(vehicleData.inspections.map(async (inspectionId) => {
-                          const inspectionImagesPath = `Vehicles/${vehicleData.fleetNo}/${inspectionId}`;
-  
-                          try {
-                              const listRef = ref(Firebase_Storage, inspectionImagesPath);
-                              const listResult = await listAll(listRef); // Fetch all files in this directory
-  
-                              const inspectionImageUrls = await Promise.all(
-                                  listResult.items.map(async (imageRef) => {
-                                      return await getDownloadURL(imageRef); // Get download URL for each image
-                                  })
-                              );
-  
-                              vehicleData.damageImages[inspectionId] = inspectionImageUrls;
-                          } catch (error) {
-                              console.error(`Error fetching images for inspection ${inspectionId}:`, error);
-                          }
-                      }));
-                  } else {
-                      // No inspections found, use placeholder image
-                      vehicleData.damageImages.placeholder = [require('../assets/UCTShuttle.jpg')];
-                  }
-  
-                  return { id: doc.id, ...vehicleData };
-              })
-          );
-  
+                    // If inspections exist, fetch images for each inspection
+                    await Promise.all(vehicleData.inspections.map(async (inspectionId) => {
+                        const inspectionImagesPath = `Vehicles/${vehicleData.fleetNo}/${inspectionId}`;
+
+                        try {
+                            const listRef = ref(Firebase_Storage, inspectionImagesPath);
+                            const listResult = await listAll(listRef); // Fetch all files in this directory
+
+                            // Get download URLs for images, sorted by their creation time (newest first)
+                            const inspectionImageUrls = await Promise.all(
+                                listResult.items
+                                    .map(async (imageRef) => {
+                                        const metadata = await getMetadata(imageRef); // Fetch image metadata
+                                        const downloadURL = await getDownloadURL(imageRef); // Get download URL for each image
+                                        return { downloadURL, timeCreated: metadata.timeCreated }; // Return URL and creation time
+                                    })
+                            );
+
+                            // Sort images by creation time, newest first
+                            inspectionImageUrls.sort((a, b) => new Date(b.timeCreated) - new Date(a.timeCreated));
+
+                            // Store only the sorted URLs in the damageImages object
+                            vehicleData.damageImages[inspectionId] = inspectionImageUrls.map(item => item.downloadURL);
+                        } catch (error) {
+                            console.error(`Error fetching images for inspection ${inspectionId}:`, error);
+                        }
+                    }));
+                } else {
+                    // No inspections found, use placeholder image
+                    vehicleData.damageImages.placeholder = [require('../assets/Shuttle.jpg')];
+                }
+
+                return { id: doc.id, ...vehicleData };
+            })
+        );
+
           // Sort vehicles by fleet number and update state
           vehiclesArray.sort((a, b) => a.fleetNo - b.fleetNo);
           setVehicles(vehiclesArray);

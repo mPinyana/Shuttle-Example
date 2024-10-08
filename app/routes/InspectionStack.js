@@ -44,7 +44,7 @@ function InspectionStack(){
                 
                         <Stack.Navigator initialRouteName="Inspections">
                             <Stack.Screen name="Inspections" component={inspection} options={{
-                                        headerLeft: ()=> <CustomHeader /*navigation={navigation}*//>,
+                                        headerLeft: ()=> <CustomHeader />,
                                         headerTitleAlign: 'center',
                                         headerShown: true,
                                         headerTitleStyle: { color: '#004aad',
@@ -68,7 +68,8 @@ function InspectionStack(){
                                         headerTitleStyle: { color: '#004aad',
                                             fontSize: 25,
                                         },
-                                        headerStyle:{borderBottomWidth: 2,}
+                                        headerStyle:{borderBottomWidth: 2,},
+                                        
                             }}/>
                             <Stack.Screen name="Interior" component={interiorPage }
                                 options={{

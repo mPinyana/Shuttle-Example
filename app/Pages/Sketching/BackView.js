@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useContext } from 'react';
 import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, TextInput, Modal,StyleSheet, ScrollView } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { AllStyles, primaryColor } from '../../shared/AllStyles';
+import { AllStyles, primaryColor,secondaryColor } from '../../shared/AllStyles';
 
 import { useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -26,7 +26,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
   const route =useRoute();
   const { inspection, updateInspections } = route.params;
-
+  //const { inspections, setInspections } = useContext(InspectContext);
   const {vehicles, setVehicles} = useContext(VehicleContext);
   const filteredcar= vehicles.filter(car=>car.fleetNo === inspection.fleetNo);
   const [carNow, setCarNow]= useState(filteredcar[0]);
@@ -170,7 +170,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
 
   const handleUpdateInspection = async () => {
-    const { inspections, setInspections } = useContext(InspectContext);
+  
   
     try {
       setIsloaing(true);
@@ -188,11 +188,11 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       await updateDoc(inspectionRef, updatedInspection);
   
       // Update the inspection in the context
-      setInspections(prevInspections => 
+    /*   setInspections(prevInspections => 
         prevInspections.map(insp => 
           insp.id === updatedInspection.id ? updatedInspection : insp
         )
-      );
+      ); */
   
       handleUpdateVehicle(updatedInspection);
       uploadAllImages(updatedInspection);
