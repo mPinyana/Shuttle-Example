@@ -1,6 +1,7 @@
 import Search from '../Pages/Search'
 import React from 'react';
 import { primaryColor } from '../shared/AllStyles';
+import Profile from '../Pages/Profile';
 
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -55,7 +56,7 @@ const ManagerTabs=({navigation})=>{
     }}/>
    
 
-    <Tab.Screen name='Profile' component={Search} options={{
+    <Tab.Screen name='Profile' component={Profile} options={{
         tabBarIcon: ({color,focused})=> <FontAwesome name={focused?"user":'user-o'} size={32} color={color} />
     }}/>
    
