@@ -11,7 +11,7 @@ export default function Documentation_inspectionCh() {
   const { inspection, setInspection } = route.params;
 
   const [documents, setDocuments] = useState(inspection.documentation);
-  const [mileage, setMileage] = useState(inspection.mileage || '');
+  const [mileage, setMileage] = useState(inspection.mileage || '');//components props
   const [isValid, setIsValid] = useState(false);
 
   const updateInspections = (updatedInspection) => {
@@ -26,7 +26,7 @@ export default function Documentation_inspectionCh() {
     updateInspections({
       ...inspection,
       documentation: documents,
-      mileage: mileage
+      mileage: mileage// hook
     });
   }, [documents, mileage]);
 
