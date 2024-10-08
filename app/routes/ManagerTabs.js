@@ -38,6 +38,7 @@ const ManagerTabs=({navigation})=>{
       }}>
     <Tab.Screen name='Fleet' component={ViewStack}
         options={{
+          headerShown:false,
             tabBarIcon: ({ color, focused })=> <Ionicons name={focused?"bus":'bus-outline'} size={32} color={color} />
         }}
      />

@@ -61,10 +61,10 @@ function LoginPage({navigation}) {
           const vehiclesSnapshot = await getDocs(vehiclesCollectionRef);
   
           // Process profiles (as you're already doing)
-          const profilesArray = await Promise.all(
-              profilesSnapshot.docs.map(async (doc) => {
-                  const profileData = doc.data();
-                  const profilePicRef = ref(Firebase_Storage, `profile_pictures/${doc.id}`);
+                    const profilesArray = await Promise.all(
+                        profilesSnapshot.docs.map(async (doc) => {
+                            const profileData = doc.data();
+                            const profilePicRef = ref(Firebase_Storage, `profile_pictures/${doc.id}`);
   
                   try {
                       const profilePicURL = await getDownloadURL(profilePicRef);
