@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useCallback, useContext  } from 'react';
 import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, TextInput, Modal,StyleSheet, ScrollView } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
