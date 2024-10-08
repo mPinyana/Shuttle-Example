@@ -223,7 +223,9 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   
       // Update only the inspections field in Firestore
       await updateDoc(vehicleRef, {
-        inspections: updatedInspections
+        inspections: updatedInspections,
+        mileage:inspected.mileage,
+
       });
   
       console.log('Inspection added to vehicle in database');
@@ -236,7 +238,8 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       // but be aware it might not reflect in your component immediately
       setCarNow(prevState => ({
         ...prevState,
-        inspections: updatedInspections
+        inspections: updatedInspections,
+        mileage:inspected.mileage,
       }));
   
     } catch (error) {

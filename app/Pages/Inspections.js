@@ -170,6 +170,7 @@ const toggleDeleteIcon = (index) => {
             fleetCtrl_email:user.email,
             time:time.toISOString(),
             fleetNo:vec,
+            mileage:'',
             documentation:documents,
             drvCompartment:driverCompartment,
             busInterior:interior,
