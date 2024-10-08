@@ -15,6 +15,8 @@ import ProfilesProvider from './app/shared/ProfilesContext';
 
 
 
+
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -22,23 +24,25 @@ export default function App() {
 
 
     return (
-      <ProfilesProvider>
-      <CurrentUserProvider>
-        <LoaderProvider>
-          <VehicleProvider>
-          <InspectionProvider>
-           <NavigationContainer>   
-             <Stack.Navigator initialRouteName='Login'>
-             <Stack.Screen name= "Login" component={LoginPage} options={{ headerShown: false}} /> 
-             <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerBackVisible: true}} /> 
-             <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
-             </Stack.Navigator>
-           </NavigationContainer>
-           </InspectionProvider>
-          </VehicleProvider>
-        </LoaderProvider>
-      </CurrentUserProvider>
-    </ProfilesProvider>
+
+      
+                    <ProfilesProvider>
+                    <CurrentUserProvider>
+                      <LoaderProvider>
+                        <VehicleProvider>
+                        <InspectionProvider>
+                        <NavigationContainer>   
+                          <Stack.Navigator initialRouteName='Login'>
+                          <Stack.Screen name= "Login" component={LoginPage} options={{ headerShown: false}} /> 
+                          <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerBackVisible: true}} /> 
+                          <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
+                          </Stack.Navigator>
+                        </NavigationContainer>
+                        </InspectionProvider>
+                        </VehicleProvider>
+                      </LoaderProvider>
+                    </CurrentUserProvider>
+                  </ProfilesProvider>
   
 
   );

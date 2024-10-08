@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import * as ImagePicker from 'expo-image-picker';
 import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions,TextInput, Modal, StyleSheet} from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
@@ -6,11 +7,12 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
+
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-const DriverSide = ({ aspectRatio = 300 / 100 }) => {
+const DriverSide = () => {
 
     
   const navigation= useNavigation();
@@ -18,9 +20,12 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
   const { inspection, updateInspections } = route.params;
 
   const [driver_Side, setDriverSide] = useState(inspection.driverSide);
-
+  const [damageImgs, setDamageImgs] = useState({});
   const translation = useRef(new Animated.Value(-100)).current;
   const [headerShown, setHeaderShown] = useState(false);
+
+
+
 
 
   useEffect(() => {
@@ -115,15 +120,33 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
   //const svgWidth = Math.min(screenWidth * 0.9, screenHeight * 0.9 * aspectRatio);
  //const svgHeight = svgWidth / aspectRatio;
 
- 
+ const handlePress = (id) => {
+  setDriver(Driverparts.map(part => 
+    part.id === id 
+      ? { ...part, damageLvl: (part.damageLvl + 1) % colors.length }
+      : part
+  ));
+};
 
-  const handlePress = (id) => {
-    setDriver(Driverparts.map(part => 
-      part.id === id 
-        ? { ...part, damageLvl: (part.damageLvl + 1) % colors.length }
-        : part
-    ));
-  };
+ const takePhoto = async () => {
+  const result = await ImagePicker.launchCameraAsync({
+    allowsEditing: false,
+    quality: 1,
+  });
+
+  if (!result.canceled) {
+    // Create a unique key for the new image (e.g., using the current timestamp or an incrementing number)
+    const newImageKey = `Driver image${Object.keys(damageImgs).length + 1}`;
+
+    // Update the damageImgs object with the new image URI
+    setDamageImgs((prevState) => ({
+      ...prevState,
+      [newImageKey]: result.assets[0].uri, // Add the new image URI with the generated key
+    }));
+  }
+};
+
+
 
   const handleCommentButtonPress = () => {
     setCommentModalVisible(true);
@@ -146,16 +169,14 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
 
 
   const handleDamageLog = () => {
-    const updatedDriversSide = { 
-      ...driver_Side, 
-      parts: Driverparts,
-      comment: comment,
-    };
-    setDriverSide(updatedDriversSide);
-    return updatedDriversSide;
+
+    // Update the driver side parts state
+    const updatedDriverSide = { ...driver_Side, parts: Driverparts, damagePics:damageImgs };
+    setDriverSide(updatedDriverSide);
+    return updatedDriverSide; // Return the updated state for use
   };
 
-
+  
 
   return (
     <View style={AllStyles.container}>
@@ -317,9 +338,20 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
       </View>
       </ScrollView>
 
-      <TouchableOpacity style={AllStyles.btnCamera}>
-        <SimpleLineIcons name="camera" size={30} color="white" />
-      </TouchableOpacity>
+
+      
+              <TouchableOpacity style={AllStyles.btnCamera} onPress={takePhoto}>
+              <SimpleLineIcons name="camera" size={30} color="white" />
+              {/* Badge to display the number of images */}
+              {Object.keys(damageImgs).length > 0 && (
+                <View style={AllStyles.badgeContainer}>
+                  <Text style={AllStyles.badgeText}>
+                    {Object.keys(damageImgs).length}
+                  </Text>
+                </View>
+              )}
+            </TouchableOpacity>
+
 
       <TouchableOpacity style={styles.btnComment} onPress={handleCommentButtonPress}>
         <FontAwesome name="comment" size={30} color="white" />
@@ -378,6 +410,7 @@ const DriverSide = ({ aspectRatio = 300 / 100 }) => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -476,5 +509,6 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
 });
+
 
 export default DriverSide;

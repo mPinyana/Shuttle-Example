@@ -30,6 +30,22 @@ const secondaryColor = '#ff5757' ;
         right: '10%',
         bottom: '10%'
 },
+badgeContainer: {
+    position: 'absolute',
+    top: -3,  // Adjust this value to position the badge higher
+    right: -3, // Adjust this to position it on the right side
+    backgroundColor: 'red',
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
 
 btnArrowR:{
     position: 'absolute',
@@ -54,8 +70,8 @@ btnBackArrow:{
 },
 btnCamera:{
     position: 'absolute',
-        width: '16%',
-        height: '9%',
+        width: 60,
+        height: 60,
         alignItems: 'center',
         justifyContent:'center',
         right: '5%',
