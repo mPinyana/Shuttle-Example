@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef,useCallback, useContext  } from 'react';
 import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, TextInput, Modal,StyleSheet, ScrollView } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { AllStyles, primaryColor } from '../../shared/AllStyles';
+import { AllStyles, primaryColor, secondaryColor } from '../../shared/AllStyles';
 
 
 
@@ -34,6 +34,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   const filteredcar= vehicles.filter(car=>car.fleetNo === inspection.fleetNo);
   const [carNow, setCarNow]= useState(filteredcar[0]);
   const [isloading, setIsloaing] = useState(false);
+  //const { inspections, setInspections } = useContext(InspectContext);
   
 
 
@@ -173,7 +174,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
 
   const handleUpdateInspection = async () => {
-    const { inspections, setInspections } = useContext(InspectContext);
+    
   
     try {
       setIsloaing(true);
@@ -191,11 +192,11 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       await updateDoc(inspectionRef, updatedInspection);
   
       // Update the inspection in the context
-      setInspections(prevInspections => 
+     /*  setInspections(prevInspections => 
         prevInspections.map(insp => 
           insp.id === updatedInspection.id ? updatedInspection : insp
         )
-      );
+      ); */
   
       handleUpdateVehicle(updatedInspection);
       uploadAllImages(updatedInspection);
@@ -228,7 +229,6 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       await updateDoc(vehicleRef, {
         inspections: updatedInspections,
         mileage:inspected.mileage,
-
       });
   
       console.log('Inspection added to vehicle in database');
@@ -342,12 +342,12 @@ const uploadImage = async (uri, path) => {
           <Text style={AllStyles.textBtn} >Submit</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        {/* <TouchableOpacity 
           style={[AllStyles.btn, styles.viewButton]}
           onPress={handleViewInspectionDetails}
         >
           <Text style={AllStyles.textBtn}>View Details</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
     
       </View>
       

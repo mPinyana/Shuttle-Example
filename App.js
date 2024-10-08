@@ -3,6 +3,8 @@ import React from 'react';
 import SignUpScreen from './app/Pages/SignUpScreen';
 import LoginPage from './app/Pages/LoginPage';
 import HomePage from  './app/Pages/HomePage';
+//import Profile from './app/Pages/Profile';
+//import CustomHeader from './path/to/CustomHeader';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -18,6 +20,7 @@ import ProfilesProvider from './app/shared/ProfilesContext';
 
 
 const Stack = createNativeStackNavigator();
+
 
 export default function App() {
       
@@ -36,6 +39,8 @@ export default function App() {
                           <Stack.Screen name= "Login" component={LoginPage} options={{ headerShown: false}} /> 
                           <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerBackVisible: true}} /> 
                           <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
+                      
+
                           </Stack.Navigator>
                         </NavigationContainer>
                         </InspectionProvider>
