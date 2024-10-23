@@ -8,8 +8,6 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';// utilise "check"
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import Entypo from '@expo/vector-icons/Entypo';// will use the cross/cancel
 
-
-
 import { VehicleContext } from '../shared/VehicleContext';
 
 
