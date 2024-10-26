@@ -1,6 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Settings from "../Pages/Settings";
 import Vehicle from "../Pages/Vehicle";
+import ViewCtrl from "../Pages/Sketching/Viewing/ViewCtrl";
 import { useRoute, useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import DamageImageGallery from "../Pages/DamageImageGallery";
@@ -25,8 +26,9 @@ const VehicleTopTabs=() =>{
     return (
       <Tab.Navigator>
         <Tab.Screen name="Details" component={Vehicle} initialParams={{ vehicle }} />
-        <Tab.Screen name="Inspections" component={Settings} />
-      {/*    <Tab.Screen name="Photos" component={DamageImageGallery} initialParams={{ vehicle }} />  */}
+
+         <Tab.Screen name="Inspections" component={Settings} initialParams={{ vehicle }} /> 
+
       </Tab.Navigator>
     );
   }

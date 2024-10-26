@@ -1,8 +1,7 @@
-
-import React, { useState, useEffect, useRef,useContext } from 'react';
+import React, { useState, useEffect,useRef,useCallback,useContext } from 'react';
 import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, TextInput, Modal,StyleSheet, ScrollView } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { AllStyles, primaryColor,secondaryColor } from '../../shared/AllStyles';
+import { AllStyles, primaryColor,secondaryColor} from '../../shared/AllStyles';
 
 import { useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -23,14 +22,15 @@ import { InspectContext } from '../../shared/InspectionContext';
 
 const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
-
+  
   const route =useRoute();
   const { inspection, updateInspections } = route.params;
-  //const { inspections, setInspections } = useContext(InspectContext);
+
   const {vehicles, setVehicles} = useContext(VehicleContext);
   const filteredcar= vehicles.filter(car=>car.fleetNo === inspection.fleetNo);
   const [carNow, setCarNow]= useState(filteredcar[0]);
   const [isloading, setIsloaing] = useState(false);
+  //const { inspections, setInspections } = useContext(InspectContext);
   
 
 
@@ -170,7 +170,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
 
   const handleUpdateInspection = async () => {
-  
+
   
     try {
       setIsloaing(true);
@@ -188,11 +188,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       await updateDoc(inspectionRef, updatedInspection);
   
       // Update the inspection in the context
-    /*   setInspections(prevInspections => 
-        prevInspections.map(insp => 
-          insp.id === updatedInspection.id ? updatedInspection : insp
-        )
-      ); */
+
   
       handleUpdateVehicle(updatedInspection);
       uploadAllImages(updatedInspection);
@@ -225,7 +221,6 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       await updateDoc(vehicleRef, {
         inspections: updatedInspections,
         mileage:inspected.mileage,
-
       });
   
       console.log('Inspection added to vehicle in database');
@@ -334,9 +329,17 @@ const uploadImage = async (uri, path) => {
 
       <View style={AllStyles.btnContainer}>
         <TouchableOpacity style={AllStyles.btn}
-          onPress={() => {handleDamageLog();handleUpdateInspection()}}>
+          onPress={() => {handleDamageLog();handleUpdateInspection()}}
+          >
           <Text style={AllStyles.textBtn} >Submit</Text>
         </TouchableOpacity>
+
+        {/* <TouchableOpacity 
+          style={[AllStyles.btn, styles.viewButton]}
+          onPress={handleViewInspectionDetails}
+        >
+          <Text style={AllStyles.textBtn}>View Details</Text>
+        </TouchableOpacity> */}
     
       </View>
       
@@ -475,6 +478,13 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center'
+  },
+  viewButton: {
+    marginLeft: 0, // Add some space between Submit and View Details buttons
+    backgroundColor: primaryColor,
+    button:20,
+    top:2
+     // Use the primary color for consistency
   },
 });
 

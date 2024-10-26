@@ -134,7 +134,7 @@ const [electric, setElectric] = useState({
   windscreenWipes:false,
   reverseLight:false,
 })
-//handle delete
+//handle delete function , called with the id and delete from firestore and update the local inspection
 const handleDeleteInspection = async (inspectionId) => {
   try {
     await deleteDoc(doc(Firebase_DB, 'Inspections', inspectionId));
@@ -281,7 +281,7 @@ const toggleDeleteIcon = (index) => {
         hour12: false, // Ensure 24-hour format
       })
     : 'Select Time';
-
+    //function to render each inspection
     const renderInspectionItem = ({ item, index }) => (
       <TouchableOpacity
         style={styles.inspectItem}
@@ -340,6 +340,7 @@ const toggleDeleteIcon = (index) => {
       />
 
       {user.role !== 'Driver' && (
+        //wrap deete icon  functionality check if user is not a driver
         <TouchableOpacity 
           style={styles.addButton}
           onPress={() => setIsModalVisible(true)}
@@ -525,6 +526,7 @@ const toggleDeleteIcon = (index) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    //width x factor ensure proper spacing
     padding: width * 0.05,
     backgroundColor: '#f5f5f5',
   },
