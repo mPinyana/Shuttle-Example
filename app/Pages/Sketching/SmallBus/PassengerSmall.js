@@ -41,7 +41,7 @@ const PassengerSmall = ({ navigation, aspectRatio = 300 / 100 }) => {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
 
 
-  const [Passengerparts, setPassenger] = useState([
+  const psgParts= [
     { id:'2P1',
     label: 'Bottom Back (Side View)', 
     d: "M270 1300 Q195 1305,195 1305 Q 190 1295,190 1245 H 270 V 1300", damageLvl: 0 },
@@ -129,7 +129,11 @@ const PassengerSmall = ({ navigation, aspectRatio = 300 / 100 }) => {
     { id:'2P31',
     label: 'front Wheel', cx: 180, cy: 255, r: 60, damageLvl: 0 },
     
-  ]);
+  ];
+
+  const [Passengerparts, setPassenger] = useState(
+    inspection.inspStatus === 'Complete' ? inspection.passengeSide.parts : psgParts
+  );
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {

@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions,TextInput, Modal, StyleSheet} from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { CurrentUserContext } from '../../shared/CurrentUserContext';
+
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-
-
-
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -19,13 +18,11 @@ const DriverSide = () => {
   const route =useRoute();
   const { inspection, updateInspections } = route.params;
 
+  const {user} = useContext(CurrentUserContext);
   const [driver_Side, setDriverSide] = useState(inspection.driverSide);
   const [damageImgs, setDamageImgs] = useState({});
   const translation = useRef(new Animated.Value(-100)).current;
   const [headerShown, setHeaderShown] = useState(false);
-
-
-
 
 
   useEffect(() => {
@@ -45,7 +42,7 @@ const DriverSide = () => {
 
   const colors = ['white', 'yellow', '#fa0707']; // Define the color sequence
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
-  const [Driverparts, setDriver] = useState([
+  const drvParts = [
      { id:'1D1',
       label: 'Back driver perspective', 
       d: "M 655 70 Q 660 50, 415 55 V 80 H 655 Z", damageLvl: 0 },
@@ -107,10 +104,14 @@ const DriverSide = () => {
       label: 'lower Sheet 2', x: 345, y: 870, width: 70, height: 130, damageLvl: 0 },
     { id:'1D30',
       label:'lower Sheet 1', x: 345, y: 1000, width: 70, height: 30, damageLvl: 0 },
-  ]);
+  ];
+
+  const [Driverparts, setDriver] = useState(
+    inspection.inspStatus === 'Complete' ? inspection.driverSide.parts : drvParts
+  );
 
   const [isCommentModalVisible, setCommentModalVisible] = useState(false);
-  const [comment, setComment] = useState(inspection.driverSide.comment || '');
+  const [comment, setComment] = useState('');
 
 
 
@@ -153,15 +154,21 @@ const DriverSide = () => {
   };
 
   const handleSaveComment = () => {
-    const updatedDriversSide = {
+    const updatedDriverSide = {
       ...driver_Side,
-      comment: comment,
+      comments: [
+        ...driver_Side.comments,
+        {
+          commenter: user,
+          text: comment
+        }
+      ]
     };
 
-    setDriverSide(updatedDriversSide);
+    setDriverSide(updatedDriverSide);
     updateInspections({
       ...inspection,
-      driverSide: updatedDriversSide,
+      driverSide: updatedDriverSide,
     });
     Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
     setCommentModalVisible(false);

@@ -2,7 +2,7 @@ import React ,{ useState,useContext } from 'react';
 import {View, Text,TextInput,TouchableOpacity,TouchableWithoutFeedback,Alert,ScrollView,StyleSheet, Image, Keyboard,Animated} from 'react-native'; 
 import { AllStyles, primaryColor, secondaryColor}  from '../shared/AllStyles';
 import { Firebase_DB } from '../../FirebaseConfig';
-import { collection,getDocs,query,where, addDoc } from 'firebase/firestore';
+import { collection,getDocs,query,where, addDoc,setDoc, doc } from 'firebase/firestore';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';// utilise "check"
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -35,9 +35,38 @@ const Vehicle=()=>{
         setCar({ ...car, [field]: text }); // Update specific  property
       };
       
-      const handleVehicleUpdate=()=>{
-
-      }
+      const handleVehicleUpdate = async () => {
+       
+      
+        // Filter out the current vehicle receiving updates
+        const tester = vehicles.filter(carNow => carNow.fleetNo !== vehicle.fleetNo);
+      
+        // Check if user inserted a fleet number that already exists in the local vehicles array
+        const tester2 = tester.filter(carNow => carNow.fleetNo === car.fleetNo);
+      
+        if (tester2.length > 0) {
+          Alert.alert(
+            'Fleet number already in use',
+            'Fleet is already used for another vehicle. Please select a different one.'
+          );
+        } else {
+          try {
+            // Update the values locally
+            setVehicles([
+              ...vehicles.filter(carNow => carNow.fleetNo !== car.fleetNo),
+              car
+            ]);
+      
+            // Update Firestore with the modified vehicles array
+            await setDoc(doc(Firebase_DB, 'vehicles', car.id), car);
+      
+            Alert.alert('Success', 'Vehicle details updated successfully!');
+          } catch (error) {
+            console.error("Error updating vehicle: ", error);
+            Alert.alert('Error', 'There was an error updating the vehicle in the database.');
+          }
+        }
+      };
 
       const popOut = () => {
         setPop(false);
@@ -144,7 +173,7 @@ const Vehicle=()=>{
                     Mileage (km)</Text>  
 
                 <TextInput
-                   
+                   keyboardType='Numeric'
                    style={{
                     height: 45,
                     width: 100,
@@ -156,13 +185,15 @@ const Vehicle=()=>{
                     }}
                     placeholder={car.mileage}   
                     value={car.mileage}  
-                    onChangeText={(text) => handleInputChange(text, 'type')}
+                    onChangeText={(text) => handleInputChange(text, 'mileage')}
                     editable={isEditable}
                 />
         </View>
 
                 <Animated.View style={[styles.confirm, { bottom: confirm}]}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                    onPress={()=>handleVehicleUpdate()}
+                    >
                     <FontAwesome name="check" size={24} color="white" />
                     </TouchableOpacity>
                 </Animated.View>

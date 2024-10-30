@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, Modal, TextInput, StyleSheet} from 'react-native';
 import Svg, { Path, Rect,Line,Circle } from 'react-native-svg';
 import { AllStyles } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import { CurrentUserContext } from '../../shared/CurrentUserContext';
+
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
-
 import * as ImagePicker from 'expo-image-picker';
-
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
@@ -20,7 +20,7 @@ const route =useRoute();
 const { inspection, updateInspections } = route.params;
 
 const [front_Side, setFrontSide] = useState(inspection.frontSide); 
-
+const {user} = useContext(CurrentUserContext);
 const [damageImgs, setDamageImgs] = useState({});
 const colors = ['white','yellow', '#fa0707'];
 const [dimensions, setDimensions] = useState(Dimensions.get('window'));
@@ -33,7 +33,7 @@ useEffect(() => {
   });
 }, [front_Side]);
 
-const [frontParts,SetFront] = useState([
+const frntParts = [
     { id:'1F1',
         label: 'Bus roof', 
         d: "M 100 70  Q 100 25,350 20   Q 600 25, 600 70  Q 370 30,100 70", damageLvl: 0 },
@@ -86,8 +86,11 @@ const [frontParts,SetFront] = useState([
         label: 'Right bumper', 
         d: "M 530 500 V 430 H 558 Q 570 430,615 385 Q 617 500 ,600 500 H 530 M 558 430 L 615,440", damageLvl: 0 }, 
 
-]);
+];
 
+const [frontParts,SetFront] = useState(
+  inspection.inspStatus === 'Complete' ? inspection.frontSide.parts : frntParts
+);
 
 
 
@@ -121,7 +124,13 @@ const [isCommentModalVisible, setCommentModalVisible] = useState(false);
   const handleSaveComment = () => {
     const updatedFrontSide = {
       ...front_Side,
-      comment: comment,
+      comments: [
+        ...front_Side.comments,
+        {
+          commenter: user,
+          text: comment
+        }
+      ]
     };
     setFrontSide(updatedFrontSide);
     updateInspections({

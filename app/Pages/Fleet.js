@@ -20,7 +20,7 @@ const Fleet = ({navigation}) => {
         // Check if there are inspection images, if not, use the placeholder image
         const vehicleImages = vehicle.damageImages 
           ? Object.values(vehicle.damageImages).flat() // Flattening all images from different inspections
-          : [require('../assets/Shuttle.jpg')]; // Default image if no damage images
+          : [require('../assets/UCTShuttle.jpg')]; // Default image if no damage images
 
         return (
           <View
@@ -43,7 +43,7 @@ const Fleet = ({navigation}) => {
               elevation: 5,
               padding: 10,
               marginBottom: 10,
-              backgroundColor: '#f0f0f0',
+              backgroundColor: 'white',
               borderRadius: 10,}}
             onPress={() =>{navigation.navigate('details', {vehicle, index})}}
           >
