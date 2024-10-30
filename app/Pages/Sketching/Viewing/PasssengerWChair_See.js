@@ -1,27 +1,24 @@
-import React, { useState, useEffect, useRef, useCallback ,useContext} from 'react';
-import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions, TextInput, Modal, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions, FlatList, Modal, StyleSheet } from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
-import { AllStyles, primaryColor } from '../../shared/AllStyles';
+import { AllStyles,primaryColor } from '../../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { CurrentUserContext } from '../../shared/CurrentUserContext';
-import * as ImagePicker from 'expo-image-picker';
+
 
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
+const PassengerWchair_See = ({ navigation, aspectRatio = 300 / 100 }) => {
 
     
   const route =useRoute();
-  const { inspection, updateInspections } = route.params;
+  const { inspection } = route.params;
   
-  const [passenger_Side, setPassengerSide] = useState(inspection.passengerSide); 
+ 
 
-  const [damageImgs, setDamageImgs] = useState({});
-  const {user} = useContext(CurrentUserContext);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState(inspection.passengerSide.comment || '');
   const [isCommentModalVisible, setCommentModalVisible] = useState(false);
 
 
@@ -29,12 +26,7 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
   const [headerShown, setHeaderShown] = useState(false);
 
 
-  useEffect(() => {
-    updateInspections({
-      ...inspection,
-      passengerSide: passenger_Side,
-    });
-  }, [passenger_Side]);
+
 
   useEffect(() => {
     Animated.timing(translation, {
@@ -49,98 +41,12 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
 
 
-  const psgParts = [
-    { id:'1P1',
-    label: 'Back of bus (Passenger view)', d: "M 390 120 Q 395 100,150 105 V 130 H 390 Z", damageLvl: 0 },
-    { id:'1P2',
-    label: 'roof (passenger View)', x: 365, y: 130, width: 25, height: 920, damageLvl: 0 },
-    { id: '1P3',
-    label:'window 7', x: 260, y: 135, width: 100, height: 70, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P4',
-    label: 'window 6', x: 260, y: 215, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P5',
-    label: 'window 5', x: 260, y: 335, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P6',
-      label: 'wheel chair door 1', x: 95, y: 480, width: 250, height: 35,  damageLvl: 0 },
-    { id:'1P7',
-      label: 'wheel chair door 2', x: 95, y: 530, width: 250, height: 35,  damageLvl: 0 },
-    { id:'1P8',
-    label: 'window 3', x: 260, y: 575, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P9',
-    label: 'window 2', x: 260, y: 695, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P10',
-    label: 'window 1', x: 260, y: 815, width: 100, height: 110, rx: 10, ry: 10, damageLvl: 0 },
-    { id:'1P11',
-    label: 'Passenger door left', x: 90, y: 938, width: 260, height: 45, damageLvl: 0 },
-    { id:'1P12',
-        label: 'Passenger door right', x:90, y:997, width:260, height: 45, damageLvl: 0 },
-    { id:'1P13',
-    label: 'Windscreen (Passenger view)', d: "M 390 1050 H 150 V 1080 Q 391 1070,390 1050 M 315 1050 Q 215 1050, 200 1078", damageLvl: 0 },
-    { id:'1P14',
-    label:'middle Sheet 7', d: "M 150 130 V 160 H 165 V 260 H 250 V 130 Z", damageLvl: 0 },
-    { id:'1P15',
-     label:'middle Sheet 6', x:150, y:260, width:100, height:120, damageLvl: 0 },
-    { id:'1P16',
-    label: 'middle Sheet 5', x:150, y:380, width:100, height:90, damageLvl: 0 },
-    { id:'1P17',
-    label: 'middle Sheet 4', x:150, y:580, width:100, height:40, damageLvl: 0 },
-    { id:'1P18',
-    label: 'middle Sheet 3', x:150, y:620, width:100, height:120, damageLvl: 0 },
-    { id:'1P19',
-    label:'middle Sheet 2', x:150, y:740, width:100, height:120, damageLvl: 0 },
-    { id:'1P20',
-    label: 'middle Sheet 1', x:150, y:860, width:100, height:70, damageLvl: 0 },
-    { id:'1P21',
-    label: 'bottom Back (Passenger)', d: "M 150 105 Q 100 105,80 120 V 130 H 150 Z", damageLvl: 0 },
-    { id:'1P22',
-     label:'lowerS heet 1', d: "M 80 130 H 150 V 160 H 165 V 260 H 80 Z", damageLvl: 0 },
-    { id:'1P23', 
-    label:'lower Sheet 2', x:80, y:260, width:70, height:60, damageLvl: 0 },
-    { id:'1P24',
-    label: 'back Wheel (Passenger side)', cx: 80, cy: 380, r: 50, damageLvl: 0 },
-    { id:'1P25',
-    label: 'lower Sheet 3',x:80, y:440, width:70,height:30, damageLvl: 0 },
-    { id:'1P27',
-    label: 'lower Sheet 5', x:80, y:580, width:70, height:40, damageLvl: 0 },
-    { id:'1P28',
-    label: 'lower Sheet 6', x:80, y:620, width:70, height:90, damageLvl: 0 },
-    { id:'1P29',
-    label: 'lower Sheet 7', x:80, y:710, width:70, height:90, damageLvl: 0 },
-    { id:'1P30',
-    label: 'front Wheel (passenger side)', cx: 80, cy: 860, r: 50, damageLvl: 0 },
-    { id:'1P31',
-    label: 'lower Sheet 8', x: 80, y: 1050, width: 70, height: 30, damageLvl: 0 },
-  ];
 
-  const [Passengerparts, setPassenger] = useState(
-    inspection.inspStatus === 'Complete' ? inspection.passengerSide.parts : psgParts
-  );
-  
 
   const handleCommentButtonPress = () => {
     setCommentModalVisible(true);
   };
 
-  const handleSaveComment = () => {
-    const updatedPassengerSide = {
-      ...passenger_Side,
-      comments: [
-        ...passenger_Side.comments,
-        {
-          commenter: user,
-          text: comment
-        }
-      ]
-    };
-
-    setPassengerSide(updatedPassengerSide);
-    updateInspections({
-      ...inspection,
-      passengerSide: updatedPassengerSide,
-    });
-    Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
-    setCommentModalVisible(false);
-  };
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
@@ -152,45 +58,66 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
   const screenWidth = dimensions.width;
   const screenHeight = dimensions.height;
 
+
+
+  const renderComments = ({ item,index }) => {
   
-  const takePhoto = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: false,
-      quality: 1,
-    });
-  
-    if (!result.canceled) {
-      // Create a unique key for the new image (e.g., using the current timestamp or an incrementing number)
-      const newImageKey = `Passenger image${Object.keys(damageImgs).length + 1}`;
-  
-      // Update the damageImgs object with the new image URI
-      setDamageImgs((prevState) => ({
-        ...prevState,
-        [newImageKey]: result.assets[0].uri, // Add the new image URI with the generated key
-      }));
-    }
-  };
-  
-  
+    return (
+            <View
+            style={{ marginTop:10, height:130, borderBottomWidth:0.3}}
+            >
+                    <View
+                    style={{flexDirection:'row',alignItems:'center', marginTop:10,marginLeft:15,height:30}}
+                    >
+                    <Text
+                    style={{fontSize:19}}
+                    >
+                    {item.commenter.name} {item.commenter.surname}
+                    </Text>
+
+                    <Text
+                    style={{fontSize:13}} 
+                    >
+                    {'\u2B24    '} 
+                    </Text>
+
+
+                    <Text
+                    style={{fontStyle:'italic'}}
+                    >
+                    {item.commenter.email}
+                    </Text>
+
+                    </View>
+
+                    <View
+                    style={{
+                      
+                      width:'80%',
+                      height:'60%',
+                       marginTop:5,
+                       padding:7,
+                       marginLeft:30,
+                       borderWidth:0.5,
+                       borderRadius:15,
+                       backgroundColor:'#f2f2f2'
+                       }}
+                    >
+                      <Text
+                      style={{fontSize:15}}
+                      >
+                        {item.text} 
+                      </Text>
+                    </View>
+          </View>
+
+
+    );
+};
+
 
  
 
-  const handlePress = (id) => {
-    setPassenger(Passengerparts.map(part => 
-      part.id === id 
-        ? { ...part, damageLvl: (part.damageLvl + 1) % colors.length }
-        : part
-    ));
-  };
-
-  const handleDamageLog = () => {
-    // Update the driver side parts state
-
-    const updatedPassengerSide = { ...passenger_Side, parts: Passengerparts,damagePics:damageImgs };
-
-    setPassengerSide(updatedPassengerSide);
-    return updatedPassengerSide; // Return the updated state for use
-  };
 
   return (
     <View style={AllStyles.container}>
@@ -241,17 +168,13 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
          //S flexWrap: 'wrap'
         }}
         >
-          Passenger's Side
+          Passenger View
         </Text>
       </Animated.View>
 
       <TouchableOpacity
-          onPress={()=> navigation.navigate('FrontView', {
-            inspection: {
-              ...inspection,
-              passengerSide: passenger_Side,
-            },
-            updateInspections,
+          onPress={()=> navigation.navigate('Front_See', {
+            inspection
           })}
           style={{
             padding: 10, 
@@ -268,8 +191,8 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
       <View style={{ width: screenWidth, height: screenHeight, justifyContent: 'center', alignItems: 'center'}}>
         <Svg height="100%" width="100%" viewBox="-50 120 600 600">
 
-          {Passengerparts.map((part) => (
-            <TouchableWithoutFeedback key={part.id} onPress={() => handlePress(part.id)}>
+          {inspection.passengerSide.parts.map((part) => (
+            <TouchableWithoutFeedback key={part.id} >
               {part.d ? (
                 <Path
                   d={part.d}
@@ -356,71 +279,81 @@ const PassengerWchair = ({ navigation, aspectRatio = 300 / 100 }) => {
       </View>
       </ScrollView>
 
-      <TouchableOpacity style={AllStyles.btnCamera} onPress={takePhoto}>
-              <SimpleLineIcons name="camera" size={30} color="white" />
-              {/* Badge to display the number of images */}
-              {Object.keys(damageImgs).length > 0 && (
-                <View style={AllStyles.badgeContainer}>
-                  <Text style={AllStyles.badgeText}>
-                    {Object.keys(damageImgs).length}
-                  </Text>
-                </View>
-              )}
-            </TouchableOpacity>
        
 
       <TouchableOpacity style={styles.btnComment} onPress={handleCommentButtonPress}>
-        <FontAwesome name="comment" size={30} color="white" />
-      </TouchableOpacity>
+          <FontAwesome name="comment" size={30} color="white" />
+          {Object.keys(inspection.passengerSide.comments).length > 0 && (
+                <View style={AllStyles.badgeContainer}>
+                  <Text style={AllStyles.badgeText}>
+                    {Object.keys(inspection.passengerSide.comments).length}
+                  </Text>
+                </View>
+              )}
+        </TouchableOpacity>
 
       <TouchableOpacity 
         style={AllStyles.btnArrowR}    
         onPress={() => {
-          const updatedPassengerSide = handleDamageLog();
-          navigation.navigate('BackView', {
-            inspection: {
-              ...inspection,
-              passengerSide: updatedPassengerSide,
-            },
-            updateInspections,
-          });
+      
+          navigation.navigate('Back_See', {
+            inspection});
         }}
       >
         <AntDesign name="arrowright" size={30} color="white" />
       </TouchableOpacity>
 
       <Modal
-        animationType="slide"
-        transparent={true}
-        visible={isCommentModalVisible}
-        onRequestClose={() => setCommentModalVisible(false)}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TextInput
-              style={styles.input}
-              onChangeText={setComment}
-              value={comment}
-              placeholder="Write your comment here"
-              multiline
-            />
-            <View style={styles.buttonContainer}>
-              <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setCommentModalVisible(false)}
-              >
-                <Text style={styles.textStyle}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.button, styles.buttonSave]}
-                onPress={handleSaveComment}
-              >
-                <Text style={styles.textStyle}>Save</Text>
-              </TouchableOpacity>
+          animationType="slide"
+          style={{flex:1}}
+          transparent={true}
+          visible={isCommentModalVisible}
+          onRequestClose={() => setCommentModalVisible(false)}
+        >
+          
+            <View style={{
+                  marginTop:'80%',
+                  height:'60%',
+                  padding: 10,
+                  backgroundColor: 'white',
+                  borderRadius: 15,
+                  borderWidth:2, 
+                  borderColor:'#6495ED',
+                  shadowColor: 'black',
+                  shadowOffset: {
+                      width: 0,
+                      height: 2
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    //elevation: 5
+            }}>
+              
+               <TouchableOpacity
+                          style={AllStyles.btnClose}
+                          onPress={()=> setCommentModalVisible(false)}
+                        >
+                            <Ionicons name='close' size={24} color='black'/>
+                        </TouchableOpacity>
+                  <Text style={{
+                          fontSize:25,
+                          
+                        }}>Comments</Text>
+                  <FlatList
+                    data={inspection.passengerSide.comments}
+                    renderItem={renderComments}
+                       
+                    keyExtractor={(item, index) => index.toString()}
+                    contentContainerStyle={{
+                      flexGrow:1,
+                       
+                      }}
+                  />
+             
+             
             </View>
-          </View>
-        </View>
-      </Modal>
+        
+        </Modal>
 
     </View>
   );
@@ -526,4 +459,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default PassengerWchair;
+export default PassengerWchair_See;

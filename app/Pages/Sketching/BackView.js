@@ -2,6 +2,8 @@ import React, { useState, useEffect,useRef,useCallback,useContext } from 'react'
 import { View, TouchableWithoutFeedback, TouchableOpacity, Text, Alert,Dimensions, TextInput, Modal,StyleSheet, ScrollView } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import { AllStyles, primaryColor,secondaryColor} from '../../shared/AllStyles';
+import { VehicleContext } from '../../shared/VehicleContext';
+import { CurrentUserContext } from '../../shared/CurrentUserContext';
 
 import { useRoute } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
@@ -13,10 +15,9 @@ import LoadingDots from "react-native-loading-dots";
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 
 
-import { VehicleContext } from '../../shared/VehicleContext';
+
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-
 import { InspectContext } from '../../shared/InspectionContext';
 
 
@@ -26,6 +27,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
   const route =useRoute();
   const { inspection, updateInspections } = route.params;
 
+  const {user} = useContext(CurrentUserContext);
   const {vehicles, setVehicles} = useContext(VehicleContext);
   const filteredcar= vehicles.filter(car=>car.fleetNo === inspection.fleetNo);
   const [carNow, setCarNow]= useState(filteredcar[0]);
@@ -47,7 +49,7 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
   const colors = ['white','yellow', '#fa0707'];
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
-  const [BackParts, setBack] = useState([
+  const bckParts =[
     { id:'1B1',
       label: 'top mid back Bar', 
       d: "M20 17 Q 150 1, 300 17 L300,40 Q 150 15,20 40 L20,17", damageLvl: 0 },
@@ -90,10 +92,14 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
     { id:'1B14',
       title: 'Bottom right back Bumper', 
       d: "M280 280 Q 315 288 , 316 258 V 310 H 280 M 290 295 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
-  ]);
+  ];
+
+  const [BackParts, setBack] = useState(
+    inspection.inspStatus === 'Complete' ? inspection.backSide.parts : bckParts
+  );
 
   const [isCommentModalVisible, setCommentModalVisible] = useState(false);
-  const [comment, setComment] = useState(inspection.backSide.comment || '');
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
@@ -143,24 +149,33 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
 
 
   const handleSaveComment = () => {
-    setBackSide(prevState => ({
-      ...prevState,
-      comment: comment
-    }));
-    setCommentModalVisible(false);
+    const updatedBackSide = {
+      ...back_Side,
+      comments: [
+        ...back_Side.comments,
+        {
+          commenter: user,
+          text: comment
+        }
+      ]
+    };
+
+    setBackSide(updatedBackSide);
+    updateInspections({
+      ...inspection,
+      backSide: updatedBackSide,
+    });
     Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
+    setCommentModalVisible(false);
   };
-/*  handleDamageLog=()=>{
-    setBackSide({...back_Side, parts:BackParts})
-  }
-  */
+
 
 
   const handleDamageLog = () => {
     return new Promise((resolve) => {
       setBackSide((prevBackSide) => {
 
-        const updatedBackSide = { ...prevBackSide, parts: BackParts, comment: comment, damagePics:damageImgs };
+        const updatedBackSide = { ...prevBackSide, parts: BackParts, damagePics:damageImgs };
         resolve(updatedBackSide);
         return updatedBackSide;
 
@@ -215,12 +230,13 @@ const BackView = ({navigation, aspectRatio = 350 / 320}) => {
       const currentVehicleData = vehicleSnapshot.data();
   
       // Prepare the update
-      const updatedInspections = [inspected.id, ...(currentVehicleData.inspections || [])];
+      const updatedInspection = [inspected.id, ...(currentVehicleData.inspections.filter(vecInspect => vecInspect === inspected.id) || [])];
   
       // Update only the inspections field in Firestore
       await updateDoc(vehicleRef, {
-        inspections: updatedInspections,
+        inspections: updatedInspection,
         mileage:inspected.mileage,
+   
       });
   
       console.log('Inspection added to vehicle in database');

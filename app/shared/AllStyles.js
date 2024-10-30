@@ -205,7 +205,7 @@ btnClose: {
     },
     modal:{
         justifyContent:'flex-end',
-        margin:0,  
+       margin:0,  
     },
     modalContent: {
        

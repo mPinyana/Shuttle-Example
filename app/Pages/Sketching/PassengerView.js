@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { View,ScrollView, TouchableWithoutFeedback, TouchableOpacity,Animated, Text, Alert, Dimensions, TextInput, Modal, StyleSheet } from 'react-native';
 import Svg, { Path, Rect, Circle, Polyline, Line, Text as SvgText, TSpan } from 'react-native-svg';
 import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
+import { CurrentUserContext } from '../../shared/CurrentUserContext';
 
+
+import * as ImagePicker from 'expo-image-picker';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -15,7 +17,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
     
   const route =useRoute();
   const { inspection, updateInspections } = route.params;
-  
+  const {user} = useContext(CurrentUserContext);
   const [passenger_Side, setPassengerSide] = useState(inspection.passengerSide); 
   const [damageImgs, setDamageImgs] = useState({});
   const translation = useRef(new Animated.Value(-100)).current;
@@ -42,7 +44,7 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
 
 
-  const [Passengerparts, setPassenger] = useState([
+  const psgParts = [
     { id:'1P1',
     label: 'Back of bus (Passenger view)', d: "M 390 120 Q 395 100,150 105 V 130 H 390 Z", damageLvl: 0 },
     { id:'1P2',
@@ -103,10 +105,15 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
     label: 'front Wheel (passenger side)', cx: 80, cy: 860, r: 50, damageLvl: 0 },
     { id:'1P30',
     label: 'lower Sheet 8', x: 80, y: 1050, width: 70, height: 30, damageLvl: 0 },
-  ]);
+  ];
+
+  const [Passengerparts, setPassenger] = useState(
+    inspection.inspStatus === 'Complete' ? inspection.passengerSide.parts : psgParts
+  );
+  
 
   const [isCommentModalVisible, setCommentModalVisible] = useState(false);
-  const [comment, setComment] = useState(inspection.passengerSide.comment || '');
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {
@@ -156,12 +163,24 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
   };
 
   const handleSaveComment = () => {
-    setPassengerSide(prevState => ({
-      ...prevState,
-      comment: comment
-    }));
-    setCommentModalVisible(false);
+    const updatedPassengerSide = {
+      ...passenger_Side,
+      comments: [
+        ...passenger_Side.comments,
+        {
+          commenter: user,
+          text: comment
+        }
+      ]
+    };
+
+    setPassengerSide(updatedPassengerSide);
+    updateInspections({
+      ...inspection,
+      passengerSide: updatedPassengerSide,
+    });
     Alert.alert('Comment Saved', 'Your comment has been saved successfully.');
+    setCommentModalVisible(false);
   };
 
   const handleDamageLog = () => {
@@ -169,7 +188,6 @@ const PassengerView = ({ navigation, aspectRatio = 300 / 100 }) => {
     const updatedPassengerSide = { 
       ...passenger_Side, 
       parts: Passengerparts,
-      comment: comment ,
       damagePics:damageImgs
     };
 

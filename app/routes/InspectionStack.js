@@ -4,7 +4,7 @@ import React, { useEffect, useState, useContext } from 'react';
 
 
 //Checlisting
-import inspection from "../Pages/Inspections";
+import inspection from "../Pages/Inspection";
 import docPage from "../Pages/Checklist/Documentation_inspectionCh"; // 1/7
 import driverCompartmentPage from '../Pages/Checklist/DriverCompartment_inspectCh'; // 2/7
 import interiorPage from '../Pages/Checklist/Interior_InspectionCh'; // 3/7
@@ -44,7 +44,7 @@ function InspectionStack(){
                 
                         <Stack.Navigator initialRouteName="Inspections">
                             <Stack.Screen name="Inspections" component={inspection} options={{
-                                        headerLeft: ()=> <CustomHeader />,
+                                       headerLeft:false,
                                         headerTitleAlign: 'center',
                                         headerShown: true,
                                         headerTitleStyle: { color: '#004aad',
@@ -119,7 +119,7 @@ function InspectionStack(){
                             />
                             <Stack.Screen name="FrontView" component={FrontView} 
                                 options={{
-                                    title:'Front View',
+                                    title:'Front Side',
                                     headerTitleStyle: { color: '#004aad',
                                         fontSize: 25,
                                     },
@@ -157,7 +157,7 @@ function InspectionStack(){
                                 />
                             <Stack.Screen name="BackView" component={BackView} 
                                 options={{
-                                    title:'BackSide',
+                                    title:'Back Side',
                                     headerTitleStyle: { color: '#004aad',
                                         fontSize: 25,
                                     },

@@ -40,7 +40,7 @@ const DriverSmall = () => {
 
   const colors = ['white', 'yellow', '#fa0707']; // Define the color sequence
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
-  const [Driverparts, setDriver] = useState([
+  const drvParts= [
      { id:'2D1',
       label: 'Bottom Back (Side View)', 
       d: "M270 100 Q195 95,195 95 Q 190 105,190 155 H 270 V 100", damageLvl: 0 },
@@ -130,7 +130,11 @@ const DriverSmall = () => {
         label: 'Back Wheel ', 
         cx: 180, cy: 500, r: 70, damageLvl: 0 },
    
-  ]);
+  ];
+
+  const [Driverparts, setDriver] = useState(
+    inspection.inspStatus === 'Complete' ? inspection.driverSide.parts : drvParts
+  );
 
 
   const screenWidth = dimensions.width;

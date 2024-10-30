@@ -39,7 +39,7 @@ const BackSmall = ({navigation,}) => {
 
   const colors = ['white','yellow', '#fa0707'];
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));
-  const [BackParts, setBack] = useState([
+  const bckParts = [
     { id:'2B1',
       label: 'Roof (back View)', 
       d: "M50 17  Q 210 5,350 17  L353,40 Q 210 45,47 40 Z", damageLvl: 0 },
@@ -77,7 +77,13 @@ const BackSmall = ({navigation,}) => {
       title: ' Right Lights', 
       d: "M385 240  L360,250 Q 360 300 ,356 350 H 362 Q 363 305,373 275 Q 380 255 ,385 250 V 240", damageLvl: 0 },
    
-  ]);
+  ];
+
+  const [BackParts, setBack] = useState(
+    inspection.inspStatus === 'Complete' ? inspection.backSide.parts : bckParts
+  );
+
+
 
   useEffect(() => {
     const subscription = Dimensions.addEventListener('change', ({ window }) => {

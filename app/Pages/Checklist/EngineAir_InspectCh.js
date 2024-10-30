@@ -3,8 +3,7 @@ import { AllStyles, primaryColor } from '../../shared/AllStyles';
 import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import EngineAirChecklist from "./EngineAirChecklist";
-import { Firebase_DB } from "../../../FirebaseConfig";
-import { doc, updateDoc } from 'firebase/firestore';
+
 
 export default function EngineAir_InspectCh({ navigation }) {
     const route = useRoute();

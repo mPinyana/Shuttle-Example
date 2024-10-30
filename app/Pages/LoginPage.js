@@ -114,7 +114,7 @@ function LoginPage({navigation}) {
                     }));
                 } else {
                     // No inspections found, use placeholder image
-                    vehicleData.damageImages.placeholder = [require('../assets/Shuttle.jpg')];
+                    vehicleData.damageImages.placeholder = [require('../assets/UCTShuttle.jpg')];
                 }
 
                 return { id: doc.id, ...vehicleData };
@@ -146,7 +146,7 @@ function LoginPage({navigation}) {
   };
   
       
-      const fetchInspections = async (currentUser) => {
+/*       const fetchInspections = async (currentUser) => {
         try {
           const inspectionsRef = collection(Firebase_DB, 'Inspections');
           const driverQuery = query(inspectionsRef, where('driverEmail', '==', currentUser.email));
@@ -169,7 +169,25 @@ function LoginPage({navigation}) {
           throw error;
         }
       };
-    
+     */
+      const fetchInspections = async () => {
+        try {
+            const inspectionsRef = collection(Firebase_DB, 'Inspections');
+            const snapshot = await getDocs(inspectionsRef);
+            
+            const fetchedInspections = snapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+            }));
+            
+            setInspection(fetchedInspections);
+            console.log(fetchedInspections);
+        } catch (error) {
+            console.error('Error fetching inspections:', error);
+            throw error;
+        }
+    };
+
 
     const logginIn = async() => {
 

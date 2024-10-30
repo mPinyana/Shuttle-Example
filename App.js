@@ -39,8 +39,6 @@ export default function App() {
                           <Stack.Screen name= "Login" component={LoginPage} options={{ headerShown: false}} /> 
                           <Stack.Screen name= "SignUp" component={SignUpScreen} options={{ headerBackVisible: true}} /> 
                           <Stack.Screen name="Home" component={HomePage} options={{ headerShown: false }} />
-                      
-
                           </Stack.Navigator>
                         </NavigationContainer>
                         </InspectionProvider>

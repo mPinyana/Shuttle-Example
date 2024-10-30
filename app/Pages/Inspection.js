@@ -31,11 +31,14 @@ export default function Inspection({ navigation ,route}){
   const [showDeleteIcon, setShowDeleteIcon] = useState({});
  
  
-  const {profiles, setProfiles} = useContext(ProfilesContext);// implement context as the same as below
-  const { user } = useContext(CurrentUserContext);//    ""        ""  as the same as below
+  const {profiles, setProfiles} = useContext(ProfilesContext);
+  const { user } = useContext(CurrentUserContext);
   const {inspections, setInspection} = useContext(InspectContext);
   const {vehicles, setVehicles} = useContext(VehicleContext);
   
+  const myInspections = inspections.filter(
+    (inspect) => inspect.driverEmail === user.email || inspect.fleetCtrl_email === user.email
+);
   
 
 
@@ -183,22 +186,22 @@ const toggleDeleteIcon = (index) => {
             driverSide:{
               parts:{},
               damagePics:{},
-              comments:null
+              comments:[]
             },
             frontSide:{
               parts:{},
               damagePics:{},
-              comments:''
+              comments:[]
             },
             passengerSide:{
               parts:{},
               damagePics:{},
-              comments:''
+              comments:[]
             },
             backSide:{
               parts:{},
               damagePics:{},
-              comments:''
+              comments:[]
             },
         };
 
@@ -213,16 +216,16 @@ const toggleDeleteIcon = (index) => {
          { id: docRef.id, ...newInspection }
          ]);
          // Immediately update the status to "Pending"
-      await updateDoc(doc(Firebase_DB, 'Inspections', docRef.id), {
-        inspStatus: 'Pending'
-      });
+    //  await updateDoc(doc(Firebase_DB, 'Inspections', docRef.id), {
+   //  inspStatus: 'Pending'
+  //    });
 
       // Update the local state to reflect the new status
-      setInspection(prevInspections => 
+  /*     setInspection(prevInspections => 
         prevInspections.map(insp => 
           insp.id === docRef.id ? { ...insp, inspStatus: 'Pending' } : insp
         )
-      );
+      ); */
           Alert.alert(
             'Inspection Added',
             `Inspection was successfully added`,
@@ -332,7 +335,7 @@ const toggleDeleteIcon = (index) => {
       <Text style={styles.subText}> Find Inspections assigned..</Text>
       
       <FlatList
-        data={inspections}
+        data={myInspections}
         renderItem={renderInspectionItem}
         
         keyExtractor={(item, index) => index.toString()}

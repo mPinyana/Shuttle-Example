@@ -29,7 +29,7 @@ useEffect(() => {
   });
 }, [front_Side]);
 
-const [frontParts,SetFront] = useState([
+const frntParts= [
     { id:'2F1',
         label: 'Bus roof (Front View)', 
         d: "M90 60 Q 95 35,100 30 Q 260 17,400 30 Q 405 35,410 60 Q 250 45,90 60 ", damageLvl: 0 },
@@ -69,8 +69,12 @@ const [frontParts,SetFront] = useState([
     { id:'2F13',
        label: 'Right bottom corner light', 
        d: "M323 398 Q 346 365,345 350 Q 400 330, 405 315 L 411,290 Q 405 405,395 405 H 323  Z M390 355  L383,398 H 350  L 360 365 Z M 365 380 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0", damageLvl: 0 },
-]);
+];
 
+
+const [frontParts,SetFront] = useState(
+  inspection.inspStatus === 'Complete' ? inspection.frontSide.parts : frntParts
+);
 
 const takePhoto = async () => {
   const result = await ImagePicker.launchCameraAsync({
