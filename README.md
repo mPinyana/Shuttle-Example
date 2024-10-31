@@ -125,3 +125,11 @@ In thsis part, the user has accesss to:
 </ul>
 
 <br><br>
+![Screenshot_Fleet](https://github.com/user-attachments/assets/647c6854-7c29-459f-b76a-c66483d0299a)
+![Screenshot_VecInpec](https://github.com/user-attachments/assets/a9554d8d-f88a-4393-b6a6-7014c0d8ee80)
+![Screenshot_DipsInpec](https://github.com/user-attachments/assets/df752c4e-7728-4d19-89a1-c5f8f81da8e2)
+![Screenshot_InspecComment](https://github.com/user-attachments/assets/7fe3d5ee-b2db-4a42-a2c2-034b7bc50a71)
+
+
+
+
