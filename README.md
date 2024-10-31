@@ -72,6 +72,12 @@ npm install
 ```
 <br>
 
+- Run the application
+```bash
+npx expo start
+```
+<br>
+
 # App Features 
 The main benefits of the application are outlined in the subheadings below. Ofcourse these are not the full capabilities of the application but the important ones, that add the most business value
 <br>
@@ -87,15 +93,35 @@ This is the inception of the entire inspection process, where the user responsib
 
 
 
-
-
-
-
-
-
-
 <br><br>
 ## 2. Conducting Inspection 
+The user has to record their observations about the vehicle's condition in three broad steps. <br>
+<ul>
+  <li>Complete a checklist, which has 7 pages</li>
+  <li>Mark damage on blueprint</li>
+  <li>Additional info: comments and photos</li>
+</ul>
+
+![Screenshot_Check](https://github.com/user-attachments/assets/0d8654ff-020b-4b87-8f63-cab8455fb852)
+<space> 
+![Screenshot_Sketch](https://github.com/user-attachments/assets/17e88204-d28e-4de4-a96e-f60f5ba698e8)
+<space> 
+![Screenshot_Comment](https://github.com/user-attachments/assets/0843d788-5be9-45bf-a0fe-4336363c5b75)
+<space> 
+![Screenshot_Cam](https://github.com/user-attachments/assets/3730373a-8609-4268-8d78-af7ee5844b56)
+
+
+
 <br><br>
-## 3. Viewing Vehicle condition 
+## 3. Viewing Vehicle condition
+Conversely, the observed details in the inspection need to be organised according to the relevant bus/vehicle for management to make decisions accordingly.
+
+In thsis part, the user has accesss to:
+
+<ul>
+  <li>A landing page tha lists all vehicles currently in the fleet, which  has preview of the most recent pic and default  pic for those not yet inspected</li>
+  <li>A list of all inpection conducted on the vehicle</li>
+  <li>Obviously, a display the information specified during the inspecting process before</li>
+</ul>
+
 <br><br>
